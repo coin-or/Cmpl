@@ -1,0 +1,23 @@
+
+Error No input file
+Usage:  [options] [<input file>]
+
+Options:
+ -i[<File>]  : input file / reading from stdin
+ -m[<File>]  : export model in MPS format in a file or stdout
+ -x[<File>]  : export model in OSiL XML format in a file or stdout
+ -e[<File>]  : output for error messages and warnings 
+               -e simple output to stderr
+               -e<File> ouput in MprL XML format to file
+ -l[<File>]  : output for replacements for products of variables
+ -s[<File>]  : output for short statistic info
+ -p[<File>]  : output for protocol
+ -gn         : generation option: don't make reductions
+ -gf         : generation option: constraints for products of variables follow the product
+ -cd         : no warning at multiple parameter definition
+ -ca         : no warning at deprecated '=' assignment
+ -ci<X>      : mode for integer expressions (0 - 3), defaults to 1
+ -fc<X>      : format option: maximal length of comment, defaults to 60
+ -ff         : format option: generate free MPS
+ -f%<format> : format option: format spezifier for float number output, defaults to %f
+ -v          : print version number

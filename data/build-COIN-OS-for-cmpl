@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# test of the OS
+if [[ $OSTYPE == *darwin* ]] ||  [[ $OSTYPE == *linux* ]] ; then
+	echo "downloading COIN-OS" 
+	svn co  https://projects.coin-or.org/svn/OS/releases/2.3.2 COIN-OS
+	echo "Finished - download COIN-OS"
+	echo "downloading GLPK" 
+	cd COIN-OS/ThirdParty/Glpk/
+    ./get.Glpk
+    cd ../../../
+    echo "Finished - download GLPK"
+fi
+
+if test -d COIN-OS ; then 
+	
+	cd COIN-OS
+	
+	if ./configure COIN_SKIP_PROJECTS="Ipopt Bonmin Bcp DyLP Couenne HSL"  --enable-static --disable-shared
+    then
+		echo "configure finished"
+    else
+	echo "Configure fails"
+        exit 1
+    fi
+
+    make
+    make install
+	
+	if test -d ThirdParty/Glpk/glpk ; then 
+
+    	cd ThirdParty/Glpk/glpk
+
+    	if ./configure --disable-shared
+    	then
+       		make 
+        	cd examples
+        	cp glpsol ../../../../bin/glpsol
+    	else
+        	echo "GLPK configure failed"
+        	cd ../../../
+        	exit 3
+    	fi
+    	cd ../../../../
+    fi
+    
+    if [[ $OSTYPE == *msys* ]] ; then
+    	cd bin
+    	cpFile=`which libstdc++-6.dll`
+    	cp $cpFile .
+    	cpFile=`which mingwm10.dll`
+    	cp $cpFile .
+    	cpFile=`which libgcc_s_dw2-1.dll`
+    	cp $cpFile .
+    fi
+    
+	echo "COIN-OS is built in COIN-OS/bin"
+	
+else
+    echo "COIN-OS does not exists"
+    exit 1
+fi

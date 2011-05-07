@@ -1,0 +1,37 @@
+CMPL model generating - running
+CMPL model generating - finished
+OSSolverServices      - running
+---------------------------------------------------------------------------------------------------------
+General status:     normal
+Problem :           22_diet.cmpl
+SolverName          COIN-OR cbc
+Nr. of Solutions:   1
+---------------------------------------------------------------------------------------------------------
+Solution nr.:       1
+Objective name :    cost
+Objective value :   101.14 (min!)
+
+Variables           
+Nr. of variables:   8
+Name                 Type            Activity         Lower Bound         Upper Bound            Marginal
+---------------------------------------------------------------------------------------------------------
+x_BEEF                  I                2.00                2.00               10.00                   -
+x_CHK                   I                8.00                2.00               10.00                   -
+x_FISH                  I                2.00                2.00               10.00                   -
+x_HAM                   I                2.00                2.00               10.00                   -
+x_MCH                   I               10.00                2.00               10.00                   -
+x_MTL                   I               10.00                2.00               10.00                   -
+x_SPG                   I               10.00                2.00               10.00                   -
+x_TUR                   I                2.00                2.00               10.00                   -
+---------------------------------------------------------------------------------------------------------
+
+Constraints         
+Nr. of constraints: 4
+Name                 Type            Activity         Lower Bound         Upper Bound            Marginal
+---------------------------------------------------------------------------------------------------------
+A                       G             1500.00              700.00            Infinity                   -
+B1                      G             1330.00              700.00            Infinity                   -
+B2                      G              860.00              700.00            Infinity                   -
+C                       G              700.00              700.00            Infinity                   -
+---------------------------------------------------------------------------------------------------------
+OSSolverServices      - finished
