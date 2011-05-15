@@ -1,0 +1,3 @@
+-osil 19_quadratic-assignment.osil
+-osrl 19_quadratic-assignment.osrl
+-serviceMethod solve

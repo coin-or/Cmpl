@@ -1,0 +1,69 @@
+oldcmpl="/Users/mike/Documents/Projekte/Projekte/Coliop3/CMPL/cmpl-1-3-2/bin/cmpl"
+echo "$oldcmpl"
+
+$oldcmpl -ca -m01_Standardmodell.mps 01_Standardmodell.gen 
+mv 01_Standardmodell.mps 01_Standardmodell.comp.mps 
+
+$oldcmpl -ca -m02_Standardmodell.mps 02_Standardmodell.gen
+mv 02_Standardmodell.mps 02_Standardmodell.comp.mps
+
+$oldcmpl -ff -ca -f%20.0f -m03_Fibonacci.mps 03_Fibonacci.gen
+mv 03_Fibonacci.mps  03_Fibonacci.comp.mps
+
+$oldcmpl -ca -cd -m04_Primzahlen.mps 04_Primzahlen.gen
+mv 04_Primzahlen.mps 04_Primzahlen.comp.mps 
+
+$oldcmpl -ca -m05_IntervallLinearisierung.mps 05_IntervallLinearisierung.gen
+mv 05_IntervallLinearisierung.mps 05_IntervallLinearisierung.comp.mps
+
+$oldcmpl -m06_Variablenprodukte.A.mps 06_Variablenprodukte.A.gen
+mv 06_Variablenprodukte.A.mps 06_Variablenprodukte.A.comp.mps
+
+$oldcmpl -m06_Variablenprodukte.B.mps 06_Variablenprodukte.B.gen
+mv 06_Variablenprodukte.B.mps 06_Variablenprodukte.B.comp.mps
+
+$oldcmpl -m06_Variablenprodukte.C.mps 06_Variablenprodukte.C.gen 2>06_Variablenprodukte.C.comp.stderr
+mv 06_Variablenprodukte.C.mps 06_Variablenprodukte.C.comp.mps
+
+$oldcmpl -m07_Mehrkriteriell.mps 07_Mehrkriteriell.gen
+mv 07_Mehrkriteriell.mps 07_Mehrkriteriell.comp.mps
+
+$oldcmpl -m08_SummeNegiert.mps 08_SummeNegiert.gen
+mv 08_SummeNegiert.mps 08_SummeNegiert.comp.mps
+
+$oldcmpl -ca -m09_Beispiel_Steglich.mps 09_Beispiel_Steglich.gen >09_Beispiel_Steglich.comp.stdout
+mv 09_Beispiel_Steglich.mps 09_Beispiel_Steglich.comp.mps
+
+$oldcmpl -m10_Beispiel_Rost.mps 10_Beispiel_Rost.gen
+mv 10_Beispiel_Rost.mps 10_Beispiel_Rost.comp.mps
+
+$oldcmpl -ca -m11_Beispiel_Roemer.mps 11_Beispiel_Roemer.gen
+mv 11_Beispiel_Roemer.mps 11_Beispiel_Roemer.comp.mps
+
+$oldcmpl -ff -m11_Beispiel_Roemer2.mps 11_Beispiel_Roemer2.gen
+mv 11_Beispiel_Roemer2.mps 11_Beispiel_Roemer2.comp.mps
+
+$oldcmpl -cd -m12_Test_Loop.mps 12_Test_Loop.gen >12_Test_Loop.comp.stdout
+mv 12_Test_Loop.mps 12_Test_Loop.comp.mps
+
+$oldcmpl -cd 13_Test_Set.gen >13_Test_Set.comp.stdout 2>13_Test_Set.comp.stderr
+
+$oldcmpl  -ff -m14_Test_Summe.mps 14_Test_Summe.gen 2>14_Test_Summe.comp.stderr
+mv 14_Test_Summe.mps 14_Test_Summe.comp.mps
+
+$oldcmpl -x15_Test_Osil.comp.mps 15_Test_Osil.gen >5_Test_Osil.comp.stdout 2>5_Test_Osil.comp.stderr
+
+$oldcmpl -x16_diet.comp.mps 16_diet.gen
+
+$oldcmpl -ca -cd -m17_knapsack-min-presolved.mps 17_knapsack-min-presolved.gen >17_knapsack-min-presolved.comp.stdout 
+mv 17_knapsack-min-presolved.mps 17_knapsack-min-presolved.comp.mps
+
+$oldcmpl -ca -cd -m18_max-negative-convex-function.mps 18_max-negative-convex-function.gen >18_max-negative-convex-function.comp.stdout
+mv 18_max-negative-convex-function.mps 18_max-negative-convex-function.comp.mps
+
+$oldcmpl -ca -x19_quadratic-assignment.comp.mps 19_quadratic-assignment.gen
+
+$oldcmpl -m20_math-functions.mps 20_math-functions.gen >20_math-functions.comp.stdout
+mv 20_math-functions.mps 20_math-functions.comp.mps
+
+$oldcmpl -x21_testcsvrand.comp.mps 21_testcsvrand.gen >21_testcsvrand.comp.stdout

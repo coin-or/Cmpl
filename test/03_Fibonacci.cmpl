@@ -1,0 +1,21 @@
+# Berechnung der Fibonacci-Folge
+
+const:
+	# Initialisierung der ersten beiden Elemente
+	F[1..2] = (1, 1);
+
+	# Weitere Berechnung bis zum 20. Element
+	{i = 3(1)20:
+		F[i] = F[i-2] + F[i-1];
+	}
+
+# Alles weitere nur, um berechnete Werte in die generierte Matrix auszugeben
+var:
+	x: real;
+
+objective:
+	F[]*x;
+
+
+
+
