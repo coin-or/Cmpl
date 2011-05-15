@@ -1,6 +1,7 @@
 * text=auto !eol
 /AUTHORS -text
 /CHANGELog -text
+/INSTALL -text
 /cmpl.opt -text
 /cmpl.pro -text
 /cmplMake -text
