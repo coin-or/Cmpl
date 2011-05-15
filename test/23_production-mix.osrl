@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="http://www.coin-or.org/OS/stylesheets/OSrL.xslt"?>
+<osrl xmlns="os.optimizationservices.org"   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="os.optimizationservices.org http://www.optimizationservices.org/schemas/2.0/OSrL.xsd" >
+<general>
+<generalStatus type="normal">
+</generalStatus>
+<serviceName>
+
+Optimization Services Solver
+Main Authors: Horand Gassmann, Jun Ma, and Kipp Martin
+Distributed under the Eclipse Public License
+OS Version: 2.3.5
+Build Date: Mar 31 2011
+SVN Version: 4129
+
+</serviceName>
+<instanceName>23_production-mix.cmpl</instanceName>
+<solverInvoked>COIN-OR cbc</solverInvoked>
+</general>
+<job>
+<timingInformation numberOfTimes="1">
+<time type="elapsedTime" unit="second" category="total" >
+2.6980999999999998e-2</time>
+</timingInformation>
+</job>
+<optimization numberOfSolutions="1" numberOfVariables="3" numberOfConstraints="2" numberOfObjectives="1">
+<solution targetObjectiveIdx="-1">
+<status type="optimal">
+</status>
+<variables >
+<values numberOfVar="3">
+<var idx="0">33</var>
+<var idx="1">49</var>
+<var idx="2">0</var>
+</values>
+</variables>
+<objectives >
+<values numberOfObj="1">
+<obj idx="-1">6395</obj>
+</values>
+</objectives>
+</solution>
+</optimization>
+</osrl>

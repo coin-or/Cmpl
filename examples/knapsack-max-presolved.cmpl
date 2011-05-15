@@ -1,0 +1,28 @@
+
+	include "knapsack-data.cmpl"
+
+	#calculating the relative value of each box	
+	{j in boxes: val[j]:= p[j]/w[j]; } 
+	
+	sumSales:=0;
+	sumWeight:=0;
+	#initial solution 
+	x[]:=(0,0,0,0,0,0,0,0,0,0);
+	{ i in boxes:
+		maxVal:=max(val[]);
+		{j in boxes: 
+			{ maxVal=val[j] : 
+					{ sumWeight+w[j] <= maxWeight: 
+							x[j]:=1;
+							sumSales:=sumSales + p[j];
+							sumWeight:=sumWeight + w[j]; 
+					}
+					val[j]:=0;
+					break j;
+			}
+		}
+	}  
+	echo "Solution found";
+	echo "Optimal total sales: "+ sumSales;
+	echo "Total weight : " + sumWeight;
+	{j in boxes: echo "x_"+ j + ": " + x[j]; }

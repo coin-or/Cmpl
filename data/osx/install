@@ -1,0 +1,19 @@
+#!/bin/bash
+
+cd ..
+
+if test -d /Applications/Cmpl ; then
+    rm -R /Applications/Cmpl
+fi
+
+cp -R Cmpl /Applications
+sudo cp Cmpl/cmpl /usr/bin
+
+if (test -d /Library/Frameworks/QtXml.framework/) || (test -d /Library/Frameworks/QtCore.framework/) 
+then 
+	rm -R /Applications/Cmpl/Frameworks
+fi 
+
+rm /Applications/Cmpl/install
+
+
