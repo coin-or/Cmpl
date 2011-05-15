@@ -3,6 +3,7 @@
 /CHANGELog -text
 /INSTALL -text
 /LICENSE -text
+/README -text
 /cmpl.opt -text
 /cmpl.pro -text
 /cmplMake -text
