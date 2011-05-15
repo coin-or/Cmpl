@@ -14,3 +14,4 @@ data/osx/deinstall -text
 data/osx/install -text
 data/win/INSTALLATION -text
 data/win/README -text
+doc/CMPL-1-5-1.pdf -text
