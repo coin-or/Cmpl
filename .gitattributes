@@ -1,1 +1,16 @@
 * text=auto !eol
+data/build-COIN-OS-for-cmpl -text
+data/check_bison_flex -text
+data/linux/INSTALLATION -text
+data/linux/README -text
+data/linux/cmpl -text
+data/linux/deinstall -text
+data/linux/install -text
+data/makePackage -text
+data/osx/INSTALLATION -text
+data/osx/README -text
+data/osx/cmpl -text
+data/osx/deinstall -text
+data/osx/install -text
+data/win/INSTALLATION -text
+data/win/README -text
