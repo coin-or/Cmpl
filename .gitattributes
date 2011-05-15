@@ -2,6 +2,7 @@
 /AUTHORS -text
 /CHANGELog -text
 /cmpl.opt -text
+/cmpl.pro -text
 data/build-COIN-OS-for-cmpl -text
 data/check_bison_flex -text
 data/linux/INSTALLATION -text
