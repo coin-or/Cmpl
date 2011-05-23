@@ -1,0 +1,179 @@
+INSTALLING CMPL ON YOUR COMPUTER 
+**********************************************************************************
+
+These instructions are for UNIX-like systems (including Linux, Cygwin
+and MSys/MinGW) only.
+
+To build CMPL you have to install gcc, Qt4  and optional flex and bison.
+Test passed on
+	Linux 								gcc, Qt4, flex, bison 
+	Mac OSX  							gcc, Qt4, flex, bison 
+	Windows (v7, XP) using MSys/MinGW	gcc, Qt4
+
+Please download Qt4 using the link http://qt.nokia.com/
+
+For Windows it is strongly recommended to use the MSys/MinWG environment.
+Please download the "Automated MinGW Installer" using the following link:
+http://sourceforge.net/projects/mingw/files/
+
+**********************************************************************************
+A) Download and Unpack the distribution 										
+**********************************************************************************
+
+You can obtain the source code for the CMPL package in two ways:
+
+1)	The CMPL package is distributed in the form of a packed archive.
+
+	It is a archive file 'cmpl-X.Y.Z.tar.gz', where
+	'X.Y.Z' is the version number.
+	
+	In order to prepare the distribution for installation you should:
+	
+	1. Download the archive file from http://www.coliop.org/download/
+	2. Copy the CMPL distribution file to a working directory.
+	3. Unpack the distribution file 
+	
+2)	SVN 
+	Obtain the source directly from the COIN-OR subversion repository
+   	(recommended).  
+    	
+   	Checking out the source using a subversion client.
+
+    e.g. the latest stable version -> svn co  https://projects.coin-or.org/svn/Cmpl/stable/X.Y CMPL
+    e.g. the latest realease -> svn co  https://projects.coin-or.org/svn/Cmpl/releases/X.Y.Z CMPL 
+
+
+	
+**********************************************************************************
+B) Prepare COIN-OS as part of the CMPL package
+**********************************************************************************
+CMPL uses the COIN-OS binaries for solving LPs and MIPs. 
+Therefore it is necessary to install COIN-OS beside CMPL or to to use an
+existing COIN-OS installation.
+
+1) 	Using an existing COIN-OS installation
+	To connect CMPL with the COIN-OS binaries you have to change the path of
+	the OSSolverService binary in the file cmpl.opt.
+	
+	OSSolverServicePath =  theOSSolverServicePath/
+	
+2)  Download OSSolverService binary from 
+	http://www.coin-or.org/download/binary/OS/OSSolverService/ and
+	copy it in the directory of your choice. After this you have to change the
+	the path of	the OSSolverService binary in the file cmpl.opt.
+	
+	OSSolverServicePath =  theOSSolverServicePath/
+	
+3) 	Build a COIN-OS package
+
+	Download and build the COIN-OS and the GLPK packages
+	- 	Linux and Apple OS X
+		
+		Copy the script data/build-COIN-OS-for-cmpl in a working
+		directory and execute it.
+
+    		./build-COIN-OS-for-cmpl
+    
+		This script downloads, builds and installs COIN-OS in 
+		the folder COIN-OS/bin. 
+		
+		After these steps, you can copy COIN-OS in the directory 
+		of your choice.
+		
+	- 	Windows 
+		Before you execute the script build-COIN-OS-for-cmpl you 
+		have to download the COIN-OS and the GKLPK packages.
+		You can build the COIN-OS package with the following steps:
+           	http://www.coin-or.org/download/source/OS/OS-2.3.5.zip
+           	http://ftp.gnu.org/gnu/glpk/glpk-4.45.tar.gz
+        
+    		Unzip the COIN-OS package into COIN-OS
+    		Unzip the GLPK package into COIN-OS/ThirdParty/Glpk/glpk
+
+    		Build the COIN-OS package
+        	./build-COIN-OS-for-cmpl
+        
+		After these steps you can find the binaries in the folder 
+		COIN-OS/bin and you can copy the binaries in a directory 
+		of your choice.
+	
+		To connect CMPL with the COIN-OS binaries you have to change the path of
+		the OSSolverService binary in the file cmpl.opt.
+	
+		OSSolverServicePath =  /theOSSolverServicePath/
+    
+	
+**********************************************************************************
+C) Compiling the package 
+**********************************************************************************
+You can compile CMPL by typing the command:
+       
+    ./cmplMake 
+
+It reads the cmpl project file  and performs all necessary jobs.
+
+**********************************************************************************
+D) Checking the package
+**********************************************************************************
+To check the package, i.e. to run some tests included in the package,
+you can use the following command:
+
+    ./cmplMake  test
+    
+**********************************************************************************    
+E) Build a distribution package 
+**********************************************************************************
+To create a specific distribution package for your operating system you should 
+type the following command:
+
+    ./cmplMake package
+
+This creates a CMPL distribution package command in the folder:
+    [cmplFolder]/Package/[ linux | osx | win ]
+
+**********************************************************************************
+F) Installing the CMPL 
+**********************************************************************************
+To install the CMPL package you should type the following
+command:
+
+    ./cmplMake install
+
+This command will install the CMPL distribution package in the follwing folders:
+    
+    Apple OSX
+        program folder -> /Applications/Cmpl
+        script to execute cmpl -> /usr/bin/cmpl
+
+    Linux
+        program folder -> /usr/share/Cmpl
+        script to execute cmpl -> /usr/bin/cmpl
+
+Installing CMPL under Windows
+
+	To install the CMPL package you have to execute the install script
+
+	[cmplFolder]/Package/win/Cmpl/installCmpl.bat
+	
+	in the administrator mode. (Right-hand mouse click in the Windows Explorer
+	on this file and choose Run as Administrator) 
+
+	This command downloads the OSSolverService binary from 
+	http://www.coin-or.org/download/binary/OS/OSSolverService/,
+	installs it in c:\Program Files\OSSolverService\ and installs the CMPL 
+	distribution package in c:\Program Files\Cmpl.
+	
+	Please ensure that this folder is included in the environment variable PATH.
+  
+
+**********************************************************************************
+G) Cleaning the package
+**********************************************************************************
+After installing you can remove the object files
+from the source directory by typing
+
+    ./cmplMake clean
+  
+
+
+

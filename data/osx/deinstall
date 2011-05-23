@@ -1,0 +1,10 @@
+#!/bin/bash
+
+sudo rm -R /Applications/Cmpl
+sudo rm /usr/bin/cmpl
+sudo rm /usr/bin/OSSolverService
+
+echo "CMPL deinstalled"
+
+
+

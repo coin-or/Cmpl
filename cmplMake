@@ -1,0 +1,142 @@
+#!/bin/bash
+# This code is part of CMPL
+#
+# Copyright (C) 2007, 2008, 2009, 2010 Thomas Schleiff - Halle(Saale), 
+# Germany and Mike Steglich - Technical University of Applied Sciences
+# Wildau, Germany 
+#
+# Coliop3 and CMPL are projects of the Technical University of 
+# Applied Sciences Wildau and the Institute for Operations Research 
+# and Business Management at the Martin Luther University 
+# Halle-Wittenberg.
+# Please visit the project homepage <www.coliop.org>
+# 
+# CMPL is free software; you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License as published by 
+# the Free Software Foundation; either version 3 of the License, or 
+# (at your option) any later version.
+# 
+# CMPL is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public 
+# License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
+#
+# @author  Mike Steglich - March 2011
+
+
+# usage cmplMake
+function usage () 
+{
+	if [ $oSystem == "win" ]; then 
+		echo "Usage: make-cmpl [ test | clean | package ]"
+	else
+		echo "Usage: make-cmpl [ test | clean | package | install ]"
+	fi
+    echo " "
+    echo "test                          - test routine "
+    echo "clean                         - removes the obj and moc files in folder obj/"
+    echo "package                       - creates a distribution package in folder Package/[linux/osx/win]"
+    if [ $oSystem != "win" ]; then 
+    	echo "install                       - installs CMPL"
+    fi
+    exit 1
+}
+
+# copy the CMPL binary out of the cmpl.app
+function copyCMPLOsx () {
+	if  ( test -d bin/cmpl.app )  ; then 
+		cp bin/cmpl.app/Contents/MacOS/cmpl bin/cmpl
+	fi 
+}
+
+# CMPL test routine
+function testCMPL () 
+{
+    cd test
+    ./test-all
+    cd ..
+    exit 0
+}
+
+
+# test for qMake and GCC
+isQmake=1
+type -p qmake &>/dev/null || isQmake=0
+isGcc=1
+type -p gcc &>/dev/null || isGcc=0
+
+if [ $isQmake == 0 ]; then
+	echo "cmplMake error: qMake not found"
+	exit 1
+fi
+
+if [ $isGcc == 0 ]; then
+	echo "cmplMake error: GCC not found"
+	exit 1
+fi
+
+# test of the OS
+oSystem="";
+if [[ $OSTYPE == *darwin* ]] ; then 
+	oSystem="osx"
+elif  [[ $OSTYPE == *linux* ]] ; then
+	oSystem="linux"
+elif  [[ $OSTYPE == *msys* ]] ; then
+	oSystem="win"
+fi
+
+if [ $oSystem == "" ] ; then
+	echo "cmplMake error: Can not recognize your OS"
+	exit 1
+fi
+
+if [ $# -gt 1 ] ; then
+    usage
+    exit 1
+fi
+
+if [ $# == 0 ] ; then 
+    if [ $oSystem == "win" ] ; then
+        qmake cmpl.pro -r -spec win32-g++ CONFIG+=release
+        mingw32-make -w
+    elif [ $oSystem == "osx" ] ; then
+        qmake cmpl.pro -r -spec macx-g++ CONFIG+=release
+        make -w
+        copyCMPLOsx
+    elif [ $oSystem == "linux" ] ; then
+        qmake cmpl.pro -r -spec linux-g++  CONFIG+=release
+		make -w
+    else
+        usage   
+    fi
+    cp cmpl.opt bin/
+fi
+
+cp cmpl.opt bin/
+
+if [ $# == 1 ] ; then
+	if [ $1 == "test" ]; then
+		testCMPL
+	elif [ $1 == "clean" ]; then
+		if [ $oSystem == "win" ]; then 
+			mingw32-make clean
+		else
+          	make clean
+        fi
+	elif [ $1 == "package" ]; then
+         data/makePackage
+	elif [ $1 == "install" ]; then
+		if [ $oSystem != "win" ]; then 
+			cd "Package/${oSystem}/Cmpl"
+			./install
+    		cd ../../..
+    	fi
+	else
+    	usage	
+	fi
+fi
+
+exit 0

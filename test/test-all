@@ -1,0 +1,42 @@
+# Test whether cmpl exist or not 
+test -s ../bin/cmpl; r0=$?
+test -s ../bin/cmpl.exe; r1=$?
+
+
+if [ "$r0" = 0 -o "$r1" = 0 ]; then
+
+    echo "model generating tests"
+
+	./test-cmpl -ca -m 01_Standardmodell.mps 01_Standardmodell.cmpl
+	./test-cmpl -ca -m 02_Standardmodell.mps 02_Standardmodell.cmpl
+	./test-cmpl -ff -ca -f%20.0f -m 03_Fibonacci.mps 03_Fibonacci.cmpl
+	./test-cmpl -ca -cd -m 04_Primzahlen.mps 04_Primzahlen.cmpl
+	./test-cmpl -ca -m 05_IntervallLinearisierung.mps 05_IntervallLinearisierung.cmpl
+	./test-cmpl -m 06_Variablenprodukte.A.mps 06_Variablenprodukte.A.cmpl
+	./test-cmpl -m 06_Variablenprodukte.B.mps 06_Variablenprodukte.B.cmpl
+	./test-cmpl -m 06_Variablenprodukte.C.mps 06_Variablenprodukte.C.cmpl
+	./test-cmpl -m 07_Mehrkriteriell.mps 07_Mehrkriteriell.cmpl
+	./test-cmpl -m 08_SummeNegiert.mps 08_SummeNegiert.cmpl
+	./test-cmpl -ca -m 09_Beispiel_Steglich.mps 09_Beispiel_Steglich.cmpl
+	./test-cmpl -m 10_Beispiel_Rost.mps 10_Beispiel_Rost.cmpl
+	./test-cmpl -ca -m 11_Beispiel_Roemer.mps 11_Beispiel_Roemer.cmpl
+	./test-cmpl -ff -m 11_Beispiel_Roemer2.mps 11_Beispiel_Roemer2.cmpl
+	./test-cmpl -cd -noOutput 12_Test_Loop.cmpl
+	./test-cmpl -cd -noOutput 13_Test_Set.cmpl
+	./test-cmpl -ff -m 14_Test_Summe.mps 14_Test_Summe.cmpl
+	./test-cmpl -x 15_Test_Osil.osil 15_Test_Osil.cmpl
+	./test-cmpl -x 16_diet.osil 16_diet.cmpl
+	./test-cmpl -ca -cd -noOutput 17_knapsack-min-presolved.cmpl 
+	./test-cmpl -ca -cd -noOutput 18_max-negative-convex-function.cmpl 
+	./test-cmpl -ca -x 19_quadratic-assignment.osil 19_quadratic-assignment.cmpl
+	./test-cmpl -noOutput 20_math-functions.cmpl
+	./test-cmpl -x 21_testcsvrand.osil 21_testcsvrand.cmpl
+        
+echo "model generating and solver tests"
+	./test-cmpl 22_diet.cmpl
+    ./test-cmpl -ca 23_production-mix.cmpl
+
+else 
+	echo "CMPL does not exist in ../bin"
+fi
+
