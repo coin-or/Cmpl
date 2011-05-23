@@ -1,0 +1,42 @@
+The CMPL (Coliop Mathematical Programming Language) Package:
+---------------------------------------------------------------------------------
+
+CMPL (Coliop/Coin Mathematical Programming Language) is a mathematical programming 
+language and a system for modelling, solving and analysing linear programming (LP)
+problems and mixed integer programming (MIP) problems.
+
+The CMPL syntax is similar in formulation to the original mathematical model but
+also includes syntactic elements from modern programming languages. CMPL is 
+intended to combine the clarity of mathematical models with the flexibility of 
+programming languages. CMPL contains the COIN-OR OSSolverService including the 
+COIN-OR solvers. Since it is also possible to transform the mathematical 
+problem into MPS, Free-MPS or OSiL files, alternative solvers can be used.
+
+CMPL is an open source project licensed under  GPL. It is written in C++ and 
+is available for most of the relevant operating systems.  CMPL is a COIN-OR 
+project initiated by the Technical University of Applied Sciences Wildau 
+and the Institute for Operations Research and Business Management at the 
+Martin Luther University Halle-Wittenberg (both of Germany).
+
+For further information please visit the CMPL/Coliop3 website (www.coliop.org). 
+
+REQUIREMENTS 
+CMPL uses the COIN-OS binaries to solve LPs and MIPs. 
+Therefore it is necessary to install COIN-OS beside CMPL or to to use an
+existing COIN-OS installation.
+
+See the INSTALLATION file for the necessary steps.
+
+DOCUMENTATION:
+See the doc subdirectory for documenation. This subdirectory contains a 
+User's Manual in pdf format. See also:
+ 	
+	http://www.coliop.org
+
+
+INSTALLATION
+See the INSTALLATION file in the root directory.
+
+
+
+ 
