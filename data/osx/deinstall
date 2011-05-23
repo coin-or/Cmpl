@@ -1,9 +1,0 @@
-#!/bin/bash
-
-sudo rm -R /Applications/Cmpl
-sudo rm /usr/bin/cmpl
-
-echo "CMPL deinstalled"
-
-
-
