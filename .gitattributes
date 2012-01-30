@@ -1,5 +1,6 @@
 * text=auto !eol
 /AUTHORS -text
+/README -text
 data/build-COIN-OS-for-cmpl -text
 data/build-GLPK-for-cmpl -text
 data/check_bison_flex -text
