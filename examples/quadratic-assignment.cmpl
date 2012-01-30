@@ -1,0 +1,38 @@
+%arg -solver glpk
+#
+# Quadratic assignment problem
+#
+
+parameters:
+	n:=5;
+	M:=1000;
+	d[,]:= ( ( M, 1, 2, 3, 4),
+		 ( 2, M, 1, 2, 3),
+		 ( 3, 1, M, 1, 2),
+		 ( 2, 3, 1, M, 1),
+		 ( 5, 3, 1, 1, M) );
+
+
+	t[,]:= ( ( 0, 10, 10, 0, 20),
+		 ( 0, 0,  15, 0, 0 ),
+	         ( 0, 0,  0,  5, 20),
+		 ( 0, 0,  0,  0, 35),
+		 ( 0, 0,  0,  0, 0 ) );
+variables:
+	x[1..n,1..n]: binary;
+	#dummy variables to store the products x_hj * x_ik 
+	w[1..n,1..n,1..n,1..n]: real[0..1];
+
+objectives:
+	costs: sum{  h:=1(1)n, i:=1(1)n, j:=1(1)n, k:=1(1)n : 	t[h,i]*d[j,k]*w[h,j,i,k] } ->min;
+
+constraints:
+	{ h:=1(1)n, i:=1(1)n, j:=1(1)n, k:=1(1)n: 
+			{ t[h,i] = 0:  w[h,j,i,k] = 0; |
+		        # definition of the products x_hj * x_ik 
+			  default: w[h,j,i,k] = x[h,j] * x[i,k]; }
+	}	
+	sos1 { h:=1(1)n: sum{ j:=1(1)n: x[h,j] } = 1; }
+	sos2 { j:=1(1)n: sum{ h:=1(1)n: x[h,j] } = 1; }
+ 
+ 

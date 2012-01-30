@@ -1,0 +1,7 @@
+$HOME
+./helpBrowser
+{../doc/CMPL.pdf}
+cmpl
+{$problem$.$ext$} {-matrix} {$problem$.mat} {-solutionAscii}
+/usr/bin/coliop
+Courier-plain-13
