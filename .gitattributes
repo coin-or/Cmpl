@@ -1,5 +1,6 @@
 * text=auto !eol
 /AUTHORS -text
+/CHANGELog -text
 /INSTALL -text
 /LICENSE -text
 /README -text
