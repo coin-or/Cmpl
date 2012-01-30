@@ -3,6 +3,7 @@
 /INSTALL -text
 /LICENSE -text
 /README -text
+/cmpl.pro -text
 /cmplMake -text
 data/build-COIN-OS-for-cmpl -text
 data/build-GLPK-for-cmpl -text
