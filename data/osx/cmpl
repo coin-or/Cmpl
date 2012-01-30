@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cmplCmd="/Applications/Cmpl/bin/cmpl"
+
+$cmplCmd  $*
+
+
