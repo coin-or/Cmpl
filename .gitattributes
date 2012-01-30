@@ -36,3 +36,4 @@ data/win/cmpl.opt -text
 data/win/cmplShell.bat -text
 data/win/coliop.bat -text
 data/win/coliop3.opt -text
+doc/CMPL.pdf -text
