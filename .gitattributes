@@ -27,13 +27,6 @@ data/osx/README -text
 data/osx/cmpl -text
 data/osx/cmpl.opt -text
 data/osx/coliop -text
-data/osx/coliop.app/Contents/Info.plist -text
-data/osx/coliop.app/Contents/MacOS/applet -text
-data/osx/coliop.app/Contents/PkgInfo -text
-data/osx/coliop.app/Contents/Resources/Scripts/main.scpt -text
-data/osx/coliop.app/Contents/Resources/applet.icns -text
-data/osx/coliop.app/Contents/Resources/applet.rsrc -text
-data/osx/coliop.app/Contents/Resources/description.rtfd/TXT.rtf -text
 data/osx/coliop3.opt -text
 data/osx/deinstall -text
 data/osx/install -text
