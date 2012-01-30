@@ -1,0 +1,130 @@
+January 26 2012 - Steglich
+	CMPL 1.6.0 has been released
+	
+	CMPL is fundamentally reorganized and partially new created. 
+		New classes:
+			cmplUtil::CmplArgs 	 	handling of the CMPL command line arguments
+									handling of the CMPL header
+			cmpl::CmplCore			CMPL's core (compiler and interpreter)
+									transforms the CMPL model in a model instance
+			cmplUtil::CmplInstance	handling of the generated model instance
+									writes the instance files (OSiL, MPS, Free-MPS)
+			cmplUtil::CmplIO		interaction with the solvers
+									writes the standard solution reports to 
+									stdout, to an ASCII file or a CSV file
+			cmplUtil::CmplIOStream	handling of the solver stdout and stderr
+			cmplUtil::CmplException	handling of the CmplIO exceptions
+			cmplUtil::ArgError		handling of the CmplArgs exceptions
+			
+	Due to these reorganizations the CMPL performance is considerably increased. 
+				
+	New features: 
+		CMPL header
+			A CMPL header is intended to define CMPL options and solver options for 
+			the specific CMPL model. The elements of the CMPL header are not part 
+			of the CMPL model. Since a CMPL header is processed before the CMPL model is 
+			interpreted, the defined options have an impact on the CMPL model. 
+			
+			Most of the CBC, GLPK and Gurobi solver parameters now supported by the CMPL
+			header element %opt.
+			
+		GLPK and Gurobi support
+			Beside the COIN-OR OSSolverService the GLPK is a part of the distribution. 
+			If you have installed Gurobi then you can also use this solver directly. 
+				
+		count() - 	new array function 
+					returns the count of elements or 0 if the parameter or the 
+					variable does not exist	
+					replaces the deprecated dim() and def()
+			
+	New command line arguments
+		-maxDecimals <x> 		- maximal number of decimals in the solution report (max 12)
+		-dontRemoveTmpFiles		- Don't remove temporary files (mps,osil,osrl,gsol)
+		-matrix [<File>]		- Writes the generated matrix in a file or on stdout.
+		
+	Coliop
+		The CMPL distribution contains now Coliop which is an (simple) IDE for CMPL. 
+		Coliop is an open source project licensed under GPL. It is written in Java. The sources are
+		available under www.coliop.org.
+		
+	COIN-OS (customized - only CLP, CBC, Symphony) and GLPK are parts of the distribution now.
+	
+	Test routines are extended by some solver tests.  
+	
+May 23 2011 - Mike Steglich 
+	CMPL 1.5.2 has been released
+
+	Install script are changed for linux and OS X.
+	The scripts downloads the OSSolverService binary from www.coin-or.org/download/binary/OS/OSSolverService/ 
+	and installs it in a different folder to CMPL.
+		
+
+April 2011 - Mike Steglich 
+	CMPL 1.5.1 has been released
+		
+	New command line argument:
+	-solutionAscii      : 	optimization results in ASCII format 
+                   			A file <cmplFileName>.sol will be created.
+
+	some bugs are fixed in cmplFrame::readOsil 
+		
+March 20 2011 - Mike Steglich 
+	CMPL 1.5.0 has been released
+		
+	Direct connection to the COIN-OR OSSolverService including the COIN-OR solvers
+	via two new classes: cmplFrame and eCmpl 
+
+	cmplFrame is the common class to handle the connection between CMPL and 
+	OSSolverService. cmplFrame uses the Qt4 framework
+	eCmpl is a class to include the cmplFrame environment into the CMPL core.
+
+	All changes to the existing code are embedded in 
+	#ifdef SOLVERSERVICE	
+	#endif
+
+	A new build environmet using qmake and make was created.
+	./cmplMake  
+
+
+March 08 2011 - Mike Steglich 
+	CMPL 1.4.4 has been released
+		
+	FileIO::io_write_dest_mps()
+	New default for integers variables w/o an upper bound is set to infinity.
+		
+	FileIO::io_write_dest_xml()
+	New default for variables w/o an upper bound is set to -infinity.
+
+February 16 2011 - Mike Steglich / T. Schleiff 
+	CMPL 1.4.3 has been released
+		
+	IntFuncBase::insert_ind_elem()
+	A bug was fixed.
+		
+	Main::c_getmem(size_t len)
+	A bug was fixed.
+
+	CMPL_Scanner.l, IntFuncMathFunc::exec(val_str *vp)
+	New CMPL function srand( int x)
+
+	
+November 2010 -  T. Schleiff 
+	CMPL 1.4.2 has been released
+
+	The code base was changed from C to C++
+
+May 2010 -  Mike Steglich / T. Schleiff 
+	CMPL 1.3.2 has been released
+	
+	FileIO::io_write_dest_xml()
+	New output format OSiL 
+
+	CMPL_Scanner.l, IntFuncMathFunc::exec(val_str *vp)
+	New mathematical functions
+
+
+		
+
+
+
+			 

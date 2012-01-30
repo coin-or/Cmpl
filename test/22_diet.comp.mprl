@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mprl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.coliop.org/schemas/Mprl.xsd">
+	<general>
+		<generalStatus>warning</generalStatus>
+		<instanceName>22_diet.cmpl</instanceName>
+		<mplName>CMPL</mplName>
+		<message>cmpl finished with warnings</message>
+	</general>
+	<mplResult numberOfMessages="1">
+		<mplMessage type ="warning" file="22_diet.cmpl" line="2" description="Use of deprecated assignment with '='"/>
+	</mplResult>
+</mprl>

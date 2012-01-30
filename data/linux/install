@@ -1,0 +1,31 @@
+#!/bin/bash
+ 
+cd ..
+
+echo "Install CMPL in /usr/share/Cmpl"
+
+if test -d /usr/share/Cmpl ; then
+   sudo rm -R /usr/share/Cmpl
+fi
+
+sudo cp -R Cmpl /usr/share/
+
+coreFile="/usr/lib/libQtCore.so.4"
+xmlFile="/usr/lib/libQtXml.so.4"
+coreFile64="/usr/lib64/libQtCore.so.4"
+xmlFile64="/usr/lib64/libQtXml.so.4"
+if  ( (test -f $coreFile) && (test -f $xmlFile) ) || ( (test -f $coreFile64) && (test -f $xmlFile64) )  ; then
+   	sudo rm /usr/share/Cmpl/bin/libQtCore.so.4 
+   	sudo rm /usr/share/Cmpl/bin/libQtXml.so.4 
+fi
+
+sudo cp Cmpl/cmpl /usr/bin
+sudo chmod +x /usr/bin/cmpl
+
+sudo cp Cmpl/coliop /usr/bin
+sudo chmod +x /usr/bin/coliop
+
+
+sudo rm /usr/share/Cmpl/install
+
+echo "Install CMPL done"
