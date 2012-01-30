@@ -1,5 +1,6 @@
 * text=auto !eol
 /AUTHORS -text
+/INSTALL -text
 /LICENSE -text
 /README -text
 data/build-COIN-OS-for-cmpl -text
