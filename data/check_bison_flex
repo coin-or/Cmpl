@@ -1,8 +1,0 @@
-#!/bin/bash
-
-isnFlexBison=0
-
-type -p flex &>/dev/null || isnFlexBison=1
-type -p bison &>/dev/null || isnFlexBison=1
-
-exit $isFlexBison
