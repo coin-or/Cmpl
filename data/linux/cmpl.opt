@@ -1,0 +1,5 @@
+OSSolverServicePath =  ../Thirdparty/COIN-OS/
+GlpkPath =  ../Thirdparty/GLPK/
+GurobiCmplScriptPath = 
+Python = python 
+ScipFileName =
