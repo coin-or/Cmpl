@@ -1,5 +1,0 @@
-OSSolverServicePath =  ../Thirdparty/COIN-OS/
-GlpkPath =  ../Thirdparty/GLPK/
-GurobiCmplScriptPath = ../Data/gurobiCmpl/
-Python = python 
-ScipFileName = 
