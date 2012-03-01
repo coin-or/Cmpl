@@ -1,0 +1,19 @@
+%arg -noOutput
+
+parameters:
+	# Initialing the first element 
+	P[1] := 2;
+	# Calculating a prime sequence in the range 3 until 10 
+	{i := 3(1)10:
+		#Test whether number is prime
+		t := 1;
+		{j := defset(P[]), t != 0:
+			t := i mod P[j];
+		}
+		# If number is prime, save then as prime number
+		{t != 0:
+			P[count(P[]) + 1] := i;
+		}
+	}
+	echo "The prime sequence in the range 3 until 10";
+	{i:=defset(P[]): echo "element " + i + ": " + P[i]; } 

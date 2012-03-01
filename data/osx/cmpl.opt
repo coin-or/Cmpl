@@ -1,0 +1,3 @@
+OSSolverServicePath =  ../Thirdparty/COIN-OS/
+GlpkPath =  ../Thirdparty/GLPK/
+ScipFileName = 
