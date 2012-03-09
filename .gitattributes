@@ -15,7 +15,6 @@ data/check_bison_flex -text
 data/get-Coliop -text
 data/gurobiCmpl/gurobiCmpl.py -text
 data/linux/INSTALLATION -text
-data/linux/README -text
 data/linux/cmpl -text
 data/linux/cmpl.opt -text
 data/linux/coliop -text
