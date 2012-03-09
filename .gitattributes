@@ -13,6 +13,7 @@ data/build-COIN-OS-for-cmpl -text
 data/build-GLPK-for-cmpl -text
 data/check_bison_flex -text
 data/get-Coliop -text
+data/gurobiCmpl/gurobiCmpl.py -text
 data/linux/INSTALLATION -text
 data/linux/README -text
 data/linux/cmpl -text
