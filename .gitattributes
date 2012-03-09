@@ -4,7 +4,6 @@
 /INSTALL -text
 /LICENSE -text
 /Makefile -text
-/README -text
 /cmpl.opt -text
 /cmpl.pro -text
 /cmplMake -text
