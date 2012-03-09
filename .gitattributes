@@ -26,7 +26,6 @@ data/linux/helpBrowser -text
 data/linux/install -text
 data/makePackage -text
 data/osx/INSTALLATION -text
-data/osx/README -text
 data/osx/cmpl.opt -text
 data/osx/coliop -text
 data/osx/coliop.app/Contents/Info.plist -text
