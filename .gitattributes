@@ -41,7 +41,6 @@ data/osx/deinstall -text
 data/osx/gurobiPython -text
 data/osx/install -text
 data/win/INSTALLATION -text
-data/win/README -text
 data/win/cmpl.opt -text
 data/win/cmplShell.bat -text
 data/win/coliop.bat -text
