@@ -1,0 +1,500 @@
+
+Log started (V12.4.0.0) Sun Mar 18 16:24:34 2012
+
+
+Specified objective sense: MAXIMIZE
+Selected objective  name:  profit
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem '30_test_C.mps' read.
+Read time =    0.01 sec.
+Tried aggregator 1 time.
+MIP Presolve eliminated 3 rows and 2 columns.
+MIP Presolve modified 2 coefficients.
+Reduced MIP has 6 rows, 4 columns, and 12 nonzeros.
+Reduced MIP has 2 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Probing time =    0.00 sec.
+Tried aggregator 1 time.
+Presolve time =    0.00 sec.
+Found feasible solution after 0.02 sec.  Objective = 0.0000
+Probing time =    0.00 sec.
+Clique table members: 1.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time =    0.00 sec.
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0.0000                      2     --- 
+      0     0     4700.0000     2        0.0000     4700.0000        2     --- 
+*     0+    0                         4600.0000     4700.0000        2    2.17%
+      0     0        cutoff           4600.0000                      2    0.00%
+Elapsed real time =   0.03 sec. (tree size =  0.00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    0.01
+Parallel b&c, 2 threads:
+  Real time             =    0.00
+  Sync time (average)   =    0.00
+  Wait time (average)   =    0.00
+                          -------
+Total (root+branch&cut) =    0.01 sec.
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  4.6000000000e+03
+Solution time =    0.03 sec.  Iterations = 2  Nodes = 0
+Deterministic time = 0.07 ticks  (2.56 ticks/sec)
+
+
+Incumbent solution written to file '30_test_C.gsol'.
+
+Log started (V12.4.0.0) Sun Mar 18 16:24:34 2012
+
+
+Specified objective sense: MINIMIZE
+Selected objective  name:  costs
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem '31_transportation_C.mps' read.
+Read time =    0.00 sec.
+Tried aggregator 1 time.
+Reduced MIP has 7 rows, 12 columns, and 24 nonzeros.
+Reduced MIP has 0 binaries, 12 generals, 0 SOSs, and 0 indicators.
+Probing time =    0.00 sec.
+Tried aggregator 1 time.
+Presolve time =    0.00 sec.
+Probing time =    0.00 sec.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time =    0.00 sec.
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                        55500.0000                      5     --- 
+*     0     0      integral     0    39500.0000    39500.0000        5    0.00%
+Elapsed real time =   0.00 sec. (tree size =  0.00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    0.00
+Parallel b&c, 2 threads:
+  Real time             =    0.00
+  Sync time (average)   =    0.00
+  Wait time (average)   =    0.00
+                          -------
+Total (root+branch&cut) =    0.00 sec.
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  3.9500000000e+04
+Solution time =    0.00 sec.  Iterations = 5  Nodes = 0
+Deterministic time = 0.06 ticks  (18.12 ticks/sec)
+
+
+Incumbent solution written to file '31_transportation_C.gsol'.
+
+Log started (V12.4.0.0) Sun Mar 18 16:26:28 2012
+
+
+Specified objective sense: MAXIMIZE
+Selected objective  name:  profit
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem '30_test_C.mps' read.
+Read time =    0.00 sec.
+Tried aggregator 1 time.
+MIP Presolve eliminated 3 rows and 2 columns.
+MIP Presolve modified 2 coefficients.
+Reduced MIP has 6 rows, 4 columns, and 12 nonzeros.
+Reduced MIP has 2 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Probing time =    0.00 sec.
+Tried aggregator 1 time.
+Presolve time =    0.01 sec.
+Found feasible solution after 0.01 sec.  Objective = 0.0000
+Probing time =    0.00 sec.
+Clique table members: 1.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time =    0.00 sec.
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0.0000                      2     --- 
+      0     0     4700.0000     2        0.0000     4700.0000        2     --- 
+*     0+    0                         4600.0000     4700.0000        2    2.17%
+      0     0        cutoff           4600.0000                      2    0.00%
+Elapsed real time =   0.01 sec. (tree size =  0.00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    0.01
+Parallel b&c, 2 threads:
+  Real time             =    0.00
+  Sync time (average)   =    0.00
+  Wait time (average)   =    0.00
+                          -------
+Total (root+branch&cut) =    0.01 sec.
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  4.6000000000e+03
+Solution time =    0.01 sec.  Iterations = 2  Nodes = 0
+Deterministic time = 0.07 ticks  (5.02 ticks/sec)
+
+
+Incumbent solution written to file '30_test_C.gsol'.
+
+Log started (V12.4.0.0) Sun Mar 18 16:26:28 2012
+
+
+Specified objective sense: MINIMIZE
+Selected objective  name:  costs
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem '31_transportation_C.mps' read.
+Read time =    0.00 sec.
+Tried aggregator 1 time.
+Reduced MIP has 7 rows, 12 columns, and 24 nonzeros.
+Reduced MIP has 0 binaries, 12 generals, 0 SOSs, and 0 indicators.
+Probing time =    0.00 sec.
+Tried aggregator 1 time.
+Presolve time =    0.00 sec.
+Probing time =    0.00 sec.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time =    0.00 sec.
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                        55500.0000                      5     --- 
+*     0     0      integral     0    39500.0000    39500.0000        5    0.00%
+Elapsed real time =   0.00 sec. (tree size =  0.00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    0.00
+Parallel b&c, 2 threads:
+  Real time             =    0.00
+  Sync time (average)   =    0.00
+  Wait time (average)   =    0.00
+                          -------
+Total (root+branch&cut) =    0.00 sec.
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  3.9500000000e+04
+Solution time =    0.00 sec.  Iterations = 5  Nodes = 0
+Deterministic time = 0.06 ticks  (13.95 ticks/sec)
+
+
+Incumbent solution written to file '31_transportation_C.gsol'.
+
+Log started (V12.4.0.0) Sun Mar 18 16:26:53 2012
+
+
+Specified objective sense: MAXIMIZE
+Selected objective  name:  profit
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem '30_test_C.mps' read.
+Read time =    0.00 sec.
+Tried aggregator 1 time.
+MIP Presolve eliminated 3 rows and 2 columns.
+MIP Presolve modified 2 coefficients.
+Reduced MIP has 6 rows, 4 columns, and 12 nonzeros.
+Reduced MIP has 2 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Probing time =    0.00 sec.
+Tried aggregator 1 time.
+Presolve time =    0.00 sec.
+Found feasible solution after 0.00 sec.  Objective = 0.0000
+Probing time =    0.00 sec.
+Clique table members: 1.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time =    0.00 sec.
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0.0000                      2     --- 
+      0     0     4700.0000     2        0.0000     4700.0000        2     --- 
+*     0+    0                         4600.0000     4700.0000        2    2.17%
+      0     0        cutoff           4600.0000                      2    0.00%
+Elapsed real time =   0.01 sec. (tree size =  0.00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    0.01
+Parallel b&c, 2 threads:
+  Real time             =    0.00
+  Sync time (average)   =    0.00
+  Wait time (average)   =    0.00
+                          -------
+Total (root+branch&cut) =    0.01 sec.
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  4.6000000000e+03
+Solution time =    0.01 sec.  Iterations = 2  Nodes = 0
+Deterministic time = 0.07 ticks  (5.17 ticks/sec)
+
+
+Incumbent solution written to file '30_test_C.gsol'.
+
+Log started (V12.4.0.0) Sun Mar 18 16:26:53 2012
+
+
+Specified objective sense: MINIMIZE
+Selected objective  name:  costs
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem '31_transportation_C.mps' read.
+Read time =    0.00 sec.
+Tried aggregator 1 time.
+Reduced MIP has 7 rows, 12 columns, and 24 nonzeros.
+Reduced MIP has 0 binaries, 12 generals, 0 SOSs, and 0 indicators.
+Probing time =    0.00 sec.
+Tried aggregator 1 time.
+Presolve time =    0.00 sec.
+Probing time =    0.00 sec.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time =    0.00 sec.
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                        55500.0000                      5     --- 
+*     0     0      integral     0    39500.0000    39500.0000        5    0.00%
+Elapsed real time =   0.01 sec. (tree size =  0.00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    0.01
+Parallel b&c, 2 threads:
+  Real time             =    0.00
+  Sync time (average)   =    0.00
+  Wait time (average)   =    0.00
+                          -------
+Total (root+branch&cut) =    0.01 sec.
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  3.9500000000e+04
+Solution time =    0.01 sec.  Iterations = 5  Nodes = 0
+Deterministic time = 0.06 ticks  (5.03 ticks/sec)
+
+
+Incumbent solution written to file '31_transportation_C.gsol'.
+
+Log started (V12.4.0.0) Sun Mar 18 16:27:20 2012
+
+
+Specified objective sense: MAXIMIZE
+Selected objective  name:  profit
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem '30_test_C.mps' read.
+Read time =    0.00 sec.
+Tried aggregator 1 time.
+MIP Presolve eliminated 3 rows and 2 columns.
+MIP Presolve modified 2 coefficients.
+Reduced MIP has 6 rows, 4 columns, and 12 nonzeros.
+Reduced MIP has 2 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Probing time =    0.00 sec.
+Tried aggregator 1 time.
+Presolve time =    0.00 sec.
+Found feasible solution after 0.00 sec.  Objective = 0.0000
+Probing time =    0.00 sec.
+Clique table members: 1.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time =    0.00 sec.
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0.0000                      2     --- 
+      0     0     4700.0000     2        0.0000     4700.0000        2     --- 
+*     0+    0                         4600.0000     4700.0000        2    2.17%
+      0     0        cutoff           4600.0000                      2    0.00%
+Elapsed real time =   0.01 sec. (tree size =  0.00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    0.01
+Parallel b&c, 2 threads:
+  Real time             =    0.00
+  Sync time (average)   =    0.00
+  Wait time (average)   =    0.00
+                          -------
+Total (root+branch&cut) =    0.01 sec.
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  4.6000000000e+03
+Solution time =    0.01 sec.  Iterations = 2  Nodes = 0
+Deterministic time = 0.07 ticks  (5.08 ticks/sec)
+
+
+Incumbent solution written to file '30_test_C.gsol'.
+
+Log started (V12.4.0.0) Sun Mar 18 16:27:20 2012
+
+
+Specified objective sense: MINIMIZE
+Selected objective  name:  costs
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem '31_transportation_C.mps' read.
+Read time =    0.00 sec.
+Tried aggregator 1 time.
+Reduced MIP has 7 rows, 12 columns, and 24 nonzeros.
+Reduced MIP has 0 binaries, 12 generals, 0 SOSs, and 0 indicators.
+Probing time =    0.00 sec.
+Tried aggregator 1 time.
+Presolve time =    0.00 sec.
+Probing time =    0.00 sec.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time =    0.00 sec.
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                        55500.0000                      5     --- 
+*     0     0      integral     0    39500.0000    39500.0000        5    0.00%
+Elapsed real time =   0.01 sec. (tree size =  0.00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    0.01
+Parallel b&c, 2 threads:
+  Real time             =    0.00
+  Sync time (average)   =    0.00
+  Wait time (average)   =    0.00
+                          -------
+Total (root+branch&cut) =    0.01 sec.
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  3.9500000000e+04
+Solution time =    0.01 sec.  Iterations = 5  Nodes = 0
+Deterministic time = 0.06 ticks  (6.23 ticks/sec)
+
+
+Incumbent solution written to file '31_transportation_C.gsol'.
+
+Log started (V12.4.0.0) Sun Mar 18 16:27:40 2012
+
+
+Specified objective sense: MAXIMIZE
+Selected objective  name:  profit
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem '30_test_C.mps' read.
+Read time =    0.02 sec.
+Tried aggregator 1 time.
+MIP Presolve eliminated 3 rows and 2 columns.
+MIP Presolve modified 2 coefficients.
+Reduced MIP has 6 rows, 4 columns, and 12 nonzeros.
+Reduced MIP has 2 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Probing time =    0.00 sec.
+Tried aggregator 1 time.
+Presolve time =    0.00 sec.
+Found feasible solution after 0.00 sec.  Objective = 0.0000
+Probing time =    0.00 sec.
+Clique table members: 1.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time =    0.00 sec.
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0.0000                      2     --- 
+      0     0     4700.0000     2        0.0000     4700.0000        2     --- 
+*     0+    0                         4600.0000     4700.0000        2    2.17%
+      0     0        cutoff           4600.0000                      2    0.00%
+Elapsed real time =   0.01 sec. (tree size =  0.00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    0.00
+Parallel b&c, 2 threads:
+  Real time             =    0.00
+  Sync time (average)   =    0.00
+  Wait time (average)   =    0.00
+                          -------
+Total (root+branch&cut) =    0.00 sec.
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  4.6000000000e+03
+Solution time =    0.01 sec.  Iterations = 2  Nodes = 0
+Deterministic time = 0.07 ticks  (11.73 ticks/sec)
+
+
+Incumbent solution written to file '30_test_C.gsol'.
+
+Log started (V12.4.0.0) Sun Mar 18 16:27:40 2012
+
+
+Specified objective sense: MINIMIZE
+Selected objective  name:  costs
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem '31_transportation_C.mps' read.
+Read time =    0.00 sec.
+Tried aggregator 1 time.
+Reduced MIP has 7 rows, 12 columns, and 24 nonzeros.
+Reduced MIP has 0 binaries, 12 generals, 0 SOSs, and 0 indicators.
+Probing time =    0.00 sec.
+Tried aggregator 1 time.
+Presolve time =    0.00 sec.
+Probing time =    0.00 sec.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time =    0.00 sec.
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                        55500.0000                      5     --- 
+*     0     0      integral     0    39500.0000    39500.0000        5    0.00%
+Elapsed real time =   0.01 sec. (tree size =  0.00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    0.00
+Parallel b&c, 2 threads:
+  Real time             =    0.00
+  Sync time (average)   =    0.00
+  Wait time (average)   =    0.00
+                          -------
+Total (root+branch&cut) =    0.00 sec.
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  3.9500000000e+04
+Solution time =    0.01 sec.  Iterations = 5  Nodes = 0
+Deterministic time = 0.06 ticks  (9.05 ticks/sec)
+
+
+Incumbent solution written to file '31_transportation_C.gsol'.
