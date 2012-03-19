@@ -1,0 +1,9 @@
+include "knapsack-data.cmpl"
+variables:
+	x[boxes] : binary;
+objectives:
+	sales: p[]T * x[] ->max;
+constraints:
+	weight: w[]T * x[] <= maxWeight;
+ 
+ 
