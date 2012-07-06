@@ -1,0 +1,74 @@
+//
+// Robuste Optimierung
+//
+// Beispiel von Michael Roemer 20.10.2007
+// nach Lassmann, Rogge 1990
+//
+
+// Koeffizienten und Variablen fuer das Basismodell
+%data
+parameters:
+
+	
+	// countensionierung der Matrizen und Vektoren muss zueinander passen
+	// Hier direkt fuer Fehlermeldung pruefen
+	Zeilen := count(Aufwand[,1]);
+	Spalten := count(Aufwand[1,]);
+
+	{Spalten != count(Erloes[]): error "countensionierung Erloesvektor falsch"; }
+	{Spalten != count(UntereSchranke[]): error "countensionierung untere Schranken falsch"; }
+	{Spalten != count(ObereSchranke[]): error "countensionierung obere Schranken falsch"; }
+	{Zeilen != count(Kapazitaet[]): error "countensionierung Kapazitaetsvektor falsch"; }
+	
+variables:
+
+	// Variablen fuer Stueckzahl pro Produkt
+	// Fuer Stueckzahlen waere wohl prinzipiell Ganzzahligkeit sinnvoll (Datentyp integer),
+	// hier aber als stetig definiert
+	x[1..Spalten] : real[0..];
+
+// Zusaetze fuer die robuste Optimierung
+parameters:
+	// Gamma wird hier ueber die Konsole eingelesen
+	// (Stattdessen koennte es natuerlich auch hier direkt festgelegt werden)
+	// (Hier wird der Einfachheit halber ein Gamma fuer alle Zeilen verwendet,
+	//  statt es zeilenweise verschieden festzulegen; das waere natuerlich genauso gut moeglich)
+	Gamma := 3; #import(stdin, "Gamma fuer robuste Optimierung: ");
+
+	// Test, ob Gamma im erlaubten Bereich liegt, sonst Fehlermeldung
+	{Gamma < 0:          error "Gamma darf nicht kleiner als 0 sein"; }
+	{Gamma > Spalten:    error "Gamma darf nicht groesser als die Anzahl der Spalten sein"; }
+
+	// Maximale Abweichung in den Aufwaenden um 10%
+	{i := 1(1)Zeilen, j := 1(1)Spalten:
+		Abweichung[i,j] := 0.1 * Aufwand[i,j];
+	}
+
+variables:
+	// Variablen q und p entsprechend der Zeilen- und Spaltenanzahl der Aufwandsmatrix benoetigt
+	q[1..Zeilen] : real[0..];
+	p[1..Zeilen, 1..Spalten] : real[0..];
+
+
+// Zielfunktion
+objectives:
+	Ziel: Erloes[]T * x[] -> max;
+	
+// Restriktionen
+constraints:
+	// Die Restriktionen fuer das Basisproblem koennten einfach geschrieben werden mit:
+	//       Aufwand[,] * x[] <= Kapazitaet[];
+
+	// Fuer die robuste Optimierung muss hier stattdessen zeilenweise formuliert werden
+	{i := (1..Zeilen):
+		Aufwand[i,]T * x[] + Gamma * q[i] - sum{j:=1(1)Spalten: -p[i,j]} <= Kapazitaet[i];
+	}
+
+	// Restriktionen fuer die Abweichung
+	{i := 1..Zeilen, j := 1..Spalten:
+		q[i] + p[i,j] >= Abweichung[i,j] * x[j];
+	}
+
+	// Schranken
+	UntereSchranke[] <= x[] <= ObereSchranke[];
+

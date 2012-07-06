@@ -1,0 +1,54 @@
+%arg -noOutput
+
+
+parameters:
+
+	routes  := set( [1,1], [1,2], [1,4] , [2,2], [2,3] ,[2,4] , [3,1] , [3,3] );
+	
+	plants  := 1(1)3;
+	centers := 1(1)4;
+
+	s[plants]  := (5000,6000,2500);
+	d[centers] := (6000,4000,2000,1500);
+
+	c[routes] := ( 3, 2, 6, 5, 2, 3, 2, 4 );
+	
+	
+	ts := set( [1,1], [1,3], [2,3], [3,3], [3,2] );
+	t2 := set( [3,3], [2,2], [1,1] );
+	
+	A[ts] := (4, 67, 44, -5, 0);
+	
+
+ 	echo plants + centers;
+	echo  plants * centers;
+
+	echo len(routes); 
+	echo len(plants); 
+	
+	{k in  defset(s[]): echo " k " + k; }
+	
+	echo " tt " + [1,1]; 
+	{ t in  routes: echo " tk " +  t; } 
+	
+		
+	echo "max s " +max(s[plants]);
+	
+	echo "max c " + max(c[routes]);
+	echo max(c);
+	
+	echo "min c " + min(c[,]);
+	echo min(c);
+	
+	echo count(c[routes]);
+	echo count(c[[1,1]]);
+
+	echo max(A[t2]);
+	echo min(A[t2]);
+	
+	echo max(A[ts]);
+	echo min(A[ts]);
+	
+	echo count(A[t2]);
+	 
+ 
