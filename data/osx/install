@@ -1,0 +1,29 @@
+#!/bin/bash
+
+cd ..
+
+echo "Install CMPL in /Applictions/Cmpl"
+
+if test -d /Applications/Cmpl ; then
+    rm -R /Applications/Cmpl
+fi
+
+cp -R Cmpl /Applications
+if (test -f /usr/bin/cmpl) 
+then 
+	sudo rm /usr/bin/cmpl
+fi
+sudo ln -s /Applications/Cmpl/bin/cmpl /usr/bin/cmpl
+sudo cp Cmpl/coliop /usr/bin
+
+	
+if (test -d /Library/Frameworks/QtXml.framework/) || (test -d /Library/Frameworks/QtCore.framework/) 
+then 
+	rm -R /Applications/Cmpl/Frameworks
+fi 
+
+rm /Applications/Cmpl/install
+#rm /Applications/Cmpl/cmpl
+mv /Applications/Cmpl/coliop  /Applications/Cmpl/Coliop3/coliop 
+
+echo "Install CMPL done"

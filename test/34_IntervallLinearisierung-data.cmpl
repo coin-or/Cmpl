@@ -1,0 +1,28 @@
+%data 
+
+parameters:
+
+	{i := 3(1)NL_Bis: Func[i] := Func[i-2] + Func[i-1]; }
+
+	# Intervalle bestimmen
+	Schrittweite := (NL_Bis - NL_Von) / LinAnzahl;
+	{i := 0(1)LinAnzahl-1:
+		L_Index[i] := NL_Von + (i*Schrittweite) div 1;
+	}
+	L_Index[LinAnzahl] := NL_Bis;
+
+	# Anstieg der Funktion in den Intervallen
+	{i := 1(1)LinAnzahl:
+		L_Anstieg[i] :=
+		 (Func[L_Index[i]] - Func[L_Index[i-1]]) /
+		 (L_Index[i] - L_Index[i-1]);
+	}
+
+# Alles weitere nur, um berechnete Werte in die generierte Matrix auszugeben
+variables:
+	x, y, z: real;
+
+objectives:
+	{i := 1(1)LinAnzahl:
+		L_Index[i-1]*x + L_Index[i]*y + L_Anstieg[i]*z;
+	}
