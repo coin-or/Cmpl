@@ -1,0 +1,22 @@
+INSTALL CMPL 
+**********************************************************************************************
+
+To install the CMPL package you only have to copy the folder
+
+	Cmpl to c:\program files\Cmpl
+		
+	
+		
+Since Coliop is written in Java you have to download and install the java runtime enviroment:
+http://java.com/download/index.jsp
+  
+
+
+DEINSTALL CMPL
+**********************************************************************************************
+
+To deinstall the CMPL package you have to delete the folder:
+
+	c:\program files\Cmpl
+
+
