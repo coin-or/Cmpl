@@ -1,0 +1,9 @@
+#!/bin/bash
+
+sudo rm -R /usr/share/Cmpl
+sudo rm /usr/bin/cmpl
+sudo rm /usr/bin/coliop
+
+echo "CMPL deinstalled"
+
+

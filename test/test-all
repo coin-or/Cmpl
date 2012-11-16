@@ -1,0 +1,95 @@
+#!/bin/bash
+# Test whether cmpl exist or not 
+test -s ../bin/cmpl; r0=$?
+test -s ../bin/cmpl.exe; r1=$?
+
+isGurobi=1
+isCplex=1
+
+
+if [ "$r0" = 0 -o "$r1" = 0 ]; then
+
+    echo "######### start tests #############################"
+
+	./test-cmpl -ca -m 01_Standardmodell.mps 01_Standardmodell.cmpl
+	./test-cmpl -ca -m 02_Standardmodell.mps 02_Standardmodell.cmpl
+	./test-cmpl -ca -f% 20.0f -fm 03_Fibonacci.mps 03_Fibonacci.cmpl
+	./test-cmpl -ca -m 04_Primzahlen.mps 04_Primzahlen.cmpl
+	./test-cmpl -ca -m 05_IntervallLinearisierung.mps 05_IntervallLinearisierung.cmpl
+	./test-cmpl -m 06_Variablenprodukte.A.mps 06_Variablenprodukte.A.cmpl
+	./test-cmpl -fm 06_Variablenprodukte.B.mps 06_Variablenprodukte.B.cmpl
+	./test-cmpl -m 06_Variablenprodukte.C.mps 06_Variablenprodukte.C.cmpl
+	./test-cmpl -m 07_Mehrkriteriell.mps 07_Mehrkriteriell.cmpl
+	./test-cmpl -m 08_SummeNegiert.mps 08_SummeNegiert.cmpl
+	./test-cmpl -ca -fm 09_Beispiel_Steglich.mps 09_Beispiel_Steglich.cmpl
+	./test-cmpl -m 10_Beispiel_Rost.mps 10_Beispiel_Rost.cmpl
+	./test-cmpl -ca -m 11_Beispiel_Roemer.mps 11_Beispiel_Roemer.cmpl
+	./test-cmpl -fm 11_Beispiel_Roemer2.mps 11_Beispiel_Roemer2.cmpl
+	./test-cmpl -noOutput 12_Test_Loop.cmpl
+	./test-cmpl -noOutput 13_Test_Set.cmpl
+	./test-cmpl -fm 14_Test_Summe.mps 14_Test_Summe.cmpl
+	./test-cmpl -x 15_Test_Osil.osil 15_Test_Osil.cmpl
+	./test-cmpl -x 16_diet.osil 16_diet.cmpl
+	./test-cmpl -ca -noOutput 17_knapsack-min-presolved.cmpl 
+	./test-cmpl -ca -noOutput 18_max-negative-convex-function.cmpl 
+	./test-cmpl -ca -x 19_quadratic-assignment.osil 19_quadratic-assignment.cmpl
+	./test-cmpl -noOutput 20_math-functions.cmpl
+	./test-cmpl -x 21_testcsvrand.osil 21_testcsvrand.cmpl
+  
+	./test-cmpl -ca -silent 22_diet.cmpl
+    ./test-cmpl -ca -silent 23_production-mix.cmpl
+    ./test-cmpl -silent 24_test.cmpl
+    ./test-cmpl -silent 25_test_B.cmpl
+    ./test-cmpl -silent 26_transportation.cmpl
+    ./test-cmpl -silent 27_transportation_B.cmpl
+    if [ "$isGurobi" = 1 ]; then 
+    	./test-cmpl -silent 28_test_G.cmpl
+    	./test-cmpl -silent 29_transportation_G.cmpl
+    fi
+    if [ "$isCplex" = 1 ]; then 
+    	./test-cmpl -silent 30_test_C.cmpl
+    	./test-cmpl -silent 31_transportation_C.cmpl
+    fi
+    
+ 	./test-cmpl -m 32_Standardmodell-data.mps 32_Standardmodell-data.cmpl
+	./test-cmpl -m 33_Standardmodell-data.mps 33_Standardmodell-data.cmpl
+	./test-cmpl -m 34_IntervallLinearisierung-data.mps 34_IntervallLinearisierung-data.cmpl
+	./test-cmpl -m 35_Variablenprodukte-data.A.mps 35_Variablenprodukte-data.A.cmpl
+	./test-cmpl -fm 36_Variablenprodukte-data.B.mps 36_Variablenprodukte-data.B.cmpl
+	./test-cmpl -m 37_Mehrkriteriell-data.mps 37_Mehrkriteriell-data.cmpl
+	./test-cmpl -m 38_Beispiel_Roemer-data.mps 38_Beispiel_Roemer-data.cmpl
+	./test-cmpl -fm 39_Test_Summe-data.mps 39_Test_Summe-data.cmpl
+	./test-cmpl -x 40_Test_Osil-data.osil 40_Test_Osil-data.cmpl
+	./test-cmpl -x 41_testcsvrand-data.osil 41_testcsvrand-data.cmpl
+	./test-cmpl -x 42_diet-data.osil 42_diet-data.cmpl
+	./test-cmpl -silent 43_transportation-tupel.cmpl
+	./test-cmpl -silent 44_transportation-tupel-data.cmpl
+	./test-cmpl 45_tupel-test.cmpl
+	./test-cmpl -silent 46_tsp_cbc-all.cmpl
+	./test-cmpl -silent 47_tsp_cbc-csv.cmpl
+	./test-cmpl -silent 48_tsp_cbc-sol-kurz.cmpl
+	./test-cmpl -silent 49_tsp_cbc-sol-kurz-csv.cmpl
+	
+	if [ "$isGurobi" = 1 ]; then 
+		./test-cmpl -silent 50_tsp_gurobi-solutionPool-all.cmpl
+		./test-cmpl -silent 51_tsp_gurobi-solutionPool-all-csv.cmpl
+		./test-cmpl -silent 52_tsp_gurobi-solutionPool-kurz.cmpl
+		./test-cmpl -silent 53_tsp_gurobi-solutionPool-kurz-csv.cmpl
+	fi
+	if [ "$isCplex" = 1 ]; then 
+		./test-cmpl -silent 54_tsp_cplex-solutionPool-all.cmpl
+		./test-cmpl -silent 55_tsp_cplex-solutionPool-all-csv.cmpl
+		./test-cmpl -silent 56_tsp_cplex-solutionPool-kurz.cmpl
+		./test-cmpl -silent 57_tsp_cplex-solutionPool-kurz-csv.cmpl
+	fi
+ 
+    echo "######### Tests done  ####################################"
+    
+    if [ -f cplex.log ] ; then rm cplex.log ; fi
+	if [ -f gurobi.log ] ; then rm gurobi.log ; fi
+    
+    
+else 
+	echo "CMPL does not exist in ../bin"
+fi
+

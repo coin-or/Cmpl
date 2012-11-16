@@ -1,0 +1,15 @@
+%data knapsack-data.cdat 
+%display nonZeros
+
+variables:
+	x[boxes] : binary;
+objectives:
+	weight: w[]T * x[] ->min;
+constraints:
+	sales: p[]T * x[] >= minSales;
+
+
+ 
+ 
+ 
+ 
