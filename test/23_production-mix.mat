@@ -1,0 +1,10 @@
+Variable name                      x[1]           x[2]           x[3]
+Variable type                         I              I              I
+
+profit              max              75             80             50
+   Subject to                                                                    RHS
+res_1               L                 8             15             12           1000
+res_2               L                15             10              8           1000
+
+Lower Bound                           0              0              0
+Upper Bound                         250            240            250

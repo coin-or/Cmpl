@@ -1,0 +1,19 @@
+parameters:
+	parameters:		
+	c[] := readcsv("production-mix-c.csv");
+	a[,] := readcsv("production-mix-a.csv");
+	b[] := readcsv("production-mix-b.csv");
+	xMax[] := readcsv("production-mix-xmax.csv");
+
+variables:	
+	x[1..dim(c[])] : real;
+
+objectives:	
+	ziel: c[]T * x[] ->max;	
+
+constraints:	
+	res$2$: a[,] * x[] <= b[];	
+	0 <= x[]<= xMax[];
+
+ 
+ 
