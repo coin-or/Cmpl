@@ -1,0 +1,88 @@
+#!/bin/bash
+
+osRelease=2.6.0
+
+if [[ $OSTYPE == *darwin* ]] ||  [[ $OSTYPE == *linux* ]] ; then
+	if test -d COIN-OS-${osRelease} ; then 
+		echo "COIN-OS exists"
+		cd COIN-OS-${osRelease}
+		make clean
+		cd ..
+	else
+		echo "downloading COIN-OS" 
+		if ( svn co  https://projects.coin-or.org/svn/OS/releases/${osRelease} COIN-OS-${osRelease} ) ; then
+			echo "Finished - download COIN-OS"	
+		else
+			echo "Can't download COIN-OS - download COIN-OS"	
+		fi
+	fi
+fi
+
+if test -d COIN-OS-${osRelease} ; then 
+	
+	cd COIN-OS-${osRelease}
+	make clean
+	confErg=0;
+	if [[ $OSTYPE == *darwin* ]]; then
+		if (./configure COIN_SKIP_PROJECTS="Ipopt Bonmin Bcp DyLP Couenne HSL" ADD_CXXFLAGS="-mmacosx-version-min=10.4" ADD_CFLAGS="-mmacosx-version-min=10.4" ADD_FFLAGS="-mmacosx-version-min=10.4" LDFLAGS="-flat_namespace" --enable-static --disable-shared --enable-cbc-parallel ); then
+			confErg=1;
+		fi
+	else
+		if ( ./configure COIN_SKIP_PROJECTS="Ipopt Bonmin Bcp DyLP Couenne HSL" --enable-static --disable-shared --enable-cbc-parallel ) ; then 
+			confErg=1;
+		fi
+	fi	
+		
+	if  [ $confErg = 1 ]
+    then
+		echo "configure finished"
+    else
+		echo "Configure failed"
+        exit 1
+    fi
+
+    make
+    make install
+    
+    if [[ $OSTYPE == *msys* ]] ; then
+    	cd bin
+    	cpFile=`which libstdc++-6.dll`
+    	cp $cpFile .
+    	cpFile=`which mingwm10.dll`
+    	cp $cpFile .
+    	cpFile=`which libgcc_s_dw2-1.dll`
+    	cp $cpFile .
+    	cd ..
+    fi
+    
+	bin/OSSolverService -v 2>osStdErr
+	if  test -s osStdErr ;  then
+		echo "Can't execute /usr/bin/OSSolverService"
+		echo "Build is canceled"
+		exit 1
+	fi
+	
+	cd ../.. 
+	
+	if [ ! -d Thirdparty ] ; then 
+		mkdir Thirdparty
+	fi
+	cd Thirdparty
+	if [ ! -d COIN-OS ] ; then
+		mkdir COIN-OS
+	fi 
+	cd ..
+	
+	cp data/COIN-OS-${osRelease}/bin/OSSolverService Thirdparty/COIN-OS
+    
+	cp data/COIN-OS-${osRelease}/OS/AUTHORS Thirdparty/COIN-OS
+	cp data/COIN-OS-${osRelease}/OS/LICENSE Thirdparty/COIN-OS/
+	
+	echo "COIN-OS was built in Thirdparty/COIN-OS"
+	
+else
+    echo "COIN-OS does not exists"
+    exit 1
+fi
+
+

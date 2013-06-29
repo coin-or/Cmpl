@@ -1,0 +1,16 @@
+Please take a look at the LICENSE files in the subfolders
+
+*********** CMPL, Coliop *********************************  
+CMPL and Coliop are licensed under GPLv3.
+
+*********** pyCMPL and CMPLServer ************************ 
+CMPL and pyCMPL and CMPLServer are licensed under LGPLv3.
+
+*********** COIN-OS  ************************************* 
+COIN-OS is licensed under Eclipse Public License -v 1.0.
+
+*********** GLPK  **************************************** 
+GLPK is licensed under GPLv3.
+
+*********** PyPy (only Windows) ************************** 
+PyPy is licensed under the MIT License.

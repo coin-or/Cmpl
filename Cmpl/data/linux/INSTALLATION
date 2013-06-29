@@ -1,0 +1,27 @@
+INSTALL CMPL 
+**********************************************************************************************
+
+To install the CMPL package you should type the following
+command:
+
+	./install
+
+This command installs the CMPL distribution package in the follwing folders:
+		program folder -> /usr/share/Cmpl
+		script to execute CMPL -> /usr/bin/cmpl
+		script to execute Coliop -> /usr/bin/coliop.
+		
+		
+Since Coliop is written in Java you have to download and install the java runtime enviroment:
+http://java.com/download/index.jsp
+  
+
+DEINSTALL CMPL 
+**********************************************************************************************
+
+To deinstall the CMPL package you should type the following
+command:
+
+      /usr/share/Cmpl/deinstall
+
+
