@@ -1,0 +1,61 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes"?>
+<CmplGurobiSolutions>
+	<solution>
+		<header idx="0" value="10152.1" status="integer feasible solution"/>
+		<variables>
+			<variable idx="0" activity="2.000000e+00"/>
+			<variable idx="1" activity="0.000000e+00"/>
+			<variable idx="2" activity="-0.000000e+00"/>
+			<variable idx="3" activity="-0.000000e+00"/>
+			<variable idx="4" activity="1.000000e+00"/>
+			<variable idx="5" activity="-0.000000e+00"/>
+			<variable idx="6" activity="1.000000e+00"/>
+			<variable idx="7" activity="-0.000000e+00"/>
+			<variable idx="8" activity="1.000000e+00"/>
+			<variable idx="9" activity="-0.000000e+00"/>
+			<variable idx="10" activity="-0.000000e+00"/>
+		</variables>
+	</solution>
+	<solution>
+		<header idx="1" value="248.311" status="integer feasible solution"/>
+		<variables>
+			<variable idx="0" activity="2.000000e+00"/>
+			<variable idx="1" activity="0.000000e+00"/>
+			<variable idx="2" activity="-0.000000e+00"/>
+			<variable idx="3" activity="0.000000e+00"/>
+			<variable idx="4" activity="1.000000e+00"/>
+			<variable idx="5" activity="1.000000e+00"/>
+			<variable idx="6" activity="-0.000000e+00"/>
+			<variable idx="7" activity="-0.000000e+00"/>
+			<variable idx="8" activity="0.000000e+00"/>
+			<variable idx="9" activity="1.000000e+00"/>
+			<variable idx="10" activity="-0.000000e+00"/>
+		</variables>
+	</solution>
+	<solution>
+		<header idx="2" value="248.311" status="integer optimal solution"/>
+		<variables>
+			<variable idx="0" activity="2.000000e+00"/>
+			<variable idx="1" activity="0.000000e+00"/>
+			<variable idx="2" activity="-0.000000e+00"/>
+			<variable idx="3" activity="0.000000e+00"/>
+			<variable idx="4" activity="1.000000e+00"/>
+			<variable idx="5" activity="1.000000e+00"/>
+			<variable idx="6" activity="-0.000000e+00"/>
+			<variable idx="7" activity="-0.000000e+00"/>
+			<variable idx="8" activity="0.000000e+00"/>
+			<variable idx="9" activity="1.000000e+00"/>
+			<variable idx="10" activity="-0.000000e+00"/>
+		</variables>
+		<constraints>
+			<constraint idx="0" activity="1.000000e+00"/>
+			<constraint idx="1" activity="1.000000e+00"/>
+			<constraint idx="2" activity="1.000000e+00"/>
+			<constraint idx="3" activity="1.000000e+00"/>
+			<constraint idx="4" activity="1.000000e+00"/>
+			<constraint idx="5" activity="1.000000e+00"/>
+			<constraint idx="6" activity="2.000000e+00"/>
+			<constraint idx="7" activity="1.000000e+00"/>
+		</constraints>
+	</solution>
+</CmplGurobiSolutions>

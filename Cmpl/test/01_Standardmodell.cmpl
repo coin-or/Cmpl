@@ -1,0 +1,29 @@
+# Standardmodell der linearen Optimierung
+
+const:
+	# Erloes pro produzierter Einheit
+	c[] = ( 1, 2, 3 );
+
+	# Kapazitaet pro Produktionsschritt
+	b[] = ( 15, 20 );
+
+	# Koeffizientenmatrix
+	A[,] = (( 5.6, 7.7, 10.5 ),
+			( 9.8, 4.2, 11.1 ));
+
+var:
+	# Variablenvektor
+	x[1..dim(c[])]: real[0..];
+
+objective:
+	# Zielfunktion
+	ziel: c[]T * x[];
+
+constraint:
+	# Nebenbedingungen
+	A[,] * x[] <= b[];
+
+
+
+
+

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="http://www.coin-or.org/OS/stylesheets/OSrL.xslt"?>
+<osrl xmlns="os.optimizationservices.org"   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="os.optimizationservices.org http://www.optimizationservices.org/schemas/2.0/OSrL.xsd" >
+<general>
+<generalStatus type="normal">
+</generalStatus>
+<serviceName>
+
+Optimization Services Solver
+Main Authors: Horand Gassmann, Jun Ma, and Kipp Martin
+Distributed under the Eclipse Public License
+OS Version: 2.6.0
+Build Date: May 25 2013
+SVN Version: 4605
+
+</serviceName>
+<instanceName>diet.cmpl</instanceName>
+<solverInvoked>COIN-OR cbc</solverInvoked>
+</general>
+<job>
+<timingInformation numberOfTimes="1">
+<time type="elapsedTime" unit="second" category="total">
+7.7069999999999994e-3</time>
+</timingInformation>
+</job>
+<optimization numberOfSolutions="1" numberOfVariables="8" numberOfConstraints="4" numberOfObjectives="1">
+<solution targetObjectiveIdx="-1">
+<status type="optimal">
+</status>
+<variables >
+<values numberOfVar="8">
+<var idx="0">2</var>
+<var idx="1">8</var>
+<var idx="2">2</var>
+<var idx="3">2</var>
+<var idx="4">9.999999999999998</var>
+<var idx="5">10</var>
+<var idx="6">10</var>
+<var idx="7">2</var>
+</values>
+</variables>
+<objectives >
+<values numberOfObj="1">
+<obj idx="-1">101.14</obj>
+</values>
+</objectives>
+</solution>
+</optimization>
+</osrl>

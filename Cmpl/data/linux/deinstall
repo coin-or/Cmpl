@@ -1,0 +1,18 @@
+#!/bin/bash
+
+sudo rm -R /usr/share/Cmpl
+sudo rm /usr/bin/cmpl
+
+if (test -f /usr/bin/coliop) ; then 
+	sudo rm /usr/bin/coliop
+fi
+if (test -f /usr/bin/pyCmpl) ; then 
+	sudo rm /usr/bin/pyCmpl
+fi
+if (test -f /usr/bin/cmplServer) ; then 
+	sudo rm /usr/bin/cmplServer
+fi
+
+echo "CMPL deinstalled"
+
+

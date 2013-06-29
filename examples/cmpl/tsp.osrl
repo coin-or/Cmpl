@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="http://www.coin-or.org/OS/stylesheets/OSrL.xslt"?>
+<osrl xmlns="os.optimizationservices.org"   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="os.optimizationservices.org http://www.optimizationservices.org/schemas/2.0/OSrL.xsd" >
+<general>
+<generalStatus type="normal">
+</generalStatus>
+<serviceName>
+
+Optimization Services Solver
+Main Authors: Horand Gassmann, Jun Ma, and Kipp Martin
+Distributed under the Eclipse Public License
+OS Version: 2.6.0
+Build Date: Sep 25 2012
+SVN Version: 4527
+
+</serviceName>
+<instanceName>tsp.cmpl</instanceName>
+<solverInvoked>COIN-OR cbc</solverInvoked>
+</general>
+<job>
+<timingInformation numberOfTimes="1">
+<time type="elapsedTime" unit="second" category="total">
+.805689</time>
+</timingInformation>
+</job>
+<optimization numberOfSolutions="1" numberOfVariables="109" numberOfConstraints="92" numberOfObjectives="1">
+<solution targetObjectiveIdx="-1">
+<status type="optimal">
+</status>
+<variables >
+<values numberOfVar="109">
+<var idx="0">0</var>
+<var idx="1">0</var>
+<var idx="2">0</var>
+<var idx="3">1</var>
+<var idx="4">0</var>
+<var idx="5">0</var>
+<var idx="6">0</var>
+<var idx="7">0</var>
+<var idx="8">0</var>
+<var idx="9">0</var>
+<var idx="10">1</var>
+<var idx="11">0</var>
+<var idx="12">0</var>
+<var idx="13">0</var>
+<var idx="14">0</var>
+<var idx="15">0</var>
+<var idx="16">0</var>
+<var idx="17">0</var>
+<var idx="18">0</var>
+<var idx="19">0</var>
+<var idx="20">0</var>
+<var idx="21">0</var>
+<var idx="22">0</var>
+<var idx="23">0</var>
+<var idx="24">0</var>
+<var idx="25">1</var>
+<var idx="26">0</var>
+<var idx="27">0</var>
+<var idx="28">0</var>
+<var idx="29">0</var>
+<var idx="30">0</var>
+<var idx="31">0</var>
+<var idx="32">0</var>
+<var idx="33">0</var>
+<var idx="34">0</var>
+<var idx="35">0</var>
+<var idx="36">0</var>
+<var idx="37">0</var>
+<var idx="38">0</var>
+<var idx="39">1</var>
+<var idx="40">0</var>
+<var idx="41">0</var>
+<var idx="42">0</var>
+<var idx="43">0</var>
+<var idx="44">0</var>
+<var idx="45">0</var>
+<var idx="46">0</var>
+<var idx="47">1</var>
+<var idx="48">0</var>
+<var idx="49">0</var>
+<var idx="50">0</var>
+<var idx="51">0</var>
+<var idx="52">0</var>
+<var idx="53">0</var>
+<var idx="54">0</var>
+<var idx="55">0</var>
+<var idx="56">0</var>
+<var idx="57">0</var>
+<var idx="58">1</var>
+<var idx="59">0</var>
+<var idx="60">0</var>
+<var idx="61">1</var>
+<var idx="62">0</var>
+<var idx="63">0</var>
+<var idx="64">0</var>
+<var idx="65">0</var>
+<var idx="66">0</var>
+<var idx="67">0</var>
+<var idx="68">0</var>
+<var idx="69">0</var>
+<var idx="70">0</var>
+<var idx="71">0</var>
+<var idx="72">0</var>
+<var idx="73">0</var>
+<var idx="74">0</var>
+<var idx="75">0</var>
+<var idx="76">1</var>
+<var idx="77">0</var>
+<var idx="78">0</var>
+<var idx="79">0</var>
+<var idx="80">0</var>
+<var idx="81">0</var>
+<var idx="82">0</var>
+<var idx="83">0</var>
+<var idx="84">1</var>
+<var idx="85">0</var>
+<var idx="86">0</var>
+<var idx="87">0</var>
+<var idx="88">0</var>
+<var idx="89">0</var>
+<var idx="90">0</var>
+<var idx="91">0</var>
+<var idx="92">1</var>
+<var idx="93">0</var>
+<var idx="94">0</var>
+<var idx="95">0</var>
+<var idx="96">0</var>
+<var idx="97">0</var>
+<var idx="98">0</var>
+<var idx="99">0</var>
+<var idx="100">7.999999999999998</var>
+<var idx="101">1.9999999999999996</var>
+<var idx="102">0</var>
+<var idx="103">4.999999999999999</var>
+<var idx="104">2.999999999999999</var>
+<var idx="105">6.999999999999998</var>
+<var idx="106">5.999999999999998</var>
+<var idx="107">3.999999999999999</var>
+<var idx="108">.9999999999999998</var>
+</values>
+</variables>
+<objectives >
+<values numberOfObj="1">
+<obj idx="-1">321.31921100000005</obj>
+</values>
+</objectives>
+</solution>
+</optimization>
+</osrl>

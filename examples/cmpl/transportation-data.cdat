@@ -1,0 +1,12 @@
+
+%plants set < 1..3 >
+%centers set < 1..4 >
+	
+%s[plants] <  5000 6000 2500 >
+%d[centers] < 6000 4000 2000 1500 >
+
+%c[plants, centers]  < 	3 2 7 6
+			7 5 2 3
+			2 5 4 5 > 
+ 
+ 

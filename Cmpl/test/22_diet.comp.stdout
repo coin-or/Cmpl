@@ -1,0 +1,34 @@
+---------------------------------------------------------------------------------------------------------
+Problem              22_diet.cmpl
+Nr. of variables     8
+Nr. of constraints   4
+Objective name       cost
+Solver name          GLPK
+Display variables    (all)
+Display constraints  (all)
+---------------------------------------------------------------------------------------------------------
+
+Objective status     optimal
+Objective value      101.14 (min!)
+
+Variables 
+Name                 Type            Activity         Lower bound         Upper bound            Marginal
+---------------------------------------------------------------------------------------------------------
+x[BEEF]                 I                   2                   2                  10                   -
+x[CHK]                  I                   8                   2                  10                   -
+x[FISH]                 I                   2                   2                  10                   -
+x[HAM]                  I                   2                   2                  10                   -
+x[MCH]                  I                  10                   2                  10                   -
+x[MTL]                  I                  10                   2                  10                   -
+x[SPG]                  I                  10                   2                  10                   -
+x[TUR]                  I                   2                   2                  10                   -
+---------------------------------------------------------------------------------------------------------
+
+Constraints 
+Name                 Type            Activity         Lower bound         Upper bound            Marginal
+---------------------------------------------------------------------------------------------------------
+line[A]                 G                1500                 700            Infinity                   -
+line[B1]                G                1330                 700            Infinity                   -
+line[B2]                G                 860                 700            Infinity                   -
+line[C]                 G                 700                 700            Infinity                   -
+---------------------------------------------------------------------------------------------------------
