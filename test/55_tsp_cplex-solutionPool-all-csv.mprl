@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mprl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.coliop.org/schemas/Mprl.xsd">
-	<general>
-		<generalStatus>normal</generalStatus>
-		<instanceName>55_tsp_cplex-solutionPool-all-csv.cmpl</instanceName>
-		<mplName>CMPL</mplName>
-		<message>cmpl finished normal</message>
-	</general>
-</mprl>
