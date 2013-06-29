@@ -302,12 +302,6 @@ Cmpl/test/tsp.cmpl -text
 /README -text
 /cmplMake -text
 doc/CMPL.pdf -text
-examples/cmpl/bisection.cmpl -text
-examples/cmpl/cplex.log -text
-examples/cmpl/diet-data.cdat -text
-examples/cmpl/diet-data.cmpl -text
-examples/cmpl/diet-infeasible.cmpl -text
-examples/cmpl/diet.cFconf -text
 examples/cmpl/diet.cmpl -text
 examples/cmpl/diet.osil -text
 examples/cmpl/diet.osrl -text
