@@ -1,0 +1,75 @@
+#***********************************************************************
+ #  This code is part of pyCMPL 
+ #
+ #  Copyright (C) 2013
+ #  Mike Steglich - Technical University of Applied Sciences
+ #  Wildau, Germany 
+ #
+ #  pyCMPL is a project of the Technical University of 
+ #  Applied Sciences Wildau and the Institute for Operations Research 
+ #  and Business Management at the Martin Luther University 
+ #  Halle-Wittenberg.
+ #  Please visit the project homepage <www.coliop.org>
+ # 
+ #  pyCMPL is free software; you can redistribute it and/or modify it 
+ #  under the terms of the GNU Lesser General Public License as published by 
+ #  the Free Software Foundation; either version 3 of the License, or 
+ #  (at your option) any later version.
+ # 
+ #  pyCMPL is distributed in the hope that it will be useful, but WITHOUT
+ #  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ #  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+ #  License for more details.
+ #  
+ #  You should have received a copy of the GNU Lesser General Public License
+ #  along with this program; if not, see <http://www.gnu.org/licenses/>.
+ #
+ #**********************************************************************
+ 
+#!/bin/sh
+
+if [[ $OSTYPE == *darwin* ]] ; then 
+	export PYTHONPATH=/Applications/Cmpl/pyCmpl
+	export CMPLBINARY=/Applications/Cmpl/bin/cmpl
+elif  [[ $OSTYPE == *linux* ]] ; then
+	export PYTHONPATH=/usr/share/Cmpl/pyCmpl
+	export CMPLBINARY=/usr/share/Cmpl/bin/cmpl
+fi
+
+function usage () 
+{
+	echo "Usage: cmplServer < start | stop >  [<port>]  "
+	echo "-start 		- start cmplServer "
+	echo "-stop  		- stop cmplServer "
+	echo "-isRunning 	- tests whether cmplServer is running or not"
+	echo "port  		- define cmplServer's port (default 8008)"
+	exit 1
+}
+
+if [ $# == 0 -o $# -gt 2 ] ; then
+    usage
+    exit 1
+fi
+
+if [ $# == 2 ] ; then
+	cmplPort=$2
+else
+	cmplPort="8008"
+fi
+
+if [ $1 == "-start" ]; then
+	echo "Starting CmplServer ..."
+	rm ~/cmplServer.out 2>/dev/null
+	nohup python $PYTHONPATH/pyCmpl/cmplServerHandler.py -start $cmplPort >~/cmplServer.out &
+	sleep 0.5
+	more ~/cmplServer.out
+
+elif [ $1 == "-stop" ]; then
+	 python $PYTHONPATH/pyCmpl/cmplServerHandler.py -stop $cmplPort
+elif [ $1 == "-isRunning" ]; then
+	 python $PYTHONPATH/pyCmpl/cmplServerHandler.py -isRunning $cmplPort
+else
+	usage
+fi
+
+exit 0

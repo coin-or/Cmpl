@@ -1,0 +1,4 @@
+OSSolverServicePath =  ../Thirdparty/COIN-OS/
+GlpkPath =  ../Thirdparty/GLPK/
+ScipFileName =
+CplexFileName = /opt/ibm/ILOG/CPLEX_Studio1251/cplex/bin/x86_sles10_4.1/cplex

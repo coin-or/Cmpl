@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd /usr/share/Cmpl/Coliop3
+java -jar coliop.jar&
