@@ -1,0 +1,19 @@
+INSTALLING jCMPL **********************************************************************************
+
+It is recommended to build jCMPL by using NetBeans. 
+
+1) Open the jCMPL folder as a Netbeans project.
+2) Build it with ->Run->Clean and Build Project (jCMPL).
+
+3) Open the folder jCMPLTest (Cmpl/jCmpl/test/jCmplTest) as a Netbeans project.
+4) Build it with ->Run->Clean and Build Project (jCmplTest).
+
+It is also possible to use Eclipse to create the jCmpl and jCmplTest jar files. 
+In this case you have to link jCMPL agains the following jar files, that you can find in 
+Cmpl/jCmpl/Libs :
+commons-lang3
+ws-commons-util
+xmplrpc-client
+xmlrpc-commons
+
+

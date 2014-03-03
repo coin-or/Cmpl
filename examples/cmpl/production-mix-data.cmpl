@@ -1,0 +1,25 @@
+%arg -solver glpk
+%data : products set, machines set, price[products], costs[products]
+%data : a[machines,products], b[machines], xMax[products]
+
+parameters:
+	#profit contribution per unit
+	{j in products:  c[j] := price[j]-costs[j]; }
+
+variables:
+	x[products]: integer; 
+
+objectives:
+	profit: c[]T  * x[] ->max;
+
+constraints:
+	res: a[,] * x[] <= b[];
+	0<=x[]<=xMax[];
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 

@@ -1,0 +1,47 @@
+Objective value: 47.00
+
+Pattern:
+   |  1  2  3  4  5  6  7  8 
+----------------------------
+20 |  5  0  0  0  0  1  1  3 
+45 |  0  2  0  0  0  0  2  0 
+50 |  0  0  2  0  0  0  0  1 
+55 |  0  0  0  2  0  0  0  0 
+75 |  0  0  0  0  1  1  0  0 
+
+ 1 pieces of pattern: 1 
+	width 20 - 5
+	width 45 - 0
+	width 50 - 0
+	width 55 - 0
+	width 75 - 0
+ 9 pieces of pattern: 3 
+	width 20 - 0
+	width 45 - 0
+	width 50 - 2
+	width 55 - 0
+	width 75 - 0
+ 5 pieces of pattern: 4 
+	width 20 - 0
+	width 45 - 0
+	width 50 - 0
+	width 55 - 2
+	width 75 - 0
+ 8 pieces of pattern: 6 
+	width 20 - 1
+	width 45 - 0
+	width 50 - 0
+	width 55 - 0
+	width 75 - 1
+18 pieces of pattern: 7 
+	width 20 - 1
+	width 45 - 2
+	width 50 - 0
+	width 55 - 0
+	width 75 - 0
+ 6 pieces of pattern: 8 
+	width 20 - 3
+	width 45 - 0
+	width 50 - 1
+	width 55 - 0
+	width 75 - 0
