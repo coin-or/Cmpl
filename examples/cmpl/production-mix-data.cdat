@@ -1,0 +1,27 @@
+
+%products set < 1..3 >
+%machines set < 1..2 >
+
+%price[products] <500 600 450 >
+%costs[products] <425 520 400 >
+
+#machine hours required per unit
+%a[machines,products] < 8  15  12  15 10 8 >
+
+#upper bounds of the machines
+%b[machines] < 1000 1000 >
+
+#lower and upper bound of the products
+%xMax[products] < 250  240  250>
+%xMin[products] < 45 45 45 >
+
+#fixed setup costs
+%FC[products] < 500 400 500>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 

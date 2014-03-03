@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd /Applications/Cmpl/Coliop3
+java -Xdock:name=Coliop3 -jar coliop.jar&

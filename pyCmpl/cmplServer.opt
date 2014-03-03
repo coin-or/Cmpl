@@ -1,0 +1,3 @@
+maxProblems = 8
+maxInactivityTime = 43200
+port = 8008

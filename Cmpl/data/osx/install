@@ -1,0 +1,27 @@
+#!/bin/bash
+
+cd ..
+
+echo "Install CMPL in /Applictions/Cmpl"
+
+if test -d /Applications/Cmpl ; then
+    rm -R /Applications/Cmpl
+fi
+
+cp -R Cmpl /Applications
+if (test -f /usr/bin/cmpl) 
+then 
+	sudo rm /usr/bin/cmpl
+fi
+
+sudo mv /Applications/Cmpl/cmpl /usr/bin
+sudo cp /Applications/Cmpl/coliop /usr/bin
+
+rm /Applications/Cmpl/install
+mv /Applications/Cmpl/coliop  /Applications/Cmpl/Coliop3/coliop 
+
+if [ -d Cmpl/pyCmpl ] ; then
+	sudo cp Cmpl/pyCmpl/scripts/Unix/*  /usr/bin
+fi
+
+echo "Install CMPL done"

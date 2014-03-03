@@ -1,0 +1,17 @@
+%data : A set[2], c[A], V set , s, t
+
+parameters:
+	{ i in V: { i=s : rHs[i]:=1; | 
+			i=t : rHs[i]:=-1; | 
+			default: rHs[i]:=0;}  }
+
+variables:
+	x[A] :real[0..]; 
+		
+objectives:
+	sum{ [i,j] in A: c[i,j]*x[i,j] } -> min;
+
+constraints:
+	node { i in V:  sum{ j in (A *> [i,*]) : x[i,j]  } -
+			    sum{ j in (A *> [*,i]) : x[j,i]  }  = rHs[i];}
+	
