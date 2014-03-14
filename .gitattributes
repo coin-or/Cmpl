@@ -21,6 +21,7 @@ Cmpl/data/linux/coliop-3.opt -text
 Cmpl/data/linux/deinstall -text
 Cmpl/data/linux/gurobiPython -text
 Cmpl/data/linux/helpBrowser -text
+Cmpl/data/linux/install -text
 Cmpl/data/makePackage -text
 Cmpl/data/osx/INSTALLATION -text
 Cmpl/data/osx/README -text
