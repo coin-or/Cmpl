@@ -1,0 +1,35 @@
+%arg -gn
+
+#
+# Zuordnungsproblem
+# Mike Steglich - MŠrz 2009
+#
+%data 39_Test_Summe-data.cdat : n, sn set,  d[sn,sn],  t[sn,sn] 
+
+
+variables:
+	x[1..n,1..n]: binary;
+	w[1..n,1..n,1..n,1..n]: real;
+
+	
+
+objectives:
+	ziel: sum{  h:=1(1)n, i:=1(1)n, j:=1(1)n, k:=1(1)n : t[h,i]*d[j,k]*w[h,i,j,k] };
+
+
+constraints:
+
+	{ h:=1(1)n, i:=1(1)n, j:=1(1)n, k:=1(1)n: w_$h$_$i$_$j$_$k$: w[h,i,j,k] = x[h,j]*x[i,k]; }	
+
+	{ h:=1(1)n: sos1_$h$: sum{ j:=1(1)n: x[h,j] } = 1; }
+	
+	{ j:=1(1)n: sos2_$j$: sum{ h:=1(1)n: x[h,j] } = 1; }
+
+
+
+
+
+
+
+
+

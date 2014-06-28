@@ -1,0 +1,83 @@
+#!/bin/bash
+
+cbcRelease=2.8.9
+
+if [[ $OSTYPE == *darwin* ]] ||  [[ $OSTYPE == *linux* ]] ; then
+	if test -d CBC-${cbcRelease} ; then 
+		echo "CBC exists"
+		cd CBC-${cbcRelease}
+		make clean
+		cd ..
+	else
+		echo "downloading CBC" 
+		if ( svn co https://projects.coin-or.org/svn/Cbc/releases/${cbcRelease} CBC-${cbcRelease} ) ; then
+			echo "Finished - download CBC"	
+		else
+			echo "Can't download CBC"	
+		fi
+	fi
+fi
+
+if test -d CBC-${cbcRelease} ; then 
+	
+	cd CBC-${cbcRelease}
+	make clean
+	confErg=0;
+
+	if ( ./configure  --enable-static --disable-shared --enable-cbc-parallel ) ; then 
+		confErg=1;
+	fi
+		
+	if  [ $confErg = 1 ]
+    then
+		echo "configure finished"
+    else
+		echo "Configure failed"
+        exit 1
+    fi
+
+    make
+    make install
+    
+    if [[ $OSTYPE == *msys* ]] ; then
+    	cd bin
+    	cpFile=`which libstdc++-6.dll`
+    	cp $cpFile .
+    	cpFile=`which mingwm10.dll`
+    	cp $cpFile .
+    	cpFile=`which libgcc_s_dw2-1.dll`
+    	cp $cpFile .
+    	cd ..
+    fi
+    
+	bin/cbc ? quit 2>cbcStdErr
+	if  test -s cbcStdErr ;  then
+		echo "Can't execute /usr/bin/cbc"
+		echo "Build is canceled"
+		exit 1
+	fi
+	
+	cd ../.. 
+	
+	if [ ! -d Thirdparty ] ; then 
+		mkdir Thirdparty
+	fi
+	cd Thirdparty
+	if [ ! -d CBC ] ; then
+		mkdir CBC
+	fi 
+	cd ..
+	
+	cp data/CBC-${cbcRelease}/bin/cbc Thirdparty/CBC
+    
+	cp data/CBC-${cbcRelease}/Cbc/AUTHORS Thirdparty/CBC
+	cp data/CBC-${cbcRelease}/Cbc/LICENSE Thirdparty/CBC/
+	
+	echo "CBC was built in Thirdparty/CBC"
+	
+else
+    echo "CBC does not exists"
+    exit 1
+fi
+
+

@@ -1,0 +1,11 @@
+%data : machines set, locations set, A set[2], c[A] 
+
+variables:
+	x[A]: binary;
+
+objectives:
+	costs: sum{  [i,j] in A : c[i,j]*x[i,j] } -> min ;
+
+constraints:
+	sos_m { i in machines:  sum{ j in (A *> [i,*])  : x[i,j] } = 1; }
+	sos_l { j in locations: sum{ i in (A *> [*,j])  : x[i,j] } <= 1; }

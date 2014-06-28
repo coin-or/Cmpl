@@ -1,0 +1,20 @@
+const:
+    
+	a[,] := readcsv("testcsvmatrix.csv"); 	
+	echo "read matrix done"; 
+        c[] := readcsv("testcsvvector.csv");  
+	echo "read vector done";  
+ 	
+var:
+    x[1..dim(c[])]: real[0..];
+    
+objective:
+   c[]T * x[] ->max;
+    
+constraint:
+   a[,] * x[] <= 100;
+   echo "x "+  dim(x[]);
+   echo "a "+ dim(a[1,]) + " " +dim(a[,1]);
+     
+
+

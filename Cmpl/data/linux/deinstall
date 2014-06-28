@@ -1,0 +1,29 @@
+#!/bin/bash
+
+sudo rm -R /usr/share/Cmpl
+sudo rm /usr/bin/cmpl
+
+if (test -f /usr/bin/coliop) ; then 
+	sudo rm /usr/bin/coliop
+fi
+if (test -f /usr/bin/pyCmpl) ; then 
+	sudo rm /usr/bin/pyCmpl
+fi
+if (test -f /usr/bin/cmplServer) ; then 
+	sudo rm /usr/bin/cmplServer
+fi
+
+
+if [[ $MACHTYPE =~ .*arm.* ]] ; then  
+	if test -f /home/pi/Desktop/coliop.desktop ; then 
+		rm /home/pi/Desktop/coliop.desktop
+	fi
+
+	if test -f /home/pi/.local/share/applications/coliop.desktop ; then 
+		rm /home/pi/.local/share/applications/coliop.desktop 
+	fi
+fi
+
+echo "CMPL deinstalled"
+
+
