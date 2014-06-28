@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if (test -d /Applications/Cmpl) ; then 
+	sudo rm -R /Applications/Cmpl
+fi
+
+if (test -f /usr/bin/cmpl) ; then 
+	sudo rm /usr/bin/cmpl
+fi
+if (test -f /usr/bin/coliop) ; then 
+	sudo rm /usr/bin/coliop
+fi
+if (test -f /usr/bin/pyCmpl) ; then 
+	sudo rm /usr/bin/pyCmpl
+fi
+if (test -f /usr/bin/cmplServer) ; then 
+	sudo rm /usr/bin/cmplServer
+fi
+
+echo "CMPL deinstalled"
+
+
+

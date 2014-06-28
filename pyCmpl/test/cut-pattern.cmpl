@@ -1,0 +1,28 @@
+%data :  widths set, price[widths], rollWidth
+
+variables:
+	use[widths]: integer[0..];
+	reducedCosts : real;
+
+objectives:
+	reducedCosts -> min;
+
+constraints: 
+	reducedCosts = 1 - sum{ i in widths: price[i] * use[i]};
+	sum{ i in widths : i * use[i] } <= rollWidth;
+	
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

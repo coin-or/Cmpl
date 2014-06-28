@@ -1,0 +1,90 @@
+The CMPL (<Coliop|Coin> Mathematical Programming Language) Package:
+---------------------------------------------------------------------------------
+
+*********** CMPL ************************* 
+CMPL (<Coliop|Coin> Mathematical Programming Language) is a mathematical programming language 
+and a system for mathematical programming and optimization of linear optimization problems. 
+
+The CMPL syntax is similar in formulation to the original mathematical model but also 
+includes syntactic elements from modern programming languages. CMPL is intended to combine 
+the clarity of mathematical models with the flexibility of programming languages. 
+
+CMPL executes the COIN-OR OSSolverService, GLPK, Gurobi, SCIP and CPLEX directly to solve the generated model 
+instance. Since it is also possible to transform the mathematical problem into MPS, 
+Free-MPS or OSiL files, alternative solvers can be used. 
+
+CMPL is an open source project licensed under GPL. It is written in C++ and is available 
+for most of the relevant operating systems (Windows, OS X and Linux). 
+CMPL is a COIN-OR project initiated by the Technical University of Applied Sciences Wildau 
+and the Institute for Operations Research and Business Management at the Martin Luther 
+University Halle-Wittenberg.
+
+*********** Coliop ************************ 
+The CMPL distribution contains Coliop which is an (simple) IDE (Integrated Development Environment) 
+for CMPL. Coliop is a project of the Technical University of Applied Sciences Wildau and the 
+Institute for Operations Research and Business Management at the Martin Luther University.
+Coliop is an open source project licensed under GPL. It is written in Java and is as an integral 
+part of the CMPL distribution available for most of the relevant operating systems. 
+Coliop is an open source project licensed under GPL.
+
+*********** pyCMPL ************************
+pyCMPL is the CMPL API  for Python and an interactive shell. 
+The main idea of this API is 
+* to define sets and parameters within the user application, 
+* to start and control the solving process and 
+* to read the solution(s) into the application if the problem is feasible. 
+All variables, objective functions and constraints are defined in CMPL. 
+These functionalities can be used with a local CMPL installation or a CMPLServer.
+pyCMPL is an open source project licensed under LGPL.
+
+To use the pyCMPL functionalities you have to import jCMPL by 
+from pyCmpl import *
+
+*********** jCMPL ************************
+jCMPL is the CMPL API  for Java. 
+The main idea of this API is 
+* to define sets and parameters within the user application, 
+* to start and control the solving process and 
+* to read the solution(s) into the application if the problem is feasible. 
+All variables, objective functions and constraints are defined in CMPL. 
+These functionalities can be used with a local CMPL installation or a CMPLServer.
+jCMPL is an open source project licensed under LGPL.
+
+To use the jCMPL functionalities you have to import jCMPL by 
+import jCMPL.*; 
+and to link your application against jCmpl.jar and the 
+following jar files, that you can find in Cmpl/jCmpl/Libs :
+commons-lang3
+ws-commons-util
+xmplrpc-client
+xmlrpc-commons
+
+*********** CMPLServer **********************
+CMPLServer is an XML-RPC-based web service for distributed optimization.
+It is reasonable to solve large models remotely on the CMPLServer that is installed on a high performance system.
+pyCMPL provides a client API for CMPLServer. CMPL provides four XML-based file formats for the communication 
+between a CMPLServer and is clients. (CmplInstance, CmplSolutions, CmplMessages, CmplInfo)
+CMPLServer is an open source project licensed under LGPL.
+
+
+For further information please visit the CMPL website (www.coliop.org). 
+
+DOCUMENTATION:
+See the Cmpl/doc subdirectory for documenation. This subdirectory contains a 
+User's Manual in pdf format. See also:
+ 	
+	http://www.coliop.org
+	https://projects.coin-or.org/Cmpl
+
+
+INSTALLATION
+See the INSTALL file in the root directory.
+
+
+
+
+
+
+
+
+ 

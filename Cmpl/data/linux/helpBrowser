@@ -1,0 +1,21 @@
+#!/bin/bash
+
+FE=1
+type -p evince &>/dev/null || FE=0
+FO=1
+type -p okular &>/dev/null || FO=0
+FX=1
+type -p xpdf &>/dev/null || FX=0
+
+
+help=""
+
+if  [ "$FE" = 1 ]; then
+    help="evince $1"
+elif  [ "$FO" = 1 ]; then
+    help="okular $1" 
+elif  [ "$FX" = 1 ]; then
+    help="xpdf $1"      
+fi
+
+$help&
