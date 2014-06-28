@@ -1,0 +1,29 @@
+parameters:
+	products := 1..3;
+	machines := 1..2;
+
+	price[products] := (500, 600, 450 );
+	costs[products] := (425, 520, 400);
+
+	#machine hours required per unit
+	a[machines,products] := ((8, 15, 12), (15, 10, 8));
+
+	#upper bounds of the machines
+	b[machines] := (1000, 1000);
+
+	#profit contribution per unit
+	{j in products:  c[j] := price[j]-costs[j]; }
+
+	#upper bound of the products
+	xMax[products] := (250, 240, 250 );
+
+variables:
+	x[products]: real; 
+
+objectives:
+	profit: c[]T  * x[] ->max;
+
+constraints:
+	res: a[,] * x[] <= b[];
+	0<=x[]<=xMax[];
+ 

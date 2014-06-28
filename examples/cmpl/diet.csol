@@ -1,0 +1,32 @@
+<?xml version = "1.1" encoding="UTF-8" standalone="yes"?>
+<CmplSolutions version="1.0">
+   <general>
+       <instanceName>diet.cmpl</instanceName>
+       <nrOfVariables>8</nrOfVariables>
+       <nrOfConstraints>4</nrOfConstraints>
+       <objectiveName>cost</objectiveName>
+       <objectiveSense>min</objectiveSense>
+       <nrOfSolutions>1</nrOfSolutions>
+       <solverName>CBC</solverName>
+       <variablesDisplayOptions>(all)</variablesDisplayOptions>
+       <constraintsDisplayOptions>(all)</constraintsDisplayOptions>
+   </general>
+   <solution idx="0" status="optimal" value="101.14">
+       <variables>
+           <variable idx="0" name="x[BEEF]" type="I" activity="2" lowerBound="2" upperBound="10" marginal="-"/>
+           <variable idx="1" name="x[CHK]" type="I" activity="8" lowerBound="2" upperBound="10" marginal="-"/>
+           <variable idx="2" name="x[FISH]" type="I" activity="2" lowerBound="2" upperBound="10" marginal="-"/>
+           <variable idx="3" name="x[HAM]" type="I" activity="2" lowerBound="2" upperBound="10" marginal="-"/>
+           <variable idx="4" name="x[MCH]" type="I" activity="10" lowerBound="2" upperBound="10" marginal="-"/>
+           <variable idx="5" name="x[MTL]" type="I" activity="10" lowerBound="2" upperBound="10" marginal="-"/>
+           <variable idx="6" name="x[SPG]" type="I" activity="10" lowerBound="2" upperBound="10" marginal="-"/>
+           <variable idx="7" name="x[TUR]" type="I" activity="2" lowerBound="2" upperBound="10" marginal="-"/>
+       </variables>
+       <linearConstraints> 
+           <constraint idx="0" name="line[A]" type="G" activity="1500" lowerBound="700" upperBound="Infinity" marginal="-"/>
+           <constraint idx="1" name="line[B1]" type="G" activity="1330" lowerBound="700" upperBound="Infinity" marginal="-"/>
+           <constraint idx="2" name="line[B2]" type="G" activity="860" lowerBound="700" upperBound="Infinity" marginal="-"/>
+           <constraint idx="3" name="line[C]" type="G" activity="700" lowerBound="700" upperBound="Infinity" marginal="-"/>
+       </linearConstraints>
+   </solution>
+</CmplSolutions>

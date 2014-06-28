@@ -1,0 +1,25 @@
+%data : rollWidth , widths set, patterns set, orders[widths],  nbr[widths, patterns]
+
+variables:
+	 cut[patterns]: integer[0..];
+
+objectives:
+	number: sum{ j in patterns: cut[j] }->min;
+
+constraints: 
+	fill {i in widths: sum{ j in patterns : nbr[i,j] * cut[j] } >= orders[i];} 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

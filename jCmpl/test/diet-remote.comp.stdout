@@ -1,0 +1,35 @@
+Objective name      :cost
+Nr. of Variables    :8
+Nr. of Constraints  :4
+Nr. of Solutions    :1
+Display variables   :(all)
+Display constraints :(all)
+Solution nr.        :1
+Objective value     :101.14 min
+0 x[BEEF] I 2 2.0 10.0 NaN
+1 x[CHK] I 8 2.0 10.0 NaN
+2 x[FISH] I 2 2.0 10.0 NaN
+3 x[HAM] I 2 2.0 10.0 NaN
+4 x[MCH] I 10 2.0 10.0 NaN
+5 x[MTL] I 10 2.0 10.0 NaN
+6 x[SPG] I 10 2.0 10.0 NaN
+7 x[TUR] I 2 2.0 10.0 NaN
+0 line[A] G 1500.0 700.0 Infinity NaN
+1 line[B1] G 1330.0 700.0 Infinity NaN
+2 line[B2] G 860.0 700.0 Infinity NaN
+3 line[C] G 700.0 700.0 Infinity NaN
+Solution nr.        :1
+Objective value     :101.14 min
+0 x[BEEF] I 2 2.0 10.0 NaN
+1 x[CHK] I 8 2.0 10.0 NaN
+2 x[FISH] I 2 2.0 10.0 NaN
+3 x[HAM] I 2 2.0 10.0 NaN
+4 x[MCH] I 10 2.0 10.0 NaN
+5 x[MTL] I 10 2.0 10.0 NaN
+6 x[SPG] I 10 2.0 10.0 NaN
+7 x[TUR] I 2 2.0 10.0 NaN
+0 line[A] G 1500.0 700.0 Infinity NaN
+1 line[B1] G 1330.0 700.0 Infinity NaN
+2 line[B2] G 860.0 700.0 Infinity NaN
+3 line[C] G 700.0 700.0 Infinity NaN
+2
