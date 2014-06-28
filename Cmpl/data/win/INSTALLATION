@@ -1,18 +1,0 @@
-INSTALL CMPL 
-**********************************************************************************************
-
-• Windows 32	To install the CMPL package you only have to copy the folder Cmpl into c:\program files\Cmpl• Windows 64	To install the CMPL package copy the folder Cmpl into c:\program files (x86)\Cmpl
-		
-	
-		
-Since Coliop is written in Java you have to download and install the java runtime enviroment:
-http://java.com/download/index.jsp
-  
-
-
-DEINSTALL CMPL
-**********************************************************************************************
-
-To deinstall the CMPL package you have to delete CMPL folder.
-
-

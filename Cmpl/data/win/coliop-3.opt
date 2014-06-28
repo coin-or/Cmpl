@@ -1,7 +1,0 @@
-%HOMEPATH%
-rundll32
-{url.dll,FileProtocolHandler} {..\doc\CMPL.pdf}
-cmpl.bat
-{$problem$.$ext$}  {-matrix} {$problem$.mat} {-solutionAscii}
-java {-jar} {coliop.jar} 
-Courier-plain-13
