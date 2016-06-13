@@ -1,0 +1,38 @@
+%arg -noOutput
+parameters:
+	seed:=srand(100);
+	M:=10000;
+
+	nrOfCities:=5;
+	cities:=1..nrOfCities;
+
+	{i in cities:
+		  xp[i]:=rand(100);
+		  yp[i]:=rand(100);
+	}
+
+	{i in cities, j in cities:
+	    {i==j: 
+		dist[i,j]:=M; |
+	    default: 
+		dist[i,j]:= sqrt( (xp[i]-xp[j])^2 + (yp[i]-yp[j])^2 );
+		dist[j,i]:= dist[i,j]+rand(10)-rand(10);
+	    }
+	}
+	
+	echo "%nrOfCities <" +nrOfCities + ">";
+	echo "";
+	echo "%M < 10000 >";
+	echo "";
+	echo "%cities set < " + 1 + ".." + nrOfCities + ">";
+	echo "";
+	
+	
+	echo "%dist[cities,cities] < ";
+	{i in cities, j in cities:
+		  echo dist[i,j];
+	}
+	echo ">";
+	
+
+ 
