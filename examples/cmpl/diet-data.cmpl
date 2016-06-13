@@ -1,0 +1,18 @@
+%data diet-data.cdat : FOOD set, NUTR set, costs[FOOD], vitamin[NUTR,FOOD], vitMin[NUTR]
+
+variables:
+	x[FOOD]: integer[2..10];
+
+objectives:
+	cost: costs[]T * x[]->min;
+
+constraints:
+	# capacity restriction 
+	$2$: vitamin[,] * x[] >= vitMin[]; 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

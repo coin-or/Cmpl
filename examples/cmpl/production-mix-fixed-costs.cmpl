@@ -1,0 +1,22 @@
+%data production-mix-data.cdat
+
+parameters:
+	#profit contribution per unit
+	{j in products:  c[j] := price[j]-costs[j]; }
+
+	
+variables:
+	{j in products : x[j]: integer[0..xMax[j]]; } 
+	y[products] : binary;
+
+objectives:
+	profit: c[]T  * x[] - FC[]T * y[] ->max;
+
+constraints:
+	res: a[,] * x[] <= b[];
+	bounds {j in products: xMin[j] * y[j] <= x[j] <= xMax[j] * y[j]; }
+ 
+ 
+ 
+ 
+ 

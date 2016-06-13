@@ -1,0 +1,29 @@
+*********** CMPLServer ********
+
+CMPLServer is an XML-RPC-based web service for distributed optimization.
+It is reasonable to solve large models remotely on the CMPLServer that is installed on a high performance system.
+pyCMPL provides a client API for CMPLServer. CMPL provides three XML-based file formats for the communication 
+between a CMPLServer and its clients. (CmplInstance, CmplSolutions, CmplMessages, CmplInfo)
+
+
+For further information please visit the CMPL website (www.coliop.org). 
+
+DOCUMENTATION:
+See the Cmpl/doc subdirectory for documenation. This subdirectory contains a 
+User's Manual in pdf format. See also:
+ 	
+	http://www.coliop.org
+	https://projects.coin-or.org/Cmpl
+
+
+INSTALLATION
+See the INSTALL file in the root directory.
+
+
+
+
+
+
+
+
+ 

@@ -1,0 +1,83 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes"?>
+<CmplInstance version="1.0">
+<general>
+<name>shortest-path.cmpl</name>
+<jobId>G127.0.0.1-2014-05-07-13-15-13-582788</jobId>
+</general>
+<problemFiles>
+<file name="shortest-path.cmpl" type="cmplMain">
+%data __cmplData__shortest-path.cdat  : A set[2], c[A], V set , s, t
+
+parameters:
+	{ i in V: { i=s : rHs[i]:=1; | 
+			i=t : rHs[i]:=-1; | 
+			default: rHs[i]:=0;}  }
+
+variables:
+	x[A] :real[0..]; 
+		
+objectives:
+	sum{ [i,j] in A: c[i,j]*x[i,j] } -&gt; min;
+
+constraints:
+	node { i in V:  sum{ j in (A *&gt; [i,*]) : x[i,j]  } -
+			    sum{ j in (A *&gt; [*,i]) : x[j,i]  }  = rHs[i];}
+	
+</file>
+<file name="__cmplData__shortest-path.cdat" type="cmplData">
+%A set[2] &lt; 
+1 2 
+1 4 
+2 1 
+2 3 
+2 4 
+2 5 
+3 2 
+3 5 
+4 1 
+4 2 
+4 5 
+4 6 
+5 2 
+5 3 
+5 4 
+5 6 
+5 7 
+6 4 
+6 5 
+6 7 
+7 5 
+7 6 
+&gt;
+%V set &lt; 1..7 &gt;
+%c[A] &lt;
+6.1
+5.5
+6.7
+5.0
+7.9
+9.2
+11.4
+6.8
+4.0
+6.2
+17.2
+5.6
+8.2
+7.3
+17.9
+4.3
+11.1
+3.5
+5.0
+11.7
+10.7
+12.7
+&gt;
+%s &lt; 1 &gt;
+%t &lt; 7 &gt;
+
+</file>
+</problemFiles>
+</CmplInstance>
+
