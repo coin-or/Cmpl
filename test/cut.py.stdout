@@ -1,0 +1,223 @@
+---------------------------------------------------------------------------------------------------------
+Problem               cut.cmpl
+Nr. of variables      5
+Nr. of constraints    5
+Objective name        number
+Solver name           COIN-OR clp
+Display variables     (all)
+Display constraints   (all)
+---------------------------------------------------------------------------------------------------------
+
+Objective status      optimal
+Objective value       52.10               (min!)
+
+Variables            
+Name                 Type            Activity          LowerBound          UpperBound            Marginal
+---------------------------------------------------------------------------------------------------------
+cut[1]                  C                9.60                0.00                 inf                0.00
+cut[2]                  C               17.50                0.00                 inf                0.00
+cut[3]                  C               12.00                0.00                 inf                0.00
+cut[4]                  C                5.00                0.00                 inf                0.00
+cut[5]                  C                8.00                0.00                 inf                0.00
+---------------------------------------------------------------------------------------------------------
+
+Constraints          
+Name                 Type            Activity          LowerBound          UpperBound            Marginal
+---------------------------------------------------------------------------------------------------------
+fill[20]                G               48.00               48.00                 inf                0.20
+fill[45]                G               35.00               35.00                 inf                0.50
+fill[50]                G               24.00               24.00                 inf                0.50
+fill[55]                G               10.00               10.00                 inf                0.50
+fill[75]                G                8.00                8.00                 inf                1.00
+---------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------
+Problem               cut.cmpl
+Nr. of variables      6
+Nr. of constraints    5
+Objective name        number
+Solver name           COIN-OR clp
+Display variables     (all)
+Display constraints   (all)
+---------------------------------------------------------------------------------------------------------
+
+Objective status      optimal
+Objective value       50.50               (min!)
+
+Variables            
+Name                 Type            Activity          LowerBound          UpperBound            Marginal
+---------------------------------------------------------------------------------------------------------
+cut[1]                  C                8.00                0.00                 inf                0.00
+cut[2]                  C               17.50                0.00                 inf                0.00
+cut[3]                  C               12.00                0.00                 inf                0.00
+cut[4]                  C                5.00                0.00                 inf                0.00
+cut[5]                  C                0.00                0.00                 inf                0.20
+cut[6]                  C                8.00                0.00                 inf                0.00
+---------------------------------------------------------------------------------------------------------
+
+Constraints          
+Name                 Type            Activity          LowerBound          UpperBound            Marginal
+---------------------------------------------------------------------------------------------------------
+fill[20]                G               48.00               48.00                 inf                0.20
+fill[45]                G               35.00               35.00                 inf                0.50
+fill[50]                G               24.00               24.00                 inf                0.50
+fill[55]                G               10.00               10.00                 inf                0.50
+fill[75]                G                8.00                8.00                 inf                0.80
+---------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------
+Problem               cut.cmpl
+Nr. of variables      7
+Nr. of constraints    5
+Objective name        number
+Solver name           COIN-OR clp
+Display variables     (all)
+Display constraints   (all)
+---------------------------------------------------------------------------------------------------------
+
+Objective status      optimal
+Objective value       47.00               (min!)
+
+Variables            
+Name                 Type            Activity          LowerBound          UpperBound            Marginal
+---------------------------------------------------------------------------------------------------------
+cut[1]                  C                4.50                0.00                 inf                0.00
+cut[2]                  C                0.00                0.00                 inf                0.20
+cut[3]                  C               12.00                0.00                 inf                0.00
+cut[4]                  C                5.00                0.00                 inf                0.00
+cut[5]                  C                0.00                0.00                 inf                0.20
+cut[6]                  C                8.00                0.00                 inf                0.00
+cut[7]                  C               17.50                0.00                 inf                0.00
+---------------------------------------------------------------------------------------------------------
+
+Constraints          
+Name                 Type            Activity          LowerBound          UpperBound            Marginal
+---------------------------------------------------------------------------------------------------------
+fill[20]                G               48.00               48.00                 inf                0.20
+fill[45]                G               35.00               35.00                 inf                0.40
+fill[50]                G               24.00               24.00                 inf                0.50
+fill[55]                G               10.00               10.00                 inf                0.50
+fill[75]                G                8.00                8.00                 inf                0.80
+---------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------
+Problem               cut.cmpl
+Nr. of variables      8
+Nr. of constraints    5
+Objective name        number
+Solver name           COIN-OR clp
+Display variables     (all)
+Display constraints   (all)
+---------------------------------------------------------------------------------------------------------
+
+Objective status      optimal
+Objective value       46.25               (min!)
+
+Variables            
+Name                 Type            Activity          LowerBound          UpperBound            Marginal
+---------------------------------------------------------------------------------------------------------
+cut[1]                  C                0.00                0.00                 inf                0.17
+cut[2]                  C                0.00                0.00                 inf                0.17
+cut[3]                  C                8.25                0.00                 inf                0.00
+cut[4]                  C                5.00                0.00                 inf                0.00
+cut[5]                  C                0.00                0.00                 inf                0.17
+cut[6]                  C                8.00                0.00                 inf                0.00
+cut[7]                  C               17.50                0.00                 inf                0.00
+cut[8]                  C                7.50                0.00                 inf                0.00
+---------------------------------------------------------------------------------------------------------
+
+Constraints          
+Name                 Type            Activity          LowerBound          UpperBound            Marginal
+---------------------------------------------------------------------------------------------------------
+fill[20]                G               48.00               48.00                 inf                0.17
+fill[45]                G               35.00               35.00                 inf                0.42
+fill[50]                G               24.00               24.00                 inf                0.50
+fill[55]                G               10.00               10.00                 inf                0.50
+fill[75]                G                8.00                8.00                 inf                0.83
+---------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------
+Problem               cut.cmpl
+Nr. of variables      8
+Nr. of constraints    5
+Objective name        number
+Solver name           COIN-OR cbc
+Display variables     (all)
+Display constraints   (all)
+---------------------------------------------------------------------------------------------------------
+
+Objective status      optimal
+Objective value       47.00               (min!)
+
+Variables            
+Name                 Type            Activity          LowerBound          UpperBound            Marginal
+---------------------------------------------------------------------------------------------------------
+cut[1]                  I                   1                0.00                 inf                 nan
+cut[2]                  I                   0                0.00                 inf                 nan
+cut[3]                  I                   9                0.00                 inf                 nan
+cut[4]                  I                   5                0.00                 inf                 nan
+cut[5]                  I                   0                0.00                 inf                 nan
+cut[6]                  I                   8                0.00                 inf                 nan
+cut[7]                  I                  18                0.00                 inf                 nan
+cut[8]                  I                   6                0.00                 inf                 nan
+---------------------------------------------------------------------------------------------------------
+
+Constraints          
+Name                 Type            Activity          LowerBound          UpperBound            Marginal
+---------------------------------------------------------------------------------------------------------
+fill[20]                G               49.00               48.00                 inf                 nan
+fill[45]                G               36.00               35.00                 inf                 nan
+fill[50]                G               24.00               24.00                 inf                 nan
+fill[55]                G               10.00               10.00                 inf                 nan
+fill[75]                G                8.00                8.00                 inf                 nan
+---------------------------------------------------------------------------------------------------------
+
+Objective value:  47.0
+1  pieces of pattern: 
+	width  20  -  5
+	width  45  -  0
+	width  50  -  0
+	width  55  -  0
+	width  75  -  0
+0  pieces of pattern: 
+	width  20  -  0
+	width  45  -  2
+	width  50  -  0
+	width  55  -  0
+	width  75  -  0
+9  pieces of pattern: 
+	width  20  -  0
+	width  45  -  0
+	width  50  -  2
+	width  55  -  0
+	width  75  -  0
+5  pieces of pattern: 
+	width  20  -  0
+	width  45  -  0
+	width  50  -  0
+	width  55  -  2
+	width  75  -  0
+0  pieces of pattern: 
+	width  20  -  0
+	width  45  -  0
+	width  50  -  0
+	width  55  -  0
+	width  75  -  1
+8  pieces of pattern: 
+	width  20  -  1
+	width  45  -  0
+	width  50  -  0
+	width  55  -  0
+	width  75  -  1
+18  pieces of pattern: 
+	width  20  -  1
+	width  45  -  2
+	width  50  -  0
+	width  55  -  0
+	width  75  -  0
+6  pieces of pattern: 
+	width  20  -  3
+	width  45  -  0
+	width  50  -  1
+	width  55  -  0
+	width  75  -  0

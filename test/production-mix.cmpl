@@ -1,0 +1,18 @@
+%data : products set, machines set, c[products], a[machines,products], b[machines], xMax[products]
+
+variables:
+	{n in products : x[n]: real[0..xMax[n]];} 
+
+objectives:
+	profit: c[]T  * x[] ->max;
+
+constraints:
+	res: a[,] * x[] <= b[];
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 

@@ -1,0 +1,8 @@
+INSTALLING pyCMPL and CMPLServer
+**********************************************************************************
+
+It is strongly recommended to use the script cmplMake in the root folder of the entire 
+CMPL package to install pyCMPL as a part of CMPL.  
+
+
+
