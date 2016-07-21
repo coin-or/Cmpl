@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CmplMessages version="1.1">
+	<general>
+		<generalStatus>error</generalStatus>
+		<instanceName>assignment.cmpl</instanceName>
+		<message>cmpl finished with errors</message>
+	</general>
+	<messages numberOfMessages="1">
+		<message type ="error" file="(null)" line="0" description="Can&apos;t open cmplData file: assignment.cdat"/>
+	</messages>
+</CmplMessages>
