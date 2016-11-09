@@ -8,7 +8,6 @@ Cmpl/Makefile -text
 Cmpl/README -text
 Cmpl/cmpl.pro -text
 Cmpl/cmplMake -text
-Cmpl/data/Cbc-2.9.8.zip -text
 Cmpl/data/build-CBC-for-cmpl -text
 Cmpl/data/build-GLPK-for-cmpl -text
 Cmpl/data/check_bison_flex -text
