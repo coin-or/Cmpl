@@ -1,0 +1,136 @@
+#***********************************************************************
+ #  This code is part of pyCMPL 
+ #
+ #  Copyright (C) 
+ #  Mike Steglich - Technical University of Applied Sciences
+ #  Wildau, Germany 
+ #
+ #  pyCMPL is a project of the Technical University of 
+ #  Applied Sciences Wildau and the Institute for Operations Research 
+ #  and Business Management at the Martin Luther University 
+ #  Halle-Wittenberg.
+ #  Please visit the project homepage <www.coliop.org>
+ # 
+ #  pyCMPL is free software; you can redistribute it and/or modify it 
+ #  under the terms of the GNU Lesser General Public License as published by 
+ #  the Free Software Foundation; either version 3 of the License, or 
+ #  (at your option) any later version.
+ # 
+ #  pyCMPL is distributed in the hope that it will be useful, but WITHOUT
+ #  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ #  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+ #  License for more details.
+ #  
+ #  You should have received a copy of the GNU Lesser General Public License
+ #  along with this program; if not, see <http://www.gnu.org/licenses/>.
+ #
+ #**********************************************************************
+ 
+#!/bin/bash
+
+export PYTHONPATH=$PYTHONPATH:"$CmplProgPath"pyCmpl/lib:"$CmplProgPath"cmplServer
+export CMPLBINARY="$CmplProgPath"bin/cmpl
+
+serverOpt="$CmplProgPath"cmplServer/cmplServer.opt
+serverHandler="$CmplProgPath"cmplServer/cmplServer/cmplServerHandler.py
+
+function usage () 
+{
+	echo "Usage: cmplServer <command>  [<port>] [-showLog] "
+	echo "command:"
+	echo "   -start           - starts as single CMPLServer "
+	echo "   -startInGrid     - starts CMPLServer and connects to CMPLGrid"	
+	echo "   -startScheduler  - starts as CMPLGridScheduler"
+	echo "   -stop            - stops CMPLServer or CMPLGridScheduler "
+	echo "   -status          - returns the status of the CMPLServer or CMPLGridScheduler "
+	echo "port                - defines CMPLServer's or CMPLGridScheduler's port (default in cmplServer.opt: $cmplPort)"
+	echo "-showLog            - shows the CMPLServer or CMPLGridScheduler log file"
+	exit 1
+}
+
+
+function showLog() 
+{	
+	
+	if [ $isLog -eq 1 ]; then 
+		echo "Quit logging with ^C."
+		if [ $isGrid -eq 1 ] ; then 
+			tail -f ~/CmplServer/cmplGridScheduler.log
+		else
+			tail -f ~/CmplServer/cmplServer.log
+		fi
+	fi
+}
+
+isLog=0
+isGrid=0
+
+if [ $# == 0 ] || [ $# -gt 3 ] ; then
+    usage
+    exit 1
+fi
+
+if [  ${1:0:1} == "-" ] ; then 
+	if [ $1 != "-showLog" ] ; then 
+		if [ $# -gt 1 ] && [ ${2:0:1} != "-" ] ; then
+			cmplPort=$2
+			if [ $# -gt 2 ] && [ $3 == "-showLog" ] ; then
+				isLog=1
+			fi
+		else
+			arr=(`grep -i "cmplServerPort" "$serverOpt"`)
+			if [ ${arr[0]:0:1} != "#" ] ; then
+				cmplPort=${arr[2]}
+			fi
+			if [ $# -gt 1 ] && [ $2 == "-showLog" ] ; then
+				isLog=1
+			fi
+		fi
+	else 
+		usage
+	fi
+else 
+	usage
+fi
+
+if [ ! -d ~/CmplServer ]; then
+  mkdir ~/CmplServer
+fi
+
+
+if [ $1 == "-start" ]; then
+	echo "Starting CmplServer ..."
+	rm ~/cmplServer.out 2>/dev/null
+	nohup python "$serverHandler" -start $cmplPort &>~/CmplServer/cmplServer.out &
+	sleep 2
+	cat ~/CmplServer/cmplServer.out
+	showLog
+	
+elif [ $1 == "-startInGrid" ]; then
+	echo "Starting CmplServer and connecting to CmplGrid ..."
+	rm ~/cmplServer.out 2>/dev/null
+	nohup python "$serverHandler" -startInGrid $cmplPort &>~/CmplServer/cmplServer.out &
+	sleep 2
+	cat ~/CmplServer/cmplServer.out
+	showLog
+	
+elif [ $1 == "-startScheduler" ]; then
+	echo "Starting CmplGridScheduler ..."
+	rm ~/cmplServer.out 2>/dev/null
+	nohup python "$serverHandler" -startScheduler $cmplPort &>~/CmplServer/cmplServer.out &
+	sleep 2
+	cat ~/CmplServer/cmplServer.out
+	isGrid=1
+	showLog
+
+elif [ $1 == "-stop" ]; then
+	python "$serverHandler" -stop $cmplPort
+          
+elif [ $1 == "-status" ]; then
+	python "$serverHandler" -status $cmplPort
+else
+	usage
+fi
+
+
+exit 0

@@ -1,0 +1,29 @@
+%arg -solver glpk
+parameters:
+	NUTR := set("A","B1", "B2", "C");
+	FOOD := set("BEEF", "CHK", "FISH", "HAM", "MCH", "MTL", "SPG", "TUR");
+	
+	#cost per package
+	costs[FOOD] := ( 3.19, 2.59, 2.29, 2.89, 1.89, 1.99, 1.99, 2.49 );
+
+	#provision of the daily requirements for vitamins in percentages 
+	vitamin[NUTR, FOOD] := ( (60, 8, 8, 40, 15, 70, 25, 60) ,
+				 	  (20, 0, 10, 40, 35, 30, 50, 20) ,
+				 	  (10, 20, 15, 35, 15, 15, 25, 15),
+				 	  (15, 20, 10, 10, 15, 15, 15, 10)
+		     	       	);
+
+	#weekly vitamin requirements
+	vitMin[NUTR]:= (700,700,700,700);
+variables:
+	x[FOOD]: integer[2..10];
+
+objectives:
+	cost: costs[]T * x[]->min;
+
+constraints:
+	# capacity restriction 
+	$2$: vitamin[,] * x[] >= vitMin[];
+
+
+
