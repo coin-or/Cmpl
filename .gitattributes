@@ -1,5 +1,6 @@
 * text=auto !eol
 /AUTHORS -text
+/CHANGELog -text
 Cmpl/AUTHORS -text
 Cmpl/INSTALL -text
 Cmpl/LICENSE -text

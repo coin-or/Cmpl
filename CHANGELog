@@ -1,0 +1,460 @@
+08 November 2016 - Mike Steglich
+	CMPL v.1.11.1 has been released
+
+		Coliop4 (4.0.1)
+			Some changes were necessary for mac OS Sierra compatibility.
+
+		Cmpl (1.11.1)
+			Some minor bugs are fixed.
+
+08 June 2016 - Mike Steglich
+	CMPL v.1.11 has been released
+	
+		Coliop4 (4.0.0)
+			Coliop4 is the new GUI for CMPL available on Window, Linux and Mac.
+			It is more comfortable and flexible and comes with syntax highlighting. 
+			Since Coliop4 is written in C++ and QT5 Java is not longer necessary as runtime environment.
+	
+		CMPLServer and CmplGrid (1.3.2)
+			There was a problem in the handling of infeasible problems that is now fixed.
+			Some minor changes due to the integration with SolverStudio 
+			A couple of bottlenecks were identified and cleaned.
+		
+		pyCmpl (1.4.6)
+			Some minor changes due to the integration with SolverStudio 
+			new method Cmpl.setModel to specify the Cmpl model as a string w/o a model file
+			new method Cmpl.setOutputToString to write CMPL's and solver's output into a string that can be obtained with Cmpl.output() 
+			A couple of bottlenecks were identified and cleaned.
+			
+		jCmpl (1.2.1)
+			To run run CMPL with jCMPL the environment variable CMPLBINRAY has to be specified to CmplHome/cmpl (Linux and Mac) or 
+			CmplHome/cmpl.bat (Windows). 
+		
+			
+		Cmpl (1.11)
+			readCsv() - A bug in reading vectors from a csv file is fixed.
+			Several minor problems with n-tuples are fixed.
+		
+		Coliop3 (3.1.22)	
+			A bug in printing the solution is fixed.
+			A minor bug in saving new files is fixed.
+			
+		Installation 
+			An installation is not longer necessary. The entire CMPL package runs now out of the box in every directory.
+			
+			
+
+June 28 2014 - Mike Steglich
+	CMPL v.1.10.0 has been released
+	
+		CMPLServer and CmplGrid (1.3.0)
+			CMPLGrid 
+				A CMPLServer can now be used in a single server mode or in a grid mode.
+			
+				The grid mode extends the single server mode by coupling CMPLServers from several locations and at 
+				least one coordinating CMPLGridScheduler to one "virtual CMPLServer" as a grid computing system. 
+				For the client there does not appear any difference whether there is a connection to a single 
+				CMPLServer or to a CMPLGrid. The client's model is to be connected with the same functionalities 
+				as for a single CMPLServer to a CMPLGridScheduler which is responsible for the load balancing 
+				within the CMPLGrid and the assignment of the model to one of the connected CMPLServers. 
+				After this step the client is automatically connected to the chosen CMPLServer and the 
+				model can be solved synchronously or asynchronously. 
+			
+				A CMPLGrid should be used for handling a huge amount of large scale optimisation problems. 
+				An example can be a simulation in which each agent has to solve its own optimisation problem at 
+				several times. An additional example for such a CMPLGrid application is an optimisation 
+				web portal that provides a huge amount of optimisation problems.
+			
+			Problem waiting queues for CMPLServer and CMPLGridScheduler
+				If a problem is connected to a CMPLServer or a CMPLGridScheduler and the number of running problems 
+				including the model sent is greater than number of problems that can be solved 
+				simultaneously (defined in cmplServer.opt) it does not make sense to cancel the problem. 
+				Especially in case of an iterating solving process with a couple of depending problems 
+				it is the better way to refer the supernumerary problems automatically to the problem waiting queue.
+			
+				For the single server mode the problem queue handling is organised by the CMPLServer 
+				whilst in the grid mode the CMPLGridScheduler(s) is(are) responsible for it. In both modes 
+				a problem stored in the problem waiting queue has to wait until an empty solving 
+				slot is available or the maximum queuing time is reached.
+	
+			Changes in CMPLServer script:
+				Usage: cmplServer <command>  [<port>] [-showLog] 
+				command:
+				   -start           - starts as single CMPLServer 
+				   -startInGrid     - starts CMPLServer and connects to CMPLGrid
+				   -startScheduler  - starts as CMPLGridScheduler
+				   -stop            - stops CMPLServer or CMPLGridScheduler 
+				   -status          - returns the status of the CMPLServer or CMPLGridScheduler 
+				port                - defines CMPLServer's or CMPLGridScheduler's port 
+				-showLog            - shows the CMPLServer or CMPLGridScheduler log file (only Mac and Linux)
+	
+			New arguments and changes in cmplServer.opt:
+				maxProblems = <x>		
+					Defines how many problems can be carried out simultaneously. 
+					If more problems than maxProblems are connected with the 
+					CMPLServer the supernumerary problems are assigned to the problem waiting queue	
+										
+				maxServerTries = <x>
+					Since CMPLGridSchedulers and CMPLServers have to call server functions mutually 
+					it is necessary to ensure a high availability and failover by repeating failed CMPLServer 
+					calls whereby the number of tries are specified by the parameter maxServerTries.
+										
+				serviceIntervall = <x>	
+					Time in seconds between to iterations of the CMPLServer service thread
+			
+				schedulerServiceIntervall = <x> 
+					Time in seconds between to iterations of the CMPLGridScheduler service thread
+			
+				performanceIndex = <x>		
+					Assuming heterogeneous hardware for the CMPLServers in a CMPLGrid it is necessary 
+					for a reasonable load balancing to identify several performance levels of the invoked 
+					CMPLServers. This can be done by the parameter performanceIndex that influences the 
+					load balancing function directly. 
+			
+				solvers = <solverName1> [<solverName2> ...] 
+					Specifies which solvers in the set of the installed solvers can be provided by the CMPLServer. 
+			
+				cmplGridScheduler = <url> <maxproblems>
+					Specifies the CMPLGridScheduler to which the CMPLServer is to be connected. 
+					The first argument is the URL of the scheduler. The second parameter defines 
+					the maximum number of problems that the CMPLServer provides to this CMPLGridScheduler. 
+					If a CMPLServer should be connected to more than one scheduler one entry per 
+					CMPLGridScheduler is required. 	
+	
+		
+			An error for the exception handling in CMPLServer.send and CMPLServer.runSolver was fixed.
+	
+		pyCMPL (v.1.3.0) and jCMPL (v.1.2.0) 
+			For both APIs the CMPLServer client is expanded for the new CMPLGrid mode and the problem waiting queue.
+		
+		CMPL (1.10.0)
+			New command line arguments due to the new CMPLServer modes:
+				-maxServerTries <x>     : maximum number of tries of failed CmplServer calls
+				-maxQueuingTime <x>     : maximum time in <x> seconds that a problem waits in a CmplServer queue
+	
+			Cmpl script for Mac, Linux and Windows - some minor changes due to the new CMPLServer modes
+		
+			CmplHeader - % sign don't have to stay at the first position of a line
+		
+			A bug of CBC option handling is fixed.
+
+			Minor changes in CmplSolutions XML format for compatibility reasons in the <Solutions> sections
+				INF instead Infinity 
+				NaN instead "-" 
+			
+			The XSD schemes are now available in the manual and under coliop.org/schemes
+	 
+		Coliop (1.20)	
+			The message pipe handling for stdout and stderr is changed for performance reasons.
+
+
+March 1 2014 - Mike  Steglich
+	CMPL v.1.9.0 has been released
+		jCMPL (v.1.0)
+			jCMPL is the CMPL API for Java. 
+
+			As pyCMPL - the main idea of this API is to define sets and parameters within the user application, 
+			to start and control the solving process and to read the solution(s) into the application if the problem is feasible. 
+
+			All variables, objective functions and constraints are defined in CMPL. 
+
+			These functionalities can be used with a local CMPL installation or a CMPLServer.
+			
+		CMPL (v.1.9.0)	
+			- Direct access to a CMPLServer by the new command line argument -cmplUrl <url> 
+				Most of the command line arguments used for a local CMPL installation can be used
+				
+			- OSServer is not longer supported - therefore the command line argument -solverUrl is now an unknown argument
+			
+			- CBC handling is now faster and less memory consuming because Cmpl communicates now directly to CBC 	
+			
+			- readcsv
+				A vector now can be read as a row with n elements or n rows with one element. In booth cases a 
+				column vector is created.
+		
+			- Time used for generating and solving a model is now shown on the command line
+		
+			- A filename for the Cmpl header arguments %arg -solution, %arg -solutionAscii and %arg -solution 
+				can now enclosed in double quotation marks.
+				
+			- Changed command line syntax - the first argument is now the cmplFile. 
+				Usage: cmpl <cmplFile.cmpl> [options]  
+				
+			- MPS file handling of constraints with type N (e.g. inactive objective functions) 
+				These constraints or inactive objective function are committed as constraints with type "G" and an lower bound equal to negative infinity.
+				This behaviour avoids the deletion by solver preprocessing and as result these constraints or inactive objective function can be 
+				shown in the solution reports.
+						
+			- Some minor bugs are fixed.
+					
+		pyCMPL (v.1.2.0)
+			- Most of the CMPL command line arguments can now used with to a CMPLServer 
+			
+			- Additional methods Cpml.getVarByName(self, name, solNr=0) and Cpml.getConByName(self, name, solNr=0) to obtain 
+			  variables and contraints directly by their name. 
+					
+			- embarrassing spelling mistake - CmplMsg.describtion is changed to CmplMsg.description
+		
+		CMPLServer (v.1.2.0)
+			- Version and compatibility check for CMPLServer clients 
+			
+			- New options that can be defined in the new pyCmpl option file (CMPLhome/pyCmpl/pyCmpl.opt):
+				- maxProblems - Maximum number of problems that can be solved in parallel (default 8)
+				- maxInactivityTime - Inactivity time (in seconds) after that a problem is removed from the CMPLServer (default 60*60*12)
+				- port - Port of the CMPLServer  (default 8008)
+				
+			- new class CmplInfo to support the transfer of some CMPL statistics and the generated matrix
+			
+			- Some minor bugs are fixed.
+			
+		Coliop (1.19)
+			- Some minor changes to enable an access to a CMPLServer. 
+			
+
+June 20 2013 - Mike Steglich
+	CMPL v.1.8.0 has been released
+		pyCMPL and CMPLServer	
+			pyCMPL is the CMPL API  for Python and an interactive shell. 
+
+			The main idea of this API is to define sets and parameters within the user application, 
+			to start and control the solving process and to read the solution(s) into the application if the problem is feasible. 
+			All variables, objective functions and constraints are defined in CMPL. 
+			These functionalities can be used with a local CMPL installation or a CMPLServer.
+
+			CMPLServer is an XML-RPC-based web service for distributed optimization.
+			It is reasonable to solve large models remotely on the CMPLServer that is installed on a high performance system.
+			pyCMPL provides a client API for CMPLServer. CMPL provides three XML-based file formats for the communication 
+			between a CMPLServer and its clients. (CmplInstance, CmplSolutions, CmplMessages)
+
+			pyCMPL and CMPLServer are an open source projects licensed under LGPLv3 and  available for most of the relevant operating systems (Windows, OS X and Linux)
+
+		New CMPL command line arguments
+			-interRelaxation 	: All integer variables are changed to continuous variables
+			-alias <alias>  	: uses an alias name for the cmpl model
+			-solution [<File>]      : optimization results in CmplSolutions XML format 
+
+		Changed CMPL command line argument
+			-gn   			: turns matrix reductions on (default off) 
+
+		New display options 
+			-ignoreVars		: Ignores all variables in the solution reports
+			-ignorevars		: Ignores all constraints in the solution reports
+
+		MPrL XML format is changed into the CmplMessages XML format (CMPL does not longer support MPrL)
+		
+		New solution XML format CmplSolutions 
+	
+		Bug fixing
+			A bug for readcsv() that only appeared under Windows is fixed
+		
+
+
+November 15 2012 - Mike Steglich, Thomas Schleiff
+	CMPL v.1.7.1 has been released
+		set pattern matching
+			set *> [tuppelPattern]
+			Returns an n-tuple set consisting of unique elements of the set set which match tuplePattern
+			in order of their first appearance. A tuplePattern have to be formulated in the form of a 
+			tuple and has to have the same rank as the original set.
+
+		solutionPool
+			Gurobi and Cplex are able to generate and store multiple solutions to a mixed integer programming 
+			(MIP) problem. With the display option solutionPool feasible integer solutions found during a MIP 
+			optimization can be shown in the solution report. It is recommended to control the behaviour of 
+			the solution pool by setting the particular Gurobi or Cplex solver options.
+
+		Bug fixing
+			Some minor bugs in the handling of tuples are fixed.	
+
+July 5 2012 - Mike Steglich, Thomas Schleiff
+	CMPL 1.7.0 has been released
+		cmplData file and new CMPL header entry %data
+			A cmplData file is a plain text file that contains the definition of parameters, sets with 
+			their values in a specific syntax. The parameters and sets can be read into a CMPL model by 
+			using the new CMPL header entry %data.
+
+		Indices and sets for n-tuples with n>1
+			An index is always an n-tuple, where n is the count of dimensions of an array. Since this version
+			is it possible to define and use sets for n-tuples with n>1. 
+
+		New command line argument -syntax
+			Syntax checks can be carried out with or without data. If the parameters and sets are specified 
+			within the parameter section it is only necessary to use the command line argument ­-syntax or 
+			the CMPL header option %arg ­syntax. 
+			If a user wants to execute a syntax check without data then a CMPL header entry %data has 
+			to be defined including a complete specification of the sets and parameters that are necessary 
+			for the model. 
+
+		Bug fixing
+			A bug in the handling of set intersection was fixed.
+			Due to different Java installation on Win32 and Win64 the file coliop.bat has been changed. 
+
+March 19 2012 - Mike Steglich
+	CMPL 1.6.2 has been released
+		CPLEX support:
+			CPLEX can be executed directly by CMPL if the entry CplexFileName 
+			in the file <cmplhome>/bin/cmpl.opt is edited. 
+
+		New command line argument -ignoreZeros
+			If chosen then only variables and constraints with non-zero values are shown
+			in the solution reports.
+
+		New CMPL header element %display:
+			Sets variable name(s) or constraint name(s) that are to be displayed in 
+			one of the solution reports. 
+
+		Changes in solution report handling
+			Due to the new arguments -ignoreZero and %display it was necessary to change 
+			cfResult::standardReport(int outtype) and cfResult::writeCsv()
+			and to create the new private methods:   
+			custReport(int outType) and custWriteCsv();		
+
+		Solution Reports
+			The structure of the solution reports (stdio, ascii, csv) has been changed a little bit.  
+
+March 1 2012 - Mike Steglich
+	CMPL 1.6.1 has been released
+		SCIP support:
+			SCIP can be used for mixed integer programming (MIP) problems. 
+			If SCIP is installed on the same computer as CMPL then SCIP 
+			can be connected to CMPL by changing the entry ScipFileName 
+			in the file <cmplhome>/bin/cmpl.opt. 
+
+		Command line argument handling:
+			Some minor changes
+			Now it is possible to enclose the file name with double quotes if
+			the path and/or the file name contains blanks. 
+		Gurobi handling
+			changes in gurobiCmpl.py, gurobiPython and CmplIO.cc,  CmplIO.cc
+			The entries in cmpl.opt are not longer necessary to execute Gurobi 
+
+January 26 2012 - Mike Steglich
+	CMPL 1.6.0 has been released
+	
+	CMPL is fundamentally reorganized and partially new created. 
+		New classes:
+			cmplUtil::CmplArgs 	 	handling of the CMPL command line arguments
+									handling of the CMPL header
+			cmpl::CmplCore			CMPL's core (compiler and interpreter)
+									transforms the CMPL model in a model instance
+			cmplUtil::CmplInstance	handling of the generated model instance
+									writes the instance files (OSiL, MPS, Free-MPS)
+			cmplUtil::CmplIO		interaction with the solvers
+									writes the standard solution reports to 
+									stdout, to an ASCII file or a CSV file
+			cmplUtil::CmplIOStream	handling of the solver stdout and stderr
+			cmplUtil::CmplException	handling of the CmplIO exceptions
+			cmplUtil::ArgError		handling of the CmplArgs exceptions
+			
+	Due to these reorganizations the CMPL performance is considerably increased. 
+				
+	New features: 
+		CMPL header
+			A CMPL header is intended to define CMPL options and solver options for 
+			the specific CMPL model. The elements of the CMPL header are not part 
+			of the CMPL model. Since a CMPL header is processed before the CMPL model is 
+			interpreted, the defined options have an impact on the CMPL model. 
+			
+			Most of the CBC, GLPK and Gurobi solver parameters now supported by the CMPL
+			header element %opt.
+			
+		GLPK and Gurobi support
+			Beside the COIN-OR OSSolverService the GLPK is a part of the distribution. 
+			If you have installed Gurobi then you can also use this solver directly. 
+				
+		count() - 	new array function 
+					returns the count of elements or 0 if the parameter or the 
+					variable does not exist	
+					replaces the deprecated dim() and def()
+			
+	New command line arguments
+		-maxDecimals <x> 		- maximal number of decimals in the solution report (max 12)
+		-dontRemoveTmpFiles		- Don't remove temporary files (mps,osil,osrl,gsol)
+		-matrix [<File>]		- Writes the generated matrix in a file or on stdout.
+		
+	Coliop
+		The CMPL distribution contains now Coliop which is an (simple) IDE for CMPL. 
+		Coliop is an open source project licensed under GPL. It is written in Java. The sources are
+		available under www.coliop.org.
+		
+	COIN-OS (customized - only CLP, CBC, Symphony) and GLPK are parts of the distribution now.
+	
+	Test routines are extended by some solver tests.  
+	
+May 23 2011 - Mike Steglich 
+	CMPL 1.5.2 has been released
+
+	Install script are changed for linux and OS X.
+	The scripts downloads the OSSolverService binary from www.coin-or.org/download/binary/OS/OSSolverService/ 
+	and installs it in a different folder to CMPL.
+		
+
+April 2011 - Mike Steglich 
+	CMPL 1.5.1 has been released
+		
+	New command line argument:
+	-solutionAscii      : 	optimization results in ASCII format 
+                   		A file <cmplFileName>.sol will be created.
+
+	some bugs are fixed in cmplFrame::readOsil 
+		
+March 20 2011 - Mike Steglich 
+	CMPL 1.5.0 has been released
+		
+	Direct connection to the COIN-OR OSSolverService including the COIN-OR solvers
+	via two new classes: cmplFrame and eCmpl 
+
+	cmplFrame is the common class to handle the connection between CMPL and 
+	OSSolverService. cmplFrame uses the Qt4 framework
+	eCmpl is a class to include the cmplFrame environment into the CMPL core.
+
+	All changes to the existing code are embedded in 
+	#ifdef SOLVERSERVICE	
+	#endif
+
+	A new build environmet using qmake and make was created.
+	./cmplMake  
+
+
+March 08 2011 - Mike Steglich 
+	CMPL 1.4.4 has been released
+		
+	FileIO::io_write_dest_mps()
+	New default for integers variables w/o an upper bound is set to infinity.
+		
+	FileIO::io_write_dest_xml()
+	New default for variables w/o an upper bound is set to -infinity.
+
+February 16 2011 - Mike Steglich / T. Schleiff 
+	CMPL 1.4.3 has been released
+		
+	IntFuncBase::insert_ind_elem()
+	A bug was fixed.
+		
+	Main::c_getmem(size_t len)
+	A bug was fixed.
+
+	CMPL_Scanner.l, IntFuncMathFunc::exec(val_str *vp)
+	New CMPL function srand( int x)
+
+	
+November 2010 -  T. Schleiff 
+	CMPL 1.4.2 has been released
+
+	The code base was changed from C to C++
+
+May 2010 -  Mike Steglich / T. Schleiff 
+	CMPL 1.3.2 has been released
+	
+	FileIO::io_write_dest_xml()
+	New output format OSiL 
+
+	CMPL_Scanner.l, IntFuncMathFunc::exec(val_str *vp)
+	New mathematical functions
+
+
+		
+
+
+
+			 
