@@ -1,0 +1,21 @@
+CMPL csv export
+
+Problem;prodmix.cmpl
+Nr. of variables;3
+Nr. of constraints;2
+Objective name;profit
+Solver name;CBC
+Display variables;(all)
+Display constraints;(all)
+
+Objective status;optimal
+Objective value;6448.280000;(max!)
+Variables
+Name;Type;Activity;LowerBound;UpperBound;Marginal
+x[1];C;34.482800;0.000000;250.000000;0.000000
+x[2];C;48.275900;0.000000;240.000000;0.000000
+x[3];C;0.000000;0.000000;250.000000;-14.000000
+Constraints
+Name;Type;Activity;LowerBound;UpperBound;Marginal
+res[1];L;1000.000000;-inf;1000.000000;3.103450
+res[2];L;1000.000000;-inf;1000.000000;3.344830

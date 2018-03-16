@@ -1,0 +1,185 @@
+INSTALLING CMPL ON YOUR COMPUTER 
+**********************************************************************************
+
+These instructions are for UNIX-like systems (including Linux and MSys/MinGW) only.
+
+To build CMPL you have to install gcc, Qt5  and optional flex and bison.
+Test passed on
+	Linux 					gcc, Qt5, flex, bison 
+	Mac OSX  				gcc, Qt5, flex, bison 
+	Windows 				using MSys/MinGW, gcc, Qt5
+
+Please download Qt5 using the link http://www.qt.io/developers/ and install it. 
+
+For Windows it is strongly recommended to use the MSys/MinWG environment.
+Please download the "Automated MinGW Installer" using the following link:
+http://sourceforge.net/projects/mingw/files/
+
+**********************************************************************************
+A) Download and Unpack the distribution 										
+**********************************************************************************
+
+You can obtain the source code for the CMPL package in two ways:
+
+1)	SVN 
+	Obtain the source directly from the COIN-OR subversion repository
+   	(recommended).  
+    	
+   	Checking out the source using a subversion client.
+    	e.g. the latest stable version -> svn co  https://projects.coin-or.org/svn/Cmpl/stable/X.Y CMPL
+    	e.g. the latest realease -> svn co  https://projects.coin-or.org/svn/Cmpl/releases/X.Y.Z CMPL 
+
+
+	
+2)	Download the latest release version from the CMPL source code download page
+	http://www.coin-or.org/download/source/Cmpl/
+
+	It is an archive file 'cmpl-X.Y.Z.tar.gz', where 'X.Y.Z' is the version number.
+	
+	
+**********************************************************************************
+B) Prepare CBC and GLPK as part of the CMPL package
+**********************************************************************************
+CMPL uses the COIN-OS CBC and GLPK for solving LPs and MIPs. 
+Therefore it makes sense to build and install a customized version of COIN-OS 
+and the latest version of GLPK beside CMPL. 
+
+1) 	OS X and Linux
+	You can obtain CBC and GLPK by executing the following command: 
+		./cmplMake getExternals
+	
+	
+2) 	Windows
+		GLPK
+    		There are a script in <cmplHome>/Cmpl/data/ to build GLPK
+			./build-GLPK-for-cmpl
+	   	
+    		Before you execute these script you have to download the GLPK package.
+		
+	   		http://ftp.gnu.org/gnu/glpk/glpk-<glpkRelease>.tar.gz
+
+			Unzip the archive files into the following folders:
+	
+			<cmplHome>/Cmpl/data/glpk-<glpkRelease>
+		
+			Please check in the script ./build-GLPK-for-cmpl the parameter glpkRelease:
+				
+			To build GLPK please execute the scripts that builds the binarie and install it in the folder
+			<cmplHome>/Cmpl/Thirdparty/GLPK
+			
+		CBC
+			It is strongly recommended to use the original binaries from 
+			http://www.coin-or.org/download/binary/CoinAll/COIN-OR-x.x.x-win32-msvc10.zip
+			
+			Download, unzip it and copy the CBC binary into 
+			<cmplHome>/Cmpl/Thirdparty/CBC
+	   	
+**********************************************************************************
+C) Prepare Coliop3 as a part of the CMPL package (only Raspbian)
+**********************************************************************************
+The CMPL distribution contains Coliop which is an (simple) IDE (Integrated Development Environment) 
+for CMPL. 
+
+It is recommended to build Coliop by using NetBeans. 
+
+1) Open the Coliop folder as a Netbeans project.
+2) Build it with ->Run->Clean and Build Project (Coliop3).
+		
+		
+**********************************************************************************
+D) Prepare jCMPL as a part of the CMPL package
+**********************************************************************************
+It is recommended to build jCMPL by using NetBeans. 
+
+1) Open the jCMPL folder as a Netbeans project.
+2) Build it with ->Run->Clean and Build Project (jCMPL).
+
+3) Open the folder jCMPLTest (Cmpl/jCmpl/test/jCmplTest) as a Netbeans project.
+4) Build it with ->Run->Clean and Build Project (jCmplTest).
+
+It is also possible to use Eclipse to create the jCmpl and jCmplTest jar files. 
+In this case you have to link jCMPL agains the following jar files, that you can find in 
+Cmpl/jCmpl/Libs :
+commons-lang3
+ws-commons-util
+xmplrpc-client
+xmlrpc-commons
+
+
+**********************************************************************************
+E) Prepare the Python binary for pyCMPL and CMPLServer
+**********************************************************************************
+It is necessary to install a Python 2.7 to execute pyCMPL and CMPLServer.
+
+1) 	OS X and Linux
+	Only check whether Python 2.7 is installed. If not download and install it.
+	
+2) 	Windows
+		We recommend to use PyPy:
+			Please download PyPy using the following link
+    			 http://pypy.org/download.html#default-with-a-jit-compiler 
+    		unzip it in 	
+    			 <cmplHome>\pyCmpl\Thirdparty\
+    		and rename the folder 
+				<cmplHome>\pyCmpl\Thirdparty\pypy-<version>
+			into 
+				<cmplHome>\pyCmpl\Thirdparty\pypy
+		
+		If you want to use an alternative Python distribution then you have to edit in 
+			<cmplHome>\pyCmpl\scripts\Windows\pyCmpl.bat  
+    		<cmplHome>\pyCmpl\scripts\Windows\cmplServer.bat 
+    		<cmplHome>\pyCmpl\test\test-all 
+    	the entry for the environment variable PythonBin
+    
+	
+**********************************************************************************
+F) Compiling the package 
+**********************************************************************************
+You can compile CMPL and Coliop4 by typing the command:
+       
+    ./cmplMake 
+
+It reads the cmpl project file  and performs all necessary jobs.
+
+**********************************************************************************
+G) Checking the package
+**********************************************************************************
+To check the package, i.e. to run some tests included in the package,
+you can use the following command:
+
+    ./cmplMake  test
+    
+**********************************************************************************    
+H) Build a distribution package 
+**********************************************************************************
+To create a specific distribution package for your operating system you should 
+type the following command:
+
+    ./cmplMake package
+
+This creates a CMPL distribution package command in the folder:
+    [cmplFolder]/Package/[ linux | osx | win ]
+
+**********************************************************************************
+I) Installing the CMPL package
+**********************************************************************************
+
+An installation is not necessary. 
+The CMPL package works out of the box in any folder. 
+	
+Only for Raspbian -> Since Coliop3 is written in Java you have to download and install 
+the java runtime enviroment:
+http://java.com/download/index.jsp
+  
+
+**********************************************************************************
+J) Cleaning the package
+**********************************************************************************
+After installing you can remove the object files
+from the source directory by typing
+
+    ./cmplMake clean
+  
+
+
+

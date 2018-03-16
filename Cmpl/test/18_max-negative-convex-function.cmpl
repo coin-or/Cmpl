@@ -1,0 +1,27 @@
+# 
+# Calculation of the maximum of a negative convex function 
+# f(x) := - 12 - 12 * xn^3 - 12 * xn^5
+#
+parameters:
+	#distance epsilon
+	e:=0.02;	
+	#initial solution
+	xu:= 0.0;
+	xo:= 2;
+	xn:= (xu+xo)/2;
+	{ (xo-xu) > e :
+		fd:= 12 - 12 * xn^3 - 12 * xn^5;
+		{ fd >= 0 : xu:=xn; |
+		  fd <= 0 : xo:=xn ;}
+		xn:= (xu+xo)/2;
+		
+		fx := 12 * xn -3 * xn^4 - 2 * xn^6;		 
+		echo "f'(xn): " + format("%10.4f",fd) + " xu: " + format("%6.4f",xu) + 
+			" xo: " + format("%6.4f",xo) + " xn: " + format("%6.4f",xn) + 
+			" f(xn): " + format("%6.4f",fx);
+		repeat;
+	}
+	echo "Optimal solution found";
+		x:=xn;
+	echo "x: "+ format("%2.3f",x); 
+	echo "function value: " + (12 * x -3 * x^4 - 2 * x^6);

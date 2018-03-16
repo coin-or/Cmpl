@@ -1,0 +1,192 @@
+
+Log started (V12.5.0.0) Sat May 25 13:17:24 2013
+
+
+Specified objective sense: MINIMIZE
+Selected objective  name:  costs
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem 'assignment_810902.mps' read.
+Read time = 0.00 sec. (0.00 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (0.01 ticks)
+Found incumbent of value 33.000000 after 0.00 sec. (0.04 ticks)
+Probing time = 0.00 sec. (0.01 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (0.01 ticks)
+Probing time = 0.00 sec. (0.01 ticks)
+Clique table members: 7.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time = 0.00 sec. (0.01 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                           33.0000        0.0000        3  100.00%
+*     0+    0                           29.0000        0.0000        3  100.00%
+      0     0        cutoff             29.0000       29.0000        3    0.00%
+
+Root node processing (before b&c):
+  Real time             =    0.00 sec. (0.03 ticks)
+Parallel b&c, 2 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.00 sec. (0.03 ticks)
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  2.9000000000e+01
+Solution time =    0.01 sec.  Iterations = 3  Nodes = 0
+Deterministic time = 0.09 ticks  (17.42 ticks/sec)
+
+
+Incumbent solution written to file 'assignment_810902.gsol'.
+
+Log started (V12.5.0.0) Sat May 25 13:18:04 2013
+
+
+Specified objective sense: MINIMIZE
+Selected objective  name:  costs
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem 'assignment_968462.mps' read.
+Read time = 0.00 sec. (0.00 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (0.01 ticks)
+Found incumbent of value 33.000000 after 0.00 sec. (0.04 ticks)
+Probing time = 0.00 sec. (0.01 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (0.01 ticks)
+Probing time = 0.00 sec. (0.01 ticks)
+Clique table members: 7.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time = 0.00 sec. (0.01 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                           33.0000        0.0000        3  100.00%
+*     0+    0                           29.0000        0.0000        3  100.00%
+      0     0        cutoff             29.0000       29.0000        3    0.00%
+
+Root node processing (before b&c):
+  Real time             =    0.00 sec. (0.03 ticks)
+Parallel b&c, 2 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.00 sec. (0.03 ticks)
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  2.9000000000e+01
+Solution time =    0.01 sec.  Iterations = 3  Nodes = 0
+Deterministic time = 0.09 ticks  (18.72 ticks/sec)
+
+
+Incumbent solution written to file 'assignment_968462.gsol'.
+
+Log started (V12.5.0.0) Sat May 25 13:21:48 2013
+
+
+Specified objective sense: MINIMIZE
+Selected objective  name:  costs
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem 'assignment_641984.mps' read.
+Read time = 0.00 sec. (0.00 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (0.01 ticks)
+Found incumbent of value 33.000000 after 0.00 sec. (0.04 ticks)
+Probing time = 0.00 sec. (0.01 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (0.01 ticks)
+Probing time = 0.00 sec. (0.01 ticks)
+Clique table members: 7.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time = 0.00 sec. (0.01 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                           33.0000        0.0000        3  100.00%
+*     0+    0                           29.0000        0.0000        3  100.00%
+      0     0        cutoff             29.0000       29.0000        3    0.00%
+
+Root node processing (before b&c):
+  Real time             =    0.03 sec. (0.03 ticks)
+Parallel b&c, 2 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.03 sec. (0.03 ticks)
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  2.9000000000e+01
+Solution time =    0.04 sec.  Iterations = 3  Nodes = 0
+Deterministic time = 0.09 ticks  (2.47 ticks/sec)
+
+
+Incumbent solution written to file 'assignment_641984.gsol'.
+
+Log started (V12.5.0.0) Sat May 25 13:21:49 2013
+
+
+Specified objective sense: MINIMIZE
+Selected objective  name:  costs
+Selected RHS        name:  RHS
+Selected bound      name:  BOUND
+
+Problem '/Users/mike/CmplServer/127.0.0.1-2013-05-25-11-21-49-921024/assignment.mps' read.
+Read time = 0.00 sec. (0.00 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (0.01 ticks)
+Found incumbent of value 33.000000 after 0.00 sec. (0.04 ticks)
+Probing time = 0.00 sec. (0.01 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (0.01 ticks)
+Probing time = 0.00 sec. (0.01 ticks)
+Clique table members: 7.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time = 0.00 sec. (0.01 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                           33.0000        0.0000        3  100.00%
+*     0+    0                           29.0000        0.0000        3  100.00%
+      0     0        cutoff             29.0000       29.0000        3    0.00%
+
+Root node processing (before b&c):
+  Real time             =    0.00 sec. (0.03 ticks)
+Parallel b&c, 2 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.00 sec. (0.03 ticks)
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  2.9000000000e+01
+Solution time =    0.01 sec.  Iterations = 3  Nodes = 0
+Deterministic time = 0.09 ticks  (17.78 ticks/sec)
+
+
+Solution pool written to file '/Users/mike/CmplServer/127.0.0.1-2013-05-25-11-21-49-921024/assignment.gsol'.

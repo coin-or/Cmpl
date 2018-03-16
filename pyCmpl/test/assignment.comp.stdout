@@ -1,0 +1,11 @@
+Objective value:  29.0
+Objective status:  optimal
+x[1,4]   1   0.0   1.0
+x[2,3]   1   0.0   1.0
+x[3,1]   1   0.0   1.0
+sos_m[1]   1.0   1.0   1.0
+sos_m[2]   1.0   1.0   1.0
+sos_m[3]   1.0   1.0   1.0
+sos_l[1]   1.0   -inf   1.0
+sos_l[3]   1.0   -inf   1.0
+sos_l[4]   1.0   -inf   1.0

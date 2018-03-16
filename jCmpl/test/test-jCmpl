@@ -1,0 +1,66 @@
+#!/bin/bash
+
+ERG=0
+
+# compare the files
+function compfile() {
+	NAME="$1"
+	ERW="$2"
+	FILE="$NAME.$ERW"
+	
+	if [ -f "$FILE" ]; then
+		if [ "$FILE" -ot "$NAME.time" ]; then
+			echo "$NAME: file $FILE was not newly created"
+			echo "less $NAME.stderr"
+			ERG=1
+			exit $ERG
+		fi
+	fi
+
+	test -s "$FILE"; FLA=$?
+	test -s "$NAME.comp.$ERW"; FLB=$?
+
+	if [ "$FLA" = 1 -o "$FLB" = 1 ]; then
+		if [ "$FLA" = 0 ]; then
+			echo "$NAME: file $FILE is not empty"
+			echo "less $FILE"
+			ERG=2
+			exit $ERG
+		elif [ "$FLB" = 0 ]; then
+			echo "$NAME: file $FILE is empty"
+			ERG=3
+			exit $ERG
+		fi
+	else
+		diff -b "$FILE" "$NAME.comp.$ERW" >/dev/null
+		if [ $? != 0 ]; then
+			echo "$NAME: file $FILE is different to the compared file"
+			echo "diff $FILE $NAME.comp.$ERW | less"
+			ERG=4
+			exit $ERG
+		fi
+	fi
+
+}
+
+eval "DATEI=\$1"
+
+#touch "$DATEI.time"
+
+compfile "$DATEI" stdout
+compfile "$DATEI" sol
+compfile "$DATEI" csol
+compfile "$DATEI" csv
+
+
+if [ "$ERG" = 0 ]; then	
+	echo "... $DATEI : OK"
+	if [ -f "$DATEI.stdout" ] ; then rm "$DATEI.stdout" ; fi
+	if [ -f "$DATEI.csol" ] ; then rm "$DATEI.csol" ; fi
+	if [ -f "$DATEI.sol" ] ; then rm "$DATEI.sol" ; fi
+	if [ -f "$DATEI.csv" ] ; then rm "$DATEI.csv" ; fi
+	if [ -f "$DATEI.time" ] ; then rm "$DATEI.time" ; fi
+fi
+
+exit $ERG
+

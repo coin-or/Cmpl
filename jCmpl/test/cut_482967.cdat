@@ -1,0 +1,100 @@
+%widths set < 
+20 
+45 
+50 
+55 
+75 
+>
+%patterns set < 1..5 >
+%rollWidth < 110  >
+%orders[widths] <
+48 35 24 10 8 
+>
+%nbr[widths,patterns] <
+5 0 0 0 0 
+0 2 0 0 0 
+0 0 2 0 0 
+0 0 0 2 0 
+0 0 0 0 1 
+
+>
+%widths set < 
+20 
+45 
+50 
+55 
+75 
+>
+%patterns set < 1..6 >
+%rollWidth < 110  >
+%orders[widths] <
+48 35 24 10 8 
+>
+%nbr[widths,patterns] <
+5 0 0 0 0 1 
+0 2 0 0 0 0 
+0 0 2 0 0 0 
+0 0 0 2 0 0 
+0 0 0 0 1 1 
+
+>
+%widths set < 
+20 
+45 
+50 
+55 
+75 
+>
+%patterns set < 1..7 >
+%rollWidth < 110  >
+%orders[widths] <
+48 35 24 10 8 
+>
+%nbr[widths,patterns] <
+5 0 0 0 0 1 1 
+0 2 0 0 0 0 2 
+0 0 2 0 0 0 0 
+0 0 0 2 0 0 0 
+0 0 0 0 1 1 0 
+
+>
+%widths set < 
+20 
+45 
+50 
+55 
+75 
+>
+%patterns set < 1..8 >
+%rollWidth < 110  >
+%orders[widths] <
+48 35 24 10 8 
+>
+%nbr[widths,patterns] <
+5 0 0 0 0 1 1 3 
+0 2 0 0 0 0 2 0 
+0 0 2 0 0 0 0 1 
+0 0 0 2 0 0 0 0 
+0 0 0 0 1 1 0 0 
+
+>
+%widths set < 
+20 
+45 
+50 
+55 
+75 
+>
+%patterns set < 1..8 >
+%rollWidth < 110  >
+%orders[widths] <
+48 35 24 10 8 
+>
+%nbr[widths,patterns] <
+5 0 0 0 0 1 1 3 
+0 2 0 0 0 0 2 0 
+0 0 2 0 0 0 0 1 
+0 0 0 2 0 0 0 0 
+0 0 0 0 1 1 0 0 
+
+>

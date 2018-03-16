@@ -1,0 +1,18 @@
+# Test
+
+parameters:
+	c[] := ( 101, 102 );
+	b[] := ( 201, 202 );
+	A[,] := (( 11, 12 ), ( 21, 22 ));
+
+variables:
+	x[1..2], d: real;
+
+objectives:
+	c[]T * x[];
+	
+constraints:
+	(sum{i in 1(1)2: b[i]*c[i]}) * x[] + d
+		<= (-sum{j in 1(1)2: c[j]});
+
+
