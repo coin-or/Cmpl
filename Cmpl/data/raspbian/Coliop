@@ -1,0 +1,14 @@
+#!/bin/bash
+
+progPath="`dirname \"$0\"`"
+if [[ $progPath = "." ]] ; then
+	progPath="" 
+else
+	progPath=$progPath/
+fi
+
+
+LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${progPath}bin/"
+export LD_LIBRARY_PATH
+
+java -jar "$progPath"Coliop3/coliop.jar 2>/dev/null&

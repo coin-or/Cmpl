@@ -1,0 +1,28 @@
+CMPL csv export
+
+Problem;diet.cmpl
+Nr. of variables;8
+Nr. of constraints;4
+Objective name;cost
+Solver name;CBC
+Display variables;(all)
+Display constraints;(all)
+
+Objective status;optimal
+Objective value;101.140000;(min!)
+Variables
+Name;Type;Activity;LowerBound;UpperBound;Marginal
+x[BEEF];I;2;2.000000;10.000000;-
+x[CHK];I;8;2.000000;10.000000;-
+x[FISH];I;2;2.000000;10.000000;-
+x[HAM];I;2;2.000000;10.000000;-
+x[MCH];I;10;2.000000;10.000000;-
+x[MTL];I;10;2.000000;10.000000;-
+x[SPG];I;10;2.000000;10.000000;-
+x[TUR];I;2;2.000000;10.000000;-
+Constraints
+Name;Type;Activity;LowerBound;UpperBound;Marginal
+line[A];G;1500.000000;700.000000;inf;-
+line[B1];G;1330.000000;700.000000;inf;-
+line[B2];G;860.000000;700.000000;inf;-
+line[C];G;700.000000;700.000000;inf;-

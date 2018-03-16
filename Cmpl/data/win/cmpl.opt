@@ -1,0 +1,4 @@
+CbcPath = ../Thirdparty/CBC/
+GlpkPath =  ../Thirdparty/GLPK/
+ScipFileName =
+CplexFileName =

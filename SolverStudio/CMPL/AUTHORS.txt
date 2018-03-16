@@ -1,0 +1,12 @@
+*********** CMPL *********************************  
+Thomas Schleiff - Halle(Saale), Germany
+Mike Steglich - Technical University of Applied Sciences Wildau, Germany - mike.steglich@th-wildau.de
+
+*********** Coliop, pyCMPL and CMPLServer ******** 
+Mike Steglich - Technical University of Applied Sciences Wildau, Germany - mike.steglich@th-wildau.de
+
+	
+*********** jCMPL  ******************************* 
+Mike Steglich - Technical University of Applied Sciences Wildau, Germany - mike.steglich@th-wildau.de
+Bernhard Knie - Technical University of Applied Sciences Wildau, Germany
+

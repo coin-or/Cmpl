@@ -1,0 +1,16 @@
+%products set < 1..3 >
+%machines set < 1..2 >
+%c[products] <
+75 80 50 
+>
+%a[machines,products] <
+8 15 12 
+15 10 8 
+
+>
+%b[machines] <
+1000 1000 
+>
+%xMax[products] <
+250 240 250 
+>

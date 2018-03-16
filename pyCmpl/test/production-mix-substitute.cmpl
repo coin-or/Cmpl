@@ -1,0 +1,22 @@
+%data : products set, machines set, c[products], a[machines,products], b[machines], xMax[products], maxDeltaA[machines,products]
+
+variables:
+	{n in products : x[n]: real[0..xMax[n]];} 
+	w[machines]: real[0..];
+	s[machines]: real[0..];
+
+objectives:
+	ziel: c[]T*x[]->max;
+
+constraints:
+	res: a[,] * x[] -w[] <= b[];
+	deltaA: maxDeltaA[,] * x[] - w[] - s[] = 0;
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

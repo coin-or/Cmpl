@@ -1,0 +1,220 @@
+#!/bin/bash
+
+#Cmpl 1.12.0
+#June 2017
+#Stegger
+
+shopt -s nocasematch
+idx=0
+pIdx=0
+cmplUrl=""
+cmplFile=""
+maxServerTries=10
+maxServerQueuingTime=300
+isRemote=0
+asyncMode=0
+verMode=0
+helpMode=0
+
+
+progPath="`dirname \"$0\"`"
+if [[ $progPath = "." ]] ; then
+	progPath="" 
+else
+	progPath=$progPath/
+fi
+
+
+LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${progPath}bin/"
+export LD_LIBRARY_PATH
+        
+
+if [ $# -eq 0 ]; then 
+	"$progPath"bin/cmpl
+else 
+
+	while [ $# -gt 0 ] ; do
+	   idx=$(($idx+1))
+	
+	   if [[ $1 = "-cmplurl" ]] ; then
+			shift 1
+			idx=$(($idx+1))
+			cmplUrl=$1
+	   elif [[ $1 = "-maxservertries" ]] ; then
+			shift 1
+			idx=$(($idx+1))
+			maxServerTries=$1
+	   elif [[ $1 = "-maxqueuingtime" ]] ; then
+			shift 1
+			idx=$(($idx+1))
+			maxServerQueuingTime=$1
+	   elif [[ $1 = "-i" ]] ; then
+			shift 1
+			idx=$(($idx+1))
+			cmplFile=`echo $1 | tr ' ' '\ '`
+	   elif [[ $1 = "-remote" ]] ; then
+			isRemote=1
+			pIdx=$(($pIdx+1))
+			cArg[$pIdx]=$1
+	   elif [[ $1 = "-send" ]] ; then
+			asyncMode=1
+	   elif [[ $1 = "-knock" ]] ; then
+			asyncMode=2
+	   elif [[ $1 = "-retrieve" ]] ; then
+			asyncMode=3
+	   elif [[ $1 = "-cancel" ]] ; then
+			asyncMode=4
+	   elif [[ $1 = "-h" ]] ; then
+			helpMode=1
+	   elif [[ $1 = "-v" ]] ; then
+			verMode=1
+	   elif  [ $idx -eq 1 ] && [ ! ${1:0:1} = "-" ]; then
+			cmplFile=`echo $1 | tr ' ' '\ '`
+	   else
+			pIdx=$(($pIdx+1))
+			cArg[$pIdx]="$1"
+		
+	   fi
+	   shift 1
+	   
+    done
+	
+	if [ $helpMode -eq 1 ] ; then 
+		"$progPath"bin/cmpl -h
+		exit 0
+	fi
+	
+	if [ $verMode -eq 1 ] ; then 
+		"$progPath"bin/cmpl -v
+		exit 0
+	fi
+	
+	
+	if [ -n "$cmplFile" ] ; then
+
+		if ! test -f "$cmplFile"; then
+				echo "Cannot find Cmpl file: $cmplFile"
+				exit -1
+		fi
+
+
+		shopt -u nocasematch
+
+		if [[ $isRemote -eq 0 ]] ; then 
+			if [ -z "$cmplUrl" ]  ; then
+				if [ -n "$cmplFile" ] ; then
+					arr=(`grep -i "\-cmplurl" "$cmplFile"`)
+					if [ ! ${arr[0]:0:1} = "#" ]; then
+						cmplUrl=${arr[2]}
+					fi
+				fi
+			fi
+
+			if [ $maxServerTries -eq 0 ]  ; then
+				if [ -n "$cmplFile" ] ; then
+					arr=(`grep -i "\-maxservertries" "$cmplFile"`)
+					if [ ! ${arr[0]:0:1} = "#" ]; then
+						maxServerTries=${arr[2]}
+					fi
+				fi
+			fi
+
+			if [ $maxServerQueuingTime -eq 0 ]  ; then
+				if [ -n "$cmplFile" ] ; then
+					arr=(`grep -i "\-maxqueuingtime" "$cmplFile"`)
+					if [ ! ${arr[0]:0:1} = "#" ]; then
+						maxServerQueuingTime=${arr[2]}
+					fi
+				fi
+			fi
+		
+			if [ $asyncMode -eq 0 ] ; then
+				if [ -n "$cmplFile" ] ; then
+					arr=(`grep -i "\-send" "$cmplFile"`)
+					if [ -n $arr ] ; then
+						if [ ! ${arr[0]:0:1} = "#" ]; then
+							asyncMode=1
+						fi
+					fi
+				fi
+			fi
+	
+			if [ $asyncMode -eq 0 ] ; then
+				if [ -n "$cmplFile" ] ; then
+					arr=(`grep -i "\-knock" "$cmplFile"`)
+					if [ -n $arr ] ; then
+						if [ ! ${arr[0]:0:1} = "#" ]; then
+							asyncMode=2
+						fi
+					fi
+				fi
+			fi
+	
+			if [ $asyncMode -eq 0 ] ; then
+				if [ -n "$cmplFile" ] ; then
+					arr=(`grep -i "\-retrieve" "$cmplFile"`)
+					if [ -n $arr ] ; then
+						if [ ! ${arr[0]:0:1} = "#" ]; then
+							asyncMode=3
+						fi
+					fi
+				fi
+			fi
+	
+			if [ $asyncMode -eq 0 ] ; then
+				if [ -n "$cmplFile" ] ; then
+					arr=(`grep -i "\-cancel" "$cmplFile"`)
+					if [ -n $arr ] ; then
+						if [ ! ${arr[0]:0:1} = "#" ]; then
+							asyncMode=4
+						fi
+					fi
+				fi
+			fi
+		fi
+
+
+		if [ $asyncMode -gt 1 ] ; then
+			cmplUrl="###"
+		fi 
+		
+	
+		anz=${#cArg[@]}
+		i=1
+		while [ $i -le $anz ] ; do
+				progArgs="$progArgs \"${cArg[i]}\""
+				i=$(($i + 1))
+		done
+			
+                			
+		if [ -n "$cmplUrl" ] && [ -n "$cmplFile" ]  ; then
+	
+			export PYTHONPATH=$PYTHONPATH:"$progPath"pyCmpl/lib
+			export PYTHONSTARTUP="$progPath"pyCmpl/pyCmplShell.py
+			export CMPLBINARY="$progPath"bin/cmpl
+	
+			#echo "Solving $cmplFile on $cmplUrl has started ... "
+						
+			python "$progPath"pyCmpl/scripts/cmplOnServer.py "$cmplFile" $cmplUrl $maxServerTries $maxServerQueuingTime $asyncMode "${cArg[1]}" "${cArg[2]}" "${cArg[3]}" "${cArg[4]}" "${cArg[5]}" "${cArg[6]}" "${cArg[7]}" "${cArg[8]}" "${cArg[9]}" "${cArg[10]}" "${cArg[11]}" "${cArg[12]}" "${cArg[13]}" "${cArg[14]}" "${cArg[15]}" "${cArg[16]}" "${cArg[17]}" "${cArg[18]}" "${cArg[19]}" "${cArg[20]}" >&1  
+		
+		else 
+						
+			progArgs="\"$progPath\"bin/cmpl \"$cmplFile\" $progArgs"	
+			eval $progArgs
+	
+		fi
+	else
+		progArgs="\"$progPath\"bin/cmpl $progArgs"	
+		eval $progArgs
+	fi
+	
+fi
+
+
+
+
+
+
+
+
+

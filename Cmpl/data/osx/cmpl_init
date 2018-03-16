@@ -1,0 +1,14 @@
+#!/bin/bash
+
+CmplProgPath="/Applications/Cmpl/" 
+
+export CmplProgPath
+
+PATH=$PATH:$CmplProgPath:${CmplProgPath}pyCmpl/scripts/Unix
+export PATH
+
+CMPLBINARY=${CmplProgPath}bin/cmpl
+export CMPLBINARY
+	
+
+

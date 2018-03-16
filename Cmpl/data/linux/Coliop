@@ -1,0 +1,24 @@
+#!/bin/bash
+
+progPath="`dirname \"$0\"`"
+if [[ $progPath = "." ]] ; then
+	progPath="" 
+else
+	progPath=$progPath/
+fi
+
+
+LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${progPath}bin/"
+export LD_LIBRARY_PATH
+
+"$progPath"bin/Coliop4 2>/dev/null&
+
+
+
+
+
+
+
+
+
+

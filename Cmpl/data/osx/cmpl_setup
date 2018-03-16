@@ -1,0 +1,16 @@
+#!/bin/bash
+
+xattr -dr com.apple.quarantine /Applications/Cmpl  
+
+if test -f ~/.bash_profile; then
+	arr=(`grep -i "<CMPL>" ~/.bash_profile`)
+	if [ "$arr" == "" ] ; then 
+		echo '#<CMPL> Added by Cmpl installer' >>~/.bash_profile
+		echo 'source /Applications/Cmpl/bin/cmpl_init' >>~/.bash_profile
+		echo '#</CMPL> Added by Cmpl installer' >>~/.bash_profile
+	fi
+else
+	echo '#<CMPL> Added by Cmpl installer' >>~/.bash_profile
+	echo 'source /Applications/Cmpl/bin/cmpl_init' >>~/.bash_profile
+	echo '#</CMPL> Added by Cmpl installer' >>~/.bash_profile
+fi

@@ -1,0 +1,33 @@
+<?xml version = "1.1" encoding="UTF-8" standalone="yes"?>
+<CmplSolutions version="1.0">
+   <general>
+       <instanceName>cut.cmpl</instanceName>
+       <nrOfVariables>8</nrOfVariables>
+       <nrOfConstraints>5</nrOfConstraints>
+       <objectiveName>number</objectiveName>
+       <objectiveSense>min</objectiveSense>
+       <nrOfSolutions>1</nrOfSolutions>
+       <solverName>CBC</solverName>
+       <variablesDisplayOptions>(all)</variablesDisplayOptions>
+       <constraintsDisplayOptions>(all)</constraintsDisplayOptions>
+   </general>
+   <solution idx="0" status="optimal" value="47">
+       <variables>
+           <variable idx="0" name="cut[1]" type="I" activity="1" lowerBound="0" upperBound="INF" marginal="NaN"/>
+           <variable idx="1" name="cut[2]" type="I" activity="0" lowerBound="0" upperBound="INF" marginal="NaN"/>
+           <variable idx="2" name="cut[3]" type="I" activity="9" lowerBound="0" upperBound="INF" marginal="NaN"/>
+           <variable idx="3" name="cut[4]" type="I" activity="5" lowerBound="0" upperBound="INF" marginal="NaN"/>
+           <variable idx="4" name="cut[5]" type="I" activity="0" lowerBound="0" upperBound="INF" marginal="NaN"/>
+           <variable idx="5" name="cut[6]" type="I" activity="8" lowerBound="0" upperBound="INF" marginal="NaN"/>
+           <variable idx="6" name="cut[7]" type="I" activity="18" lowerBound="0" upperBound="INF" marginal="NaN"/>
+           <variable idx="7" name="cut[8]" type="I" activity="6" lowerBound="0" upperBound="INF" marginal="NaN"/>
+       </variables>
+       <linearConstraints> 
+           <constraint idx="0" name="fill[20]" type="G" activity="49" lowerBound="48" upperBound="INF" marginal="NaN"/>
+           <constraint idx="1" name="fill[45]" type="G" activity="36" lowerBound="35" upperBound="INF" marginal="NaN"/>
+           <constraint idx="2" name="fill[50]" type="G" activity="24" lowerBound="24" upperBound="INF" marginal="NaN"/>
+           <constraint idx="3" name="fill[55]" type="G" activity="10" lowerBound="10" upperBound="INF" marginal="NaN"/>
+           <constraint idx="4" name="fill[75]" type="G" activity="8" lowerBound="8" upperBound="INF" marginal="NaN"/>
+       </linearConstraints>
+   </solution>
+</CmplSolutions>

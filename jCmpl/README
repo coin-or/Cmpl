@@ -1,0 +1,40 @@
+*********** jCMPL **********************************************
+jCMPL is the CMPL API  for Java. 
+The main idea of this API is 
+* to define sets and parameters within the user application, 
+* to start and control the solving process and 
+* to read the solution(s) into the application if the problem is feasible. 
+All variables, objective functions and constraints are defined in CMPL. 
+These functionalities can be used with a local CMPL installation or a CMPLServer.
+
+To use these functionalities in your own Java application you have to link your 
+application agains Cmpl/jCmpl/jCmpl.jar and agains all of the jar files
+in Cmpl/jCmpl/lib.
+
+There are some examples in CMPLhome/examples/jCmpl.
+It is recommended to build jCMPL examples by using NetBeans. 
+
+1) Open the jCmplExamples folder as a Netbeans project.
+2) Build it with ->Run->Clean and Build Project (jCmplExamples).
+
+For further information please visit the CMPL website (www.coliop.org). 
+
+DOCUMENTATION:
+See the Cmpl/doc subdirectory for documenation. This subdirectory contains a 
+User's Manual in pdf format. See also:
+ 	
+	http://www.coliop.org
+	https://projects.coin-or.org/Cmpl
+
+
+INSTALLATION
+See the INSTALL file in the root directory.
+
+
+
+
+
+
+
+
+ 
