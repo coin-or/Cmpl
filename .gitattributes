@@ -1,4 +1,5 @@
 * text=auto !eol
+.coin-or/projDesc.xml -text
 /AUTHORS -text
 /CHANGELog -text
 Cmpl/AUTHORS -text
