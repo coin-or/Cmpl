@@ -18,6 +18,12 @@ The binaries will be continuously updated with bug fixes until the beta phase en
 
 It would be great if you could test this version and report any errors. Please use the CMPL mailing list or report a issue at https://github.com/MikeSteglich/Cmpl2/issues. 
 
+*Installation*
+
+Under Linux and Windows, installation is not required after unpacking the ZIP or tar.gz file. The CMPL package works out of the box in any folder. 
+
+On macOS, a user must double-click the downloaded DMG file in the Finder. This disc image file contains a folder Cmpl2, which has to be copied into the folder Applications via drag-and-drop in the Finder. Then the cmplSetup script must be executed by double-clicking on the icon and a message window appears with "Cmpl setup has finished". 
+
 *Source code*
 
 The source code is available on Github:
