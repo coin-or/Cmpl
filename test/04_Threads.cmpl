@@ -1,0 +1,61 @@
+
+// use up to 10 parallelly running threads
+%threads 10
+
+setCnt := 10;
+s := 1..setCnt;
+arrInit[s] := 0;
+
+
+// Test #1: every thread starts counting up to 1000, if one thread has reached it, all other threads are cancelled
+cnt := arrInit;
+
+{ @t in s:
+    { ordered @i in 1..1000:
+        local x := i*t+t*i;     // just a little bit workload
+        cnt[t] += 1;
+    }
+
+    // break cancels all threads running the iteration over t
+    break;
+}
+
+// check result: one element of cnt[] should be 1000, others lesser than 1000 but greater than 0
+// (if no threads were used then cnt[1] would be 1000, and all other elements in cnt[] equal 0)
+found1000, foundOther := 0;
+{ @t in s:
+    { cnt[t] == 1000: found1000++;
+      | cnt[t] > 0 && cnt[t] < 1000: foundOther++;
+    }
+};
+echo{ found1000 > 0 && foundOther > 0: "test.1: threading success" |: "test.1: no threading or error" };
+//echo(cnt);
+
+
+
+// Test #2: every thread count up to 1000, the order of achieving is stored
+cnt := arrInit;
+ord := arrInit;
+ordNo := 0;
+
+{ @t in s:
+    { ordered @i in 1..1000:
+        local x := i*t+t*i;     // just a little bit workload
+        cnt[t] += 1;
+    }
+
+    // store order the threads are reaching this point of code
+    // you have to use "++ordNo" to be thread safe (instead of a separate "ordNo := ordNo + 1;" which would be not thread safe)
+    ord[t] := ++ordNo;
+}
+
+// check result: every thread should have reached 1000, and the elements in ord[] should be in a random order
+// (if no thread were used, then ord[1] == 1, ord[2] == 2 etc)
+randomOrder, lastThread := 0;
+{ @t in s:
+    { ord[t] != 0 && ord[t] != t && cnt[t] == 1000: randomOrder++; }
+    { ord[t] == setCnt && cnt[t] == 1000: lastThread++; }
+}
+echo{ randomOrder > 0 && lastThread == 1: "test.2: threading success" |: "test.2: no threading or error" };
+//echo(ord);
+

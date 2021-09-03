@@ -1,0 +1,69 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes"?>
+<CmplSolutions version="1.1">
+   <general>
+       <instanceName>covering-location-cplex-solutionpool.cmpl</instanceName>
+       <nrOfVariables>6</nrOfVariables>
+       <nrOfConstraints>6</nrOfConstraints>
+       <objectiveName>line_1</objectiveName>
+       <objectiveSense>min</objectiveSense>
+       <nrOfSolutions>3</nrOfSolutions>
+       <solverName>CPLEX</solverName>
+       <solverMsg>normal</solverMsg>
+       <variablesDisplayOptions>(all)</variablesDisplayOptions>
+       <constraintsDisplayOptions>(all)</constraintsDisplayOptions>
+   </general>
+   <solution idx="0" status="integer optimal solution" value="4.1">
+       <variables>
+           <variable idx="0" name="x[S1]" type="B" activity="0" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="1" name="x[S2]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="2" name="x[S3]" type="B" activity="0" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="3" name="x[S4]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="4" name="x[S5]" type="B" activity="0" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="5" name="x[S6]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+       </variables>
+       <linearConstraints> 
+           <constraint idx="0" name="line_2" type="G" activity="1" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="1" name="line_3" type="G" activity="1" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="2" name="line_4" type="G" activity="2" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="3" name="line_5" type="G" activity="1" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="4" name="line_6" type="G" activity="2" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="5" name="line_7" type="G" activity="1" lowerBound="1" upperBound="inf" marginal="NaN"/>
+       </linearConstraints>
+   </solution>
+   <solution idx="1" status="integer feasible solution" value="4.1">
+       <variables>
+           <variable idx="0" name="x[S1]" type="B" activity="0" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="1" name="x[S2]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="2" name="x[S3]" type="B" activity="0" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="3" name="x[S4]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="4" name="x[S5]" type="B" activity="0" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="5" name="x[S6]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+       </variables>
+       <linearConstraints> 
+           <constraint idx="0" name="line_2" type="G" activity="1" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="1" name="line_3" type="G" activity="1" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="2" name="line_4" type="G" activity="2" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="3" name="line_5" type="G" activity="1" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="4" name="line_6" type="G" activity="2" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="5" name="line_7" type="G" activity="1" lowerBound="1" upperBound="inf" marginal="NaN"/>
+       </linearConstraints>
+   </solution>
+   <solution idx="2" status="integer feasible solution" value="11.5">
+       <variables>
+           <variable idx="0" name="x[S1]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="1" name="x[S2]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="2" name="x[S3]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="3" name="x[S4]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="4" name="x[S5]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="5" name="x[S6]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+       </variables>
+       <linearConstraints> 
+           <constraint idx="0" name="line_2" type="G" activity="3" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="1" name="line_3" type="G" activity="2" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="2" name="line_4" type="G" activity="5" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="3" name="line_5" type="G" activity="4" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="4" name="line_6" type="G" activity="4" lowerBound="1" upperBound="inf" marginal="NaN"/>
+           <constraint idx="5" name="line_7" type="G" activity="2" lowerBound="1" upperBound="inf" marginal="NaN"/>
+       </linearConstraints>
+   </solution>
+</CmplSolutions>

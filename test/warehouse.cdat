@@ -1,0 +1,45 @@
+%Destinations set < 
+K1 
+K2 
+K3 
+K4 
+K5 
+K6 
+>
+
+%Sources set < 
+S1 
+S2 
+S3 
+S4 
+>
+
+%s[Sources]  indices <
+S2 80.0
+S1 40.0
+S4 60.0
+S3 100.0
+>
+
+%d[Destinations]  indices <
+K6 20.0
+K4 10.0
+K2 50.0
+K5 30.0
+K3 15.0
+K1 25.0
+>
+
+%c[Sources,Destinations]   <
+19	75	42	11	52	63
+46	109	41	8	34	38
+47	65	29	14	17	18
+71	64	14	24	22	33
+>
+
+%F[Sources]  indices <
+S2 40.0
+S1 30.0
+S4 40.0
+S3 70.0
+>

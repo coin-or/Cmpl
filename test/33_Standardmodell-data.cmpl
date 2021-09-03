@@ -1,0 +1,13 @@
+%data 33_Standardmodell-data1.cdat : m1 set,  c[m1]
+%data 33_Standardmodell-data2.cdat : m2 set, n2 set,  A[n2,m2] ,  b [n2]
+
+variables:
+	x[2..3]: real[0..];
+	x[1]: integer[0..];
+
+objectives:
+	ziel: sum{i in 1..3: c[i] * x[i]};
+
+constraints:
+	{i in 1..2: sum{j in 1..3: A[i,j] * x[j]} <= b[i]; }
+

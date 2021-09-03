@@ -1,0 +1,86 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes"?>
+<CmplSolutions version="1.1">
+   <general>
+       <instanceName>warehouse.cmpl</instanceName>
+       <nrOfVariables>28</nrOfVariables>
+       <nrOfConstraints>10</nrOfConstraints>
+       <objectiveName>line_1</objectiveName>
+       <objectiveSense>min</objectiveSense>
+       <nrOfSolutions>3</nrOfSolutions>
+       <solverName>GUROBI</solverName>
+       <solverMsg>normal</solverMsg>
+       <variablesDisplayOptions>nonZeroVariables (all)</variablesDisplayOptions>
+       <constraintsDisplayOptions>nonZeroConstraints (all)</constraintsDisplayOptions>
+   </general>
+   <solution idx="0" status="integer optimal solution" value="284">
+       <variables>
+           <variable idx="0" name="x[S1,K1]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="3" name="x[S1,K4]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="13" name="x[S3,K2]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="16" name="x[S3,K5]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="17" name="x[S3,K6]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="20" name="x[S4,K3]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="24" name="y[S1]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="26" name="y[S3]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="27" name="y[S4]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+       </variables>
+       <linearConstraints> 
+           <constraint idx="0" name="line_2" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="1" name="line_3" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="2" name="line_4" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="3" name="line_5" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="4" name="line_6" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="5" name="line_7" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="6" name="line_8" type="L" activity="-5" lowerBound="-inf" upperBound="0" marginal="NaN"/>
+           <constraint idx="9" name="line_11" type="L" activity="-45" lowerBound="-inf" upperBound="0" marginal="NaN"/>
+       </linearConstraints>
+   </solution>
+   <solution idx="1" status="integer feasible solution" value="298">
+       <variables>
+           <variable idx="0" name="x[S1,K1]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="3" name="x[S1,K4]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="14" name="x[S3,K3]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="16" name="x[S3,K5]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="17" name="x[S3,K6]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="19" name="x[S4,K2]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="24" name="y[S1]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="26" name="y[S3]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="27" name="y[S4]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+       </variables>
+       <linearConstraints> 
+           <constraint idx="0" name="line_2" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="1" name="line_3" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="2" name="line_4" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="3" name="line_5" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="4" name="line_6" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="5" name="line_7" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="6" name="line_8" type="L" activity="-5" lowerBound="-inf" upperBound="0" marginal="NaN"/>
+           <constraint idx="8" name="line_10" type="L" activity="-35" lowerBound="-inf" upperBound="0" marginal="NaN"/>
+           <constraint idx="9" name="line_11" type="L" activity="-10" lowerBound="-inf" upperBound="0" marginal="NaN"/>
+       </linearConstraints>
+   </solution>
+   <solution idx="2" status="integer feasible solution" value="347">
+       <variables>
+           <variable idx="3" name="x[S1,K4]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="12" name="x[S3,K1]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="13" name="x[S3,K2]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="14" name="x[S3,K3]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="22" name="x[S4,K5]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="23" name="x[S4,K6]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="24" name="y[S1]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="26" name="y[S3]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="27" name="y[S4]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+       </variables>
+       <linearConstraints> 
+           <constraint idx="0" name="line_2" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="1" name="line_3" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="2" name="line_4" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="3" name="line_5" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="4" name="line_6" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="5" name="line_7" type="E" activity="1" lowerBound="1" upperBound="1" marginal="NaN"/>
+           <constraint idx="6" name="line_8" type="L" activity="-30" lowerBound="-inf" upperBound="0" marginal="NaN"/>
+           <constraint idx="8" name="line_10" type="L" activity="-10" lowerBound="-inf" upperBound="0" marginal="NaN"/>
+           <constraint idx="9" name="line_11" type="L" activity="-10" lowerBound="-inf" upperBound="0" marginal="NaN"/>
+       </linearConstraints>
+   </solution>
+</CmplSolutions>

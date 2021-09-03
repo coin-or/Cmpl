@@ -1,0 +1,63 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes"?>
+<CmplSolutions version="1.1">
+   <general>
+       <instanceName>prodmix-mehrperiodig-losgroesse-glpk.cmpl</instanceName>
+       <nrOfVariables>24</nrOfVariables>
+       <nrOfConstraints>18</nrOfConstraints>
+       <objectiveName>gdb</objectiveName>
+       <objectiveSense>max</objectiveSense>
+       <nrOfSolutions>1</nrOfSolutions>
+       <solverName>GLPK</solverName>
+       <solverMsg>normal</solverMsg>
+       <variablesDisplayOptions>(q[*,y[*,x*)</variablesDisplayOptions>
+       <constraintsDisplayOptions>(all)</constraintsDisplayOptions>
+   </general>
+   <solution idx="0" status="optimal" value="39029">
+       <variables>
+           <variable idx="7" name="q[1,1]" type="I" activity="0" lowerBound="0" upperBound="80" marginal="NaN"/>
+           <variable idx="9" name="q[1,2]" type="I" activity="50" lowerBound="0" upperBound="80" marginal="NaN"/>
+           <variable idx="11" name="q[1,3]" type="I" activity="0" lowerBound="0" upperBound="80" marginal="NaN"/>
+           <variable idx="13" name="q[2,1]" type="I" activity="43" lowerBound="0" upperBound="100" marginal="NaN"/>
+           <variable idx="15" name="q[2,2]" type="I" activity="0" lowerBound="0" upperBound="100" marginal="NaN"/>
+           <variable idx="17" name="q[2,3]" type="I" activity="0" lowerBound="0" upperBound="100" marginal="NaN"/>
+           <variable idx="18" name="y[1,1]" type="B" activity="0" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="19" name="y[1,2]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="20" name="y[1,3]" type="B" activity="0" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="21" name="y[2,1]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="22" name="y[2,2]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="23" name="y[2,3]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="6" name="xa[1,1]" type="I" activity="0" lowerBound="0" upperBound="40" marginal="NaN"/>
+           <variable idx="8" name="xa[1,2]" type="I" activity="50" lowerBound="0" upperBound="50" marginal="NaN"/>
+           <variable idx="10" name="xa[1,3]" type="I" activity="50" lowerBound="0" upperBound="50" marginal="NaN"/>
+           <variable idx="12" name="xa[2,1]" type="I" activity="40" lowerBound="0" upperBound="40" marginal="NaN"/>
+           <variable idx="14" name="xa[2,2]" type="I" activity="59" lowerBound="10" upperBound="70" marginal="NaN"/>
+           <variable idx="16" name="xa[2,3]" type="I" activity="74" lowerBound="20" upperBound="80" marginal="NaN"/>
+           <variable idx="0" name="x[1,1]" type="C" activity="0" lowerBound="0" upperBound="inf" marginal="NaN"/>
+           <variable idx="1" name="x[1,2]" type="C" activity="100" lowerBound="0" upperBound="inf" marginal="NaN"/>
+           <variable idx="2" name="x[1,3]" type="C" activity="0" lowerBound="0" upperBound="inf" marginal="NaN"/>
+           <variable idx="3" name="x[2,1]" type="C" activity="83" lowerBound="0" upperBound="inf" marginal="NaN"/>
+           <variable idx="4" name="x[2,2]" type="C" activity="16" lowerBound="0" upperBound="inf" marginal="NaN"/>
+           <variable idx="5" name="x[2,3]" type="C" activity="74" lowerBound="0" upperBound="inf" marginal="NaN"/>
+       </variables>
+       <linearConstraints> 
+           <constraint idx="0" name="line_2" type="L" activity="2075" lowerBound="-inf" upperBound="2500" marginal="NaN"/>
+           <constraint idx="1" name="line_3" type="L" activity="1800" lowerBound="-inf" upperBound="1800" marginal="NaN"/>
+           <constraint idx="2" name="line_4" type="L" activity="1850" lowerBound="-inf" upperBound="2200" marginal="NaN"/>
+           <constraint idx="3" name="line_5" type="L" activity="2490" lowerBound="-inf" upperBound="2500" marginal="NaN"/>
+           <constraint idx="4" name="line_6" type="L" activity="2648" lowerBound="-inf" upperBound="3000" marginal="NaN"/>
+           <constraint idx="5" name="line_7" type="L" activity="1998" lowerBound="-inf" upperBound="2000" marginal="NaN"/>
+           <constraint idx="6" name="mBilanz[1,1]" type="E" activity="0" lowerBound="0" upperBound="0" marginal="NaN"/>
+           <constraint idx="7" name="x_y[1,1]" type="G" activity="0" lowerBound="0" upperBound="inf" marginal="NaN"/>
+           <constraint idx="8" name="mBilanz[1,2]" type="E" activity="0" lowerBound="0" upperBound="0" marginal="NaN"/>
+           <constraint idx="9" name="x_y[1,2]" type="G" activity="900" lowerBound="0" upperBound="inf" marginal="NaN"/>
+           <constraint idx="10" name="mBilanz[1,3]" type="E" activity="0" lowerBound="0" upperBound="0" marginal="NaN"/>
+           <constraint idx="11" name="x_y[1,3]" type="G" activity="0" lowerBound="0" upperBound="inf" marginal="NaN"/>
+           <constraint idx="12" name="mBilanz[2,1]" type="E" activity="0" lowerBound="0" upperBound="0" marginal="NaN"/>
+           <constraint idx="13" name="x_y[2,1]" type="G" activity="917" lowerBound="0" upperBound="inf" marginal="NaN"/>
+           <constraint idx="14" name="mBilanz[2,2]" type="E" activity="0" lowerBound="0" upperBound="0" marginal="NaN"/>
+           <constraint idx="15" name="x_y[2,2]" type="G" activity="984" lowerBound="0" upperBound="inf" marginal="NaN"/>
+           <constraint idx="16" name="mBilanz[2,3]" type="E" activity="0" lowerBound="0" upperBound="0" marginal="NaN"/>
+           <constraint idx="17" name="x_y[2,3]" type="G" activity="926" lowerBound="0" upperBound="inf" marginal="NaN"/>
+       </linearConstraints>
+   </solution>
+</CmplSolutions>

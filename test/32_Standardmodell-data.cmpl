@@ -1,0 +1,17 @@
+%data 32_Standardmodell-data.cdat
+
+var:
+	# Variablenvektor
+	x[defset(c)]: real[0..];
+
+obj:
+	# Zielfunktion
+	ziel: c^T * x -> max;
+
+con:
+	# Nebenbedingungen
+	A * x <= b;
+
+
+
+

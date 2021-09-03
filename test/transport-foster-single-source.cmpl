@@ -1,0 +1,19 @@
+%display nonZeros
+parameters:
+     plants:=1(1)3;
+     centers:=1(1)4;
+     c[plants,centers] := ( (3,2,7,6), (7,5,2,3),(2,5,4,5) );
+     s[plants] := (5000,6000,5000);
+     d[centers] := (6000,4000,2000,1500);
+	{ i in plants , j in centers: costs[i,j]:= c[i,j]*d[j]; }	
+	
+variables:
+	y[plants,centers]: binary;
+
+objectives:
+	cost: sum{i in plants , j in centers :  costs[i,j] * y[i,j] } ->min;
+
+constraints:
+	{i in plants : supplies[i]: sum{j in centers : d[j]*y[i,j]} <= s[i];}
+ 	{j in centers: demands[j]: sum{i in plants  : y[i,j]} =  1;} 
+ 

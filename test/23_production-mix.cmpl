@@ -1,0 +1,26 @@
+parameters:
+	price[] := (500, 600, 450, );
+	costs[] := (425, 520, 400,);
+
+	#machine hours required per unit
+	a[,] := ((8, 15, 12), (15, 10, 8));
+
+	#upper bounds of the machines
+	b[] := (1000, 1000);
+
+	#profit contribution per unit
+	{j in defset(price):  c[j] := price[j]-costs[j]; }
+
+	#upper bound of the products
+	xMax[] := (250, 240, 250 );
+
+variables:
+	x[ defset(price)]: integer; 
+
+objectives:
+	profit: c[]T  * x[] ->max;
+
+constraints:
+	res: a[,] * x[] <= b[];
+	0<=x[]<=xMax[];
+ 

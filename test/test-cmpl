@@ -1,0 +1,108 @@
+#!/bin/bash
+
+# cmpl test 
+# Parameter: cmpl parameter
+
+# The cmpl file xxx.cmpl is to be compared with the following files:
+#	xxx.comp.mps
+#	xxx.comp.stdout (if not empty)
+#	xxx.comp.stderr	(if not empty)
+
+
+ERG=0
+
+# compare the files
+function compfile() {
+	NAME="$1"
+	ERW="$2"
+	FILE="$NAME.$ERW"
+	
+	if [ -f "$FILE" ]; then
+		if [ "$FILE" -ot "$NAME.time" ]; then
+			echo "$NAME: file $FILE was not newly created"
+			echo "less $NAME.stderr"
+			ERG=1
+			exit $ERG
+		fi
+	fi
+
+	test -s "$FILE"; FLA=$?
+	test -s "$NAME.comp.$ERW"; FLB=$?
+
+	if [ "$FLA" = 1 -o "$FLB" = 1 ]; then
+		if [ "$FLA" = 0 ]; then
+			echo "$NAME: file $FILE is not empty"
+			echo "less $FILE"
+			ERG=2
+			exit $ERG
+		elif [ "$FLB" = 0 ]; then
+			echo "$NAME: file $FILE is empty"
+			ERG=3
+			exit $ERG
+		fi
+	else
+		if  [[ $OSTYPE == *linux* ]]; then 
+			if [ -f "$NAME.comp.$ERW.linux" ]; then
+				diff -b "$FILE" "$NAME.comp.$ERW.linux" >/dev/null
+			else
+				diff -b "$FILE" "$NAME.comp.$ERW" >/dev/null
+			fi
+		else 
+			diff -b "$FILE" "$NAME.comp.$ERW" >/dev/null
+		fi
+		if [ $? != 0 ]; then
+			echo "$NAME: file $FILE is different to the compared file"
+			echo "diff $FILE $NAME.comp.$ERW | less"
+			ERG=4
+			exit $ERG
+		fi
+	fi
+
+}
+
+
+# file name w/o extension  
+DATEI=$1
+DATEI=${DATEI%.cmpl}
+#echo "$DATEI"
+
+# actual time 
+touch "$DATEI.time"
+
+
+# call cmpl
+# creates a mps/Osil file and files for stdout and stderr
+../bin/cmpl "$@" >"$DATEI.stdout" 2>"$DATEI.stderr"
+
+
+# tests for mps/Osil / stdout / stderr
+compfile "$DATEI" mps
+#compfile "$DATEI" osil
+compfile "$DATEI" stdout
+compfile "$DATEI" stderr
+compfile "$DATEI" cmsg
+compfile "$DATEI" sol
+compfile "$DATEI" csv
+compfile "$DATEI" csol
+
+
+
+if [ "$ERG" = 0 ]; then	
+	echo "$DATEI : OK"
+fi
+
+if [ -f "$DATEI.mps" ] ; then rm "$DATEI.mps"; fi 
+if [ -f "$DATEI.osil" ] ; then rm "$DATEI.osil" ; fi
+if [ -f "$DATEI.cmsg" ] ; then rm "$DATEI.cmsg" ; fi
+if [ -f "$DATEI.stdout" ] ; then rm "$DATEI.stdout" ; fi
+if [ -f "$DATEI.stderr" ] ; then rm "$DATEI.stderr" ; fi
+if [ -f "$DATEI.gsol" ] ; then rm "$DATEI.gsol" ; fi
+if [ -f "$DATEI.cfconf" ] ; then rm "$DATEI.cfconf" ; fi
+if [ -f "$DATEI.time" ] ; then rm "$DATEI.time" ; fi
+if [ -f "$DATEI.sol" ] ; then rm "$DATEI.sol" ; fi
+if [ -f "$DATEI.sol" ] ; then rm "$DATEI.csol" ; fi
+if [ -f "$DATEI.csv" ] ; then rm "$DATEI.csv" ; fi
+
+
+exit $ERG
+

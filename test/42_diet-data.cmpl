@@ -1,0 +1,12 @@
+%data
+
+variables:
+	x[FOOD]: integer[2..10];
+
+objectives:
+	cost: costs[]T * x[]->min;
+
+constraints:
+	# capacity restriction 
+	vitamin[,] * x[] >= vitMin[];
+

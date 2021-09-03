@@ -1,0 +1,38 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes"?>
+<CmplSolutions version="1.1">
+   <general>
+       <instanceName>pilots.cmpl</instanceName>
+       <nrOfVariables>35</nrOfVariables>
+       <nrOfConstraints>18</nrOfConstraints>
+       <objectiveName>line_1</objectiveName>
+       <objectiveSense>max</objectiveSense>
+       <nrOfSolutions>1</nrOfSolutions>
+       <solverName>CBC</solverName>
+       <solverMsg>normal</solverMsg>
+       <variablesDisplayOptions>nonZeroVariables (all)</variablesDisplayOptions>
+       <constraintsDisplayOptions>ignoreAllConstraints </constraintsDisplayOptions>
+   </general>
+   <solution idx="0" status="optimal" value="6">
+       <variables>
+           <variable idx="1" name="x[S,A2]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="0"/>
+           <variable idx="3" name="x[S,A4]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="1"/>
+           <variable idx="4" name="x[S,A5]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="0"/>
+           <variable idx="5" name="x[S,A6]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="1"/>
+           <variable idx="6" name="x[S,A7]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="0"/>
+           <variable idx="7" name="x[S,A8]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="0"/>
+           <variable idx="11" name="x[A2,B2]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="0"/>
+           <variable idx="15" name="x[A4,B3]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="0"/>
+           <variable idx="17" name="x[A5,B6]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="0"/>
+           <variable idx="18" name="x[A6,B4]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="0"/>
+           <variable idx="20" name="x[A7,B1]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="0"/>
+           <variable idx="25" name="x[A8,B7]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="1"/>
+           <variable idx="26" name="x[B1,T]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="1"/>
+           <variable idx="27" name="x[B2,T]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="1"/>
+           <variable idx="28" name="x[B6,T]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="1"/>
+           <variable idx="29" name="x[B3,T]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="0"/>
+           <variable idx="31" name="x[B4,T]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="0"/>
+           <variable idx="33" name="x[B7,T]" type="C" activity="1" lowerBound="0" upperBound="1" marginal="0"/>
+           <variable idx="34" name="f" type="C" activity="6" lowerBound="0" upperBound="inf" marginal="0"/>
+       </variables>
+   </solution>
+</CmplSolutions>

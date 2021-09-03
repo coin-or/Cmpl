@@ -1,0 +1,30 @@
+%data prodmix-mehrperiodig-losgroesse.cdat
+
+
+variables:
+	{n in P, t in J: 
+		xa[n,t] : integer[ xaMin[n,t]..xaMax[n,t] ];
+		q[n,t] : integer[ 0..qMax[n,t] ];
+	}
+
+	x[P,J] : real[0..];
+	y[P,J] : binary;
+
+
+objectives:
+	gdb: sum{n in P, t in J: 	p[n,t] * xa[n,t] - k[n,t] * x[n,t] 
+							- kl[n,t]*q[n,t] - kr[n,t] * y[n,t] } ->max;
+	
+constraints:
+	maschine {m in M, t in J: sum{n in P: a[m,n,t] * x[n,t]} <= b[m,t]; }
+
+	{n in P, t in J : 
+		{ t=1: 	  
+				mBilanz[n,t]:	x[n,t] -q[n,t] =  xa[n,t]; |
+		  default:  
+				mBilanz[n,t]: 	x[n,t] + q[n,t-1] -q[n,t] =  xa[n,t];
+		}
+
+		x_y[n,t]: x[n,t] <= bigM * y[n,t];
+	}
+

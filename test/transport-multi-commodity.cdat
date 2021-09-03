@@ -1,0 +1,160 @@
+%K set < 
+Gravel1 
+Gravel2 
+>
+
+%Arcs set[2] < 
+W1 U1 
+W1 U2 
+W2 U1 
+W2 U2 
+W3 U1 
+W3 U2 
+U1 U1a 
+U1a B1 
+U1a B2 
+U1a B3 
+U1a B4 
+U2 U2a 
+U2a B1 
+U2a B2 
+U2a B3 
+U2a B4 
+>
+
+%Nodes set < 
+W1 
+W2 
+W3 
+U1 
+U2 
+U1a 
+U2a 
+B1 
+B2 
+B3 
+B4 
+>
+
+%s[Nodes,K]  indices <
+B3 Gravel2 0.0
+W3 Gravel2 30.0
+U1a Gravel2 0.0
+U1 Gravel2 0.0
+B4 Gravel2 0.0
+U2a Gravel1 0.0
+W2 Gravel1 40.0
+U2a Gravel2 0.0
+U2 Gravel2 0.0
+U1 Gravel1 0.0
+B2 Gravel1 0.0
+B4 Gravel1 0.0
+U1a Gravel1 0.0
+B1 Gravel2 0.0
+W1 Gravel1 35.0
+W1 Gravel2 40.0
+B1 Gravel1 0.0
+B2 Gravel2 0.0
+W3 Gravel1 25.0
+W2 Gravel2 50.0
+U2 Gravel1 0.0
+B3 Gravel1 0.0
+>
+
+%d[Nodes,K]  indices <
+B3 Gravel2 50.0
+W3 Gravel2 0.0
+U1a Gravel2 0.0
+U1 Gravel2 0.0
+B4 Gravel2 25.0
+U2a Gravel1 0.0
+W2 Gravel1 0.0
+U2a Gravel2 0.0
+U2 Gravel2 0.0
+U1 Gravel1 0.0
+B2 Gravel1 20.0
+B4 Gravel1 15.0
+U1a Gravel1 0.0
+B1 Gravel2 30.0
+W1 Gravel1 0.0
+W1 Gravel2 0.0
+B1 Gravel1 25.0
+B2 Gravel2 15.0
+W3 Gravel1 0.0
+W2 Gravel2 0.0
+U2 Gravel1 0.0
+B3 Gravel1 40.0
+>
+
+%c[Arcs,K]  indices <
+U1a B3 Gravel1 48.0
+W3 U2 Gravel2 55.0
+U2a B1 Gravel2 48.0
+U1a B1 Gravel1 86.0
+W2 U1 Gravel2 77.0
+U1a B4 Gravel1 37.0
+U1a B2 Gravel2 63.0
+U2a B4 Gravel1 21.0
+W1 U2 Gravel2 110.0
+W1 U1 Gravel1 35.0
+U1 U1a Gravel2 0.0
+U1a B2 Gravel1 43.0
+U2a B2 Gravel1 96.0
+U2a B3 Gravel1 103.0
+U2 U2a Gravel2 0.0
+W1 U2 Gravel1 72.0
+U2a B2 Gravel2 152.0
+U2 U2a Gravel1 0.0
+U2a B1 Gravel1 34.0
+U1a B1 Gravel2 134.0
+U2a B3 Gravel2 164.0
+W1 U1 Gravel2 50.0
+W2 U1 Gravel1 52.0
+U1a B4 Gravel2 53.0
+W3 U2 Gravel1 38.0
+W3 U1 Gravel2 94.0
+W2 U2 Gravel1 49.0
+W2 U2 Gravel2 72.0
+U1 U1a Gravel1 0.0
+U2a B4 Gravel2 28.0
+W3 U1 Gravel1 62.0
+U1a B3 Gravel2 71.0
+>
+
+%maxCap[Arcs]  indices <
+U1a B4 50.0
+U1a B2 50.0
+U2a B2 40.0
+W3 U1 50.0
+W1 U2 50.0
+U2 U2a 120.0
+U1 U1a 120.0
+U1a B3 50.0
+U1a B1 50.0
+W2 U2 50.0
+W3 U2 50.0
+W1 U1 50.0
+U2a B3 40.0
+U2a B1 40.0
+W2 U1 50.0
+U2a B4 40.0
+>
+
+%minCap[Arcs]  indices <
+U1a B4 0.0
+U1a B2 0.0
+U2a B2 0.0
+W3 U1 0.0
+W1 U2 0.0
+U2 U2a 0.0
+U1 U1a 0.0
+U1a B3 0.0
+U1a B1 0.0
+W2 U2 0.0
+W3 U2 0.0
+W1 U1 0.0
+U2a B3 0.0
+U2a B1 0.0
+W2 U1 0.0
+U2a B4 0.0
+>

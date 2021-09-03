@@ -1,0 +1,25 @@
+%data tsp-poland.cdat
+#%data tsp-poland-open.cdat
+%arg -solver cplex
+%display nonZeros
+%opt cbc threads 8
+%opt cbc ratio 0.02
+
+parameters:
+	#nrOfCities := len(cities);
+	nrOfCities:=66;
+
+variables:
+	x[cities,cities]: binary;
+	u[cities]: real[1..];
+
+objectives:
+	distance: sum{i in cities, j in cities: d[i,j]* x[i,j]} ->min;
+
+constraints:
+	sos_i {j in cities:  sum{i in cities: x[i,j]}=1; }
+	sos_j {i in cities:  sum{j in cities: x[i,j]}=1; }
+
+	noSubs {i in cities, j in cities, i!=j, j!=start: 
+		u[i] - u[j] + nrOfCities * x[i,j] <= nrOfCities-1; }
+	 

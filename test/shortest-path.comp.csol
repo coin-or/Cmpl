@@ -1,0 +1,22 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes"?>
+<CmplSolutions version="1.1">
+   <general>
+       <instanceName>shortest-path.cmpl</instanceName>
+       <nrOfVariables>22</nrOfVariables>
+       <nrOfConstraints>7</nrOfConstraints>
+       <objectiveName>costs</objectiveName>
+       <objectiveSense>min</objectiveSense>
+       <nrOfSolutions>1</nrOfSolutions>
+       <solverName>CBC</solverName>
+       <solverMsg>normal</solverMsg>
+       <variablesDisplayOptions>nonZeroVariables (all)</variablesDisplayOptions>
+       <constraintsDisplayOptions>ignoreAllConstraints </constraintsDisplayOptions>
+   </general>
+   <solution idx="0" status="optimal" value="22">
+       <variables>
+           <variable idx="1" name="x[1,4]" type="C" activity="1" lowerBound="0" upperBound="inf" marginal="0"/>
+           <variable idx="11" name="x[4,6]" type="C" activity="1" lowerBound="0" upperBound="inf" marginal="0"/>
+           <variable idx="19" name="x[6,7]" type="C" activity="1" lowerBound="0" upperBound="inf" marginal="0"/>
+       </variables>
+   </solution>
+</CmplSolutions>

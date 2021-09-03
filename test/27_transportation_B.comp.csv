@@ -1,0 +1,26 @@
+Problem;27_transportation_B.cmpl
+Nr. of variables;12
+Nr. of constraints;7
+Objective name;costs
+Solver name;GLPK
+Display variables;nonzero variables (all)
+Display constraints;nonzero constraints (all)
+Objective status;optimal
+Objective value ;39500;(min!)
+Variables;
+Name;Type;Activity;Lower bound;Upper bound;Marginal
+x[1,1];C;3500;0;inf;0
+x[1,2];C;1500;0;inf;0
+x[2,2];C;2500;0;inf;0
+x[2,3];C;2000;0;inf;0
+x[2,4];C;1500;0;inf;0
+x[3,1];C;2500;0;inf;0
+Constraints 
+Name;Type;Activity;Lower bound;Upper bound;Marginal
+line_2;L;5000;-inf;5000;-3
+line_3;L;6000;-inf;6000;0
+line_4;L;2500;-inf;2500;-4
+line_5;E;6000;6000;6000;6
+line_6;E;4000;4000;4000;5
+line_7;E;2000;2000;2000;2
+line_8;E;1500;1500;1500;3

@@ -1,0 +1,22 @@
+%data: Nodes set, Arcs set[2], minCap[Arcs], maxCap[Arcs], s, t
+    
+parameters:
+     { i in Nodes :
+        { i = s:    q[i] := 1; |
+          i = t:    q[i] := -1; |
+          default:  q[i] := 0;
+        }
+     }
+    
+variables:
+    { [i,j] in Arcs: x[i,j] : real[minCap[i,j]..maxCap[i, j]];  }
+    f : real;
+
+objectives:
+    f ->max;
+
+constraints:
+    { i in Nodes :
+            sum{ j in Arcs *> [i,*] : x[i,j] } - 
+            sum{ j in Arcs *> [*,i] : x[j,i] } = q[i]*f; 
+    }

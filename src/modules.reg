@@ -1,0 +1,57 @@
+
+// register modules for cmpl
+
+// test modules
+//MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,          test,                 "example module without any functionality" )
+
+// extension modules
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,          compatSymbols,        "defines compatibility symbols for cmpl" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,          mathFunctions,        "defines math functions for cmpl" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,          inputFunctions,       "defines input functions for cmpl" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,          classFunctions,       "defines utility functions for simple object orientation" )
+
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,		   externDataFile,		 "import of extern data from cmpl data file" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,		   externXlsDataFile,		 "import of extern data from cmpl data file, which is originated from Excel data" )
+
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,		   solverSelect,		 "configurable selection of solver and appropriate options" )
+
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,		   boundRow,	 		 "replace constraints with only one variable by bounds" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,		   linearConstantRow,	 "linearize pseudo constraints and objectives without optimization variables" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,		   linearLogCon,         "linearize constraints connected by logical operations" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,		   linearVarProd,        "linearize products of optimization variables" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,		   linearSos,            "SOS and SOS2 definitions and possible linearization" )
+
+// input/output 
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,          serialize,            "writing or reading of cmpl data state" )
+
+// transfer between client and server
+//MODULE_CLASS_REG( MODULE_CONF_ORDER_TO_SERVER,     transferToServer,     "transfer execution to cmpl server if demanded" )
+//MODULE_CLASS_REG( MODULE_CONF_ORDER_TO_SERVER,     transferFromClient,   "take over execution from client (used only on cmpl server)" )
+//MODULE_CLASS_REG( MODULE_CONF_ORDER_FROM_SERVER,   transferToClient,     "transfer execution back to client (used only on cmpl server)" )
+//MODULE_CLASS_REG( MODULE_CONF_ORDER_FROM_SERVER,   transferFromServer,   "take over execution from cmpl server" )
+
+// compiler
+MODULE_CLASS_REG( MODULE_CONF_ORDER_PREP,          precompile,           "precompile cmpl input files to handle cmpl header commands" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_CMPL_PARSE,    compile,              "parse cmpl input and generate intermediary code" )
+
+// interpreter
+MODULE_CLASS_REG( MODULE_CONF_ORDER_CMPL_EXEC,     interpret,            "execute the intermediary code" )
+
+// output of generated model
+MODULE_CLASS_REG( MODULE_CONF_ORDER_OUTRES,        writeMps,             "writes the generated model to an MPS file" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_MATRIX,        writeMatrix,             "writes the generated matrix to an file" )
+
+// solver
+MODULE_CLASS_REG( MODULE_CONF_ORDER_SOLVERCBC,        solverCbc,          "executes CBC as solver" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_SOLVERGLPK,       solverGlpk,         "executes GLPK as solver" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_SOLVERCPLEX,      solverCplex,       "executes CPLEX as solver" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_SOLVERGUROBI,     solverGurobi,       "executes Gurobi as solver" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_SOLVERSCIP,       solverScip,       "executes Scip as solver" )
+
+// Solution reports
+MODULE_CLASS_REG( MODULE_CONF_ORDER_SOLUTIONASCII,   solutionReportAscii,     "standard solution report" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_SOLUTIONCSV,   solutionReportCsv   ,     "csv solution report" )
+MODULE_CLASS_REG( MODULE_CONF_ORDER_SOLUTIONXML,   solutionReportXml   ,     "CmplSolution solution report" )
+
+
+

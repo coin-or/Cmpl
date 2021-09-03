@@ -1,0 +1,3 @@
+echo("Testausgabe1");
+echo("qqq");
+echo("Testausgabe2");

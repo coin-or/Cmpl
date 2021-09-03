@@ -1,0 +1,15 @@
+%data 
+
+variables:
+    { [i,j] in Arcs, k in K: x[i,j,k] : real[0..];  }
+   
+objectives:
+    costs: sum { [i,j] in Arcs, k in K: c[i,j,k] * x[i,j,k] } ->min;
+
+constraints:
+    { i in Nodes, k in K : flows[i,k]:
+            sum{ j in Arcs *> [i,*] : x[i,j,k] } - 
+            sum{ j in Arcs *> [*,i] : x[j,i,k] } = s[i,k] - d[i,k]; 
+    }
+
+    { [i,j] in Arcs: minCap[i,j] <= sum{k in K: x[i,j,k]} <= maxCap[i,j];}

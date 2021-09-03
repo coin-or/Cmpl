@@ -1,0 +1,16 @@
+%data : Sources set, Destinations set, c[Sources,Destinations], F[Sources], d[Destinations], s[Sources]
+
+
+
+variables:
+	x[Sources,Destinations] : binary;
+	y[Sources]   : binary;
+		
+objectives:
+	sum {i in Sources, j in Destinations: c[i,j] * x[i,j] } +
+    sum {i in Sources: F[i] * y[i] }->min;
+
+constraints:
+    {j in Destinations: sum{i in Sources: x[i,j] } = 1; }
+	{i in Sources: sum {j in Destinations: d[j] * x[i,j] } <= s[i] * y[i]; }
+ 

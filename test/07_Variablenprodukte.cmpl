@@ -1,0 +1,33 @@
+
+// test for products of optimization variables
+
+par:
+	XU := 0;
+	XO := 10;
+	YU := 5;
+	YO := 25;
+
+// with one binary variable
+var:
+	bx: binary;
+	by: real[YU..YO];
+obj:
+	p_bin: bx*by -> max;
+
+// with one integer variable
+var:
+	ix: integer[XU..XO];
+	iy: real[YU..YO];
+obj:
+	p_int: ix*iy -> max;
+
+// with both real variables
+var:
+	rx: real[XU..XO];
+	ry: real[YU..YO];
+obj:
+	p_real: rx*ry -> max;
+
+
+ 
+ 

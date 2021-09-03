@@ -1,0 +1,13 @@
+%data : Sources set, Destinations set, a[Destinations,Sources], f[Sources]
+
+variables:
+    x[Sources] : binary;
+       
+objectives:
+    sum{ j in Sources: f[j]*x[j]} ->min;
+
+constraints:
+    {i in Destinations: 
+        sum{j in Sources: a[i,j]*x[j]} >= 1;
+    }
+ 

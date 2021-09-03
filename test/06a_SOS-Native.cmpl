@@ -1,0 +1,39 @@
+// test for SOS and SOS2
+
+// A: construct new anonymous SOS
+//		first argument for function sos.sos1() is definition set, second data type
+var:
+	x[]: sos.sos1([1..5], real[0..100]);
+
+
+// B: construct new SOS2 and set a name for it
+var:
+	y[]: sos.sos2([1..10], real).name("testB");
+
+
+// C: construct SOS from existing variables
+//		arguments for function sos.sos1() are the variables
+var:
+	a, b, c: int[0..100];
+	sos.sos1(a, b, c).name("testC");
+
+
+// D: define a matrix of variables, and a SOS over every row and every column
+par:
+	rows := [1..3];
+	cols := [1..4];
+
+var:
+	m[rows, cols]: bin;
+
+par:
+	// define all SOSs (because of parameter-like SOS objects this must be done in "par" section)
+	{ i in rows: rowsos[i] := sos.sos1().name("SOS Row " + i); }
+	{ j in cols: colsos[j] := sos.sos1().name("SOS Col " + j); }
+
+	// add variables to SOSs
+	{ i in rows, j in cols:
+		rowsos[i].add(m[i,j]);
+		colsos[j].add(m[i,j]);
+	}
+

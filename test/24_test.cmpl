@@ -1,0 +1,37 @@
+%display var=x*
+
+parameters:
+	rows:=1(1)2;
+	cols:=1(1)3;
+	price[] := (500, 600, 450 );
+	costs[] := (425, 520, 400);
+
+	#machine hours required per unit
+	a[,] := ((8, 15, 12,), (15, 10, 8,),  (25, 16, 8,));  
+
+	#upper bounds of the machines
+	b[] := (1000, 1000, 1000);
+
+	#profit contribution per unit
+	{j in defset(price):  c[j] := price[j]-costs[j]; }
+
+	#upper bound of a product
+	xMax[] := (250, 240, 250 );
+	xMin[] := (45, 45, 45 );
+
+	#fixed setup costs
+	FC[] := ( 500, 400, 500);
+
+	
+variables:
+	{j in defset(c): x[j]: real[0..xMax[j]]; } 
+	y[defset(c)] : binary;
+
+
+objectives:
+	profit: c[]T  * x[] - FC[]T * y[] ->max;
+
+constraints:
+
+	resaaaaaaaaa1: a[,] * x[] <= b[];
+	{j in defset(c): bb[j]: xMin[j] * y[j] <= x[j] <= xMax[j] * y[j]; }

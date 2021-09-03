@@ -1,0 +1,38 @@
+
+par:
+
+#Semicontinous variables
+semicont := &{ tp = $arg[1], lb = $arg[2], ub = $arg[3]:	
+	// Argumente der Funktion sind: Datentyp, untere Schranke, obere Schranke
+
+	local var v := tp[0..ub];
+	local var y := binary;
+	con:
+		y * lb <= v <= y * ub; 
+	return v;
+};
+
+// Liefert Fixkostenterm zur Verwendung in Zielfunktion oder Restriktionen
+fixedCosts := &{
+			v = $arg[1],		// Optimierungsvariable, die auf Wert größer 0 geprüft wird, untere Schranke muss 0 sein
+			fc = $arg[2],		// Fixkosten, die anfallen, wenn v größer 0 ist
+			varMax = $arg[3]:
+		
+
+		// Wenn k gleich 0, Fixkostenterm einfach 0
+		{ fc == 0: return 0; }
+
+
+		local var b := binary;					// "local" bedeutet, dass das Symbol "b" hier lokal ist, die erzeugte Optimierungsvariable ist es natürlich nicht.
+		b.$destNameTuple := ["__"+v.$destName + "_fk", v.$destTuple];
+
+		// Restriktionen, um b genau dann auf 1 zu setzen, wenn v größer 0 ist
+		local con res := v <= varMax * b;
+		res.$destNameTuple := ["__"+v.$destName + "_fk", v.$destTuple];
+
+		// Fixkostenterm zurueck
+		return fc*b;
+};
+
+		
+		

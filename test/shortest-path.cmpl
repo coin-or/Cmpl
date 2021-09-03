@@ -1,0 +1,25 @@
+%display nonZeros
+%display ignoreCons
+
+parameters:
+	A := set([1,2],[1,4],[2,1],[2,3],[2,4],[2,5],[3,2],[3,5],[4,1],[4,2],[4,5],[4,6],
+             [5,2],[5,3],[5,4],[5,6],[5,7],[6,4],[6,5],[6,7],[7,5],[7,6]);
+	V := 1..7;
+	s := 1;
+	t := 7;
+	
+	c[A] := (7,5,7,8,9,7,8,5,5,9,15,6,7,5,15,8,9,6,8,11,9,11);
+	
+	{ i in V: { 	i=s : b[i]:=1; | 
+			i=t : b[i]:=-1; | 
+			default: b[i]:=0;}  }
+
+variables:
+	x[A] :real[0..]; 
+		
+objectives:
+	costs: sum{[i,j] in A: c[i,j]*x[i,j]}->min;
+
+constraints:
+	node {i in V: sum{ j in (A *> [i,*]):x[i,j]}
+			- sum{ j in (A *> [*,i]):x[j,i]} = b[i];}

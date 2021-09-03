@@ -1,0 +1,15 @@
+%data prodmix-data.cdat : P set, M set, d[P] , a[M,P], b[M], xMax[P],KF[P]
+
+parameters:
+	xMin[P] := (30,30);
+
+variables:
+	x[P] : integer[0..];
+	y[P] : binary;
+
+objectives:
+	gdb:  d[]T * x[] - y[]T * KF[] ->max;
+	
+constraints:
+	maschine: a[,] * x[] <= b[];
+	{n in P: y_x[n]: y[n] * xMin[n] <=  x[n]<= y[n] * xMax[n]; }

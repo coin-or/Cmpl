@@ -1,0 +1,33 @@
+
+// two methods for computing fibonacci numbers
+
+echo ("computing fibonacci by recursive function");
+
+fib := &+{ $arg <= 2: 1 |: fib($arg-1) + fib($arg-2) };
+{ i in 1..20: echo(i + ": " + fib(i)); }
+
+
+
+echo ("");
+echo ("computing fibonacci by a class storing the already computed numbers");
+
+fibcl := &{:
+	private par:
+		$this._fib[1..2] := 1;
+		$this._maxind := 2;
+
+		$this.compute := &{ $arg > $this._maxind:
+				{ i in ($this._maxind+1) .. $arg: $this._fib[i] := $this._fib[i-1] + $this._fib[i-2]; }
+			};
+
+	public par:
+		$this.get := &{:
+				{ $arg > $this._maxind: $this.compute($arg); }
+				return $this._fib[$arg];
+			};
+};
+
+fibobj := class.construct(fibcl);
+
+{ i in 1..20: echo(i + ": " + fibobj.get(i)); }
+

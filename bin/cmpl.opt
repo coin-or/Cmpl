@@ -1,0 +1,5 @@
+CBC ../Thirdparty/CBC/cbc
+GLPK    /Applications/Cmpl/Thirdparty/GLPK/glpsol
+SCIP    /Users/mike/Applications/Scip-6.0.0/bin/scip
+CPLEX   /Users/mike/Applications/IBM/ILOG/CPLEX_Studio127/cplex/bin/x86-64_osx/cplex
+GUROBI gurobiCmpl

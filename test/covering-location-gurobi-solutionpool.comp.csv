@@ -1,0 +1,46 @@
+Problem;covering-location-gurobi-solutionpool.cmpl
+Nr. of variables;6
+Nr. of constraints;6
+Objective name;line_1
+Nr. of solutions;2
+Solver name;GUROBI
+Display variables;(all)
+Display constraints;(all)
+Solution nr.;1
+Objective status;integer optimal solution
+Objective value ;4.1;(min!)
+Variables;
+Name;Type;Activity;Lower bound;Upper bound;Marginal
+x[S1];B;0;0;1;-
+x[S2];B;1;0;1;-
+x[S3];B;-0;0;1;-
+x[S4];B;1;0;1;-
+x[S5];B;0;0;1;-
+x[S6];B;1;0;1;-
+Constraints 
+Name;Type;Activity;Lower bound;Upper bound;Marginal
+line_2;G;1;1;inf;-
+line_3;G;1;1;inf;-
+line_4;G;2;1;inf;-
+line_5;G;1;1;inf;-
+line_6;G;2;1;inf;-
+line_7;G;1;1;inf;-
+Solution nr.;2
+Objective status;integer feasible solution
+Objective value ;5.6;(min!)
+Variables;
+Name;Type;Activity;Lower bound;Upper bound;Marginal
+x[S1];B;0;0;1;-
+x[S2];B;0;0;1;-
+x[S3];B;1;0;1;-
+x[S4];B;0;0;1;-
+x[S5];B;0;0;1;-
+x[S6];B;1;0;1;-
+Constraints 
+Name;Type;Activity;Lower bound;Upper bound;Marginal
+line_2;G;1;1;inf;-
+line_3;G;1;1;inf;-
+line_4;G;1;1;inf;-
+line_5;G;1;1;inf;-
+line_6;G;2;1;inf;-
+line_7;G;1;1;inf;-

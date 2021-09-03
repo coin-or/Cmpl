@@ -1,0 +1,88 @@
+#!/bin/bash
+# Test whether cmpl exist or not 
+test -s ../bin/cmpl; r0=$?
+test -s ../bin/cmpl.exe; r1=$?
+
+isGurobi=0
+isCplex=1
+isScip=1
+
+if [ "$r0" = 0 -o "$r1" = 0 ]; then
+
+    echo "######### start Cmpl tests ##############################"
+
+	./test-cmpl 01_Standardmodell.cmpl -m -silent
+	./test-cmpl 02_Standardmodell.cmpl -threads 4 -m -silent
+	./test-cmpl 03_Primzahlen.cmpl -silent
+	./test-cmpl 04_Threads.cmpl -silent
+	./test-cmpl 05_Fibonacci.cmpl -silent 
+	./test-cmpl 06_SOS-Linear.cmpl -solver=cbc -fm -silent
+	./test-cmpl 06a_SOS-Native.cmpl -solver cplex -fm -silent
+	./test-cmpl 07_Variablenprodukte.cmpl -var-prod-linear 3 -solver cbc -fm -silent
+	./test-cmpl 07a_Variablenprodukte-Native.cmpl -solver=cplex -fm -silent
+	./test-cmpl 07_Mehrkriteriell.cmpl -m 07_Mehrkriteriell.mps -silent 
+	./test-cmpl 08_SummeNegiert.cmpl -m 08_SummeNegiert.mps -silent
+	./test-cmpl 09_Beispiel_Steglich.cmpl -fm 09_Beispiel_Steglich.mps  -silent
+	./test-cmpl 10_Beispiel_Rost.cmpl -m 10_Beispiel_Rost.mps -silent
+
+	./test-cmpl 22_diet.cmpl -silent 
+    ./test-cmpl 23_production-mix.cmpl -silent 
+    ./test-cmpl 24_test.cmpl -silent 
+    ./test-cmpl 25_test_B.cmpl -silent
+    ./test-cmpl 26_transportation.cmpl -silent 
+    ./test-cmpl 27_transportation_B.cmpl -silent 
+
+	./test-cmpl 32_Standardmodell-data.cmpl -m -silent
+
+	#eigentlich noch Indizierung mit teils freien Indizes, vorerst durch Schleife ersetzt
+	./test-cmpl 33_Standardmodell-data.cmpl -m -silent
+
+	#eigentlich fuer OSIL-Ausgabe, vorerst stattdessen MPS
+	./test-cmpl 42_diet-data.cmpl -m -silent
+ 
+
+	./test-cmpl prodmix-fc-threshold.cmpl -solver glpk -silent -solutionCsv
+    ./test-cmpl prodmix-mehrperiodig-losgroesse.cmpl -silent 
+    ./test-cmpl prodmix-mehrperiodig-losgroesse-glpk.cmpl -solver glpk -silent -display var=q[* -display var=y[* -display var=x* -solution prodmix-mehrperiodig-losgroesse-glpk.csol
+    
+	./test-cmpl transhipment.cmpl -silent -solutionCsv  
+    ./test-cmpl shortest-path.cmpl -silent -solution
+
+	./test-cmpl emptyRuns.cmpl -silent -solutionAscii 
+    ./test-cmpl cross-docking.cmpl -silent -solutionAscii -display ignoreCons -display nonZeros -display var=x*
+
+	./test-cmpl covering-location.cmpl -silent -solutionAscii
+    ./test-cmpl max-covering-location.cmpl -silent -solution -solver glpk -display nonZeros
+
+	./test-cmpl pilots.cmpl -silent -solution -display ignoreCons -display nonZeros 
+ 
+   
+    if [ "$isScip" = 1 ]; then 
+        ./test-cmpl prodmix-verfahren.cmpl -solver scip -silent -solutionAscii
+    fi
+    if [ "$isGurobi" = 1 ]; then 
+        ./test-cmpl transport-multi-commodity.cmpl -silent -solutionAscii  -display con=f* -solver gurobi
+        ./test-cmpl covering-location-gurobi-solutionpool.cmpl -solver gurobi -display solutionPool -silent -solutionCsv
+        ./test-cmpl warehouse.cmpl  -solver gurobi -display solutionPool -silent -solution -display nonZeros -solutionAscii
+    fi
+	if [ "$isCplex" = 1 ]; then 
+        ./test-cmpl transport-foster-single-source.cmpl  -solver cplex -display solutionPool -silent -solutionAscii -display nonZeros
+    	./test-cmpl covering-location-cplex-solutionpool.cmpl  -solver cplex -display solutionPool -silent -solution
+        #./test-cmpl tsp-poland.cmpl -solver cplex -silent -solutionCsv -opt cplex mip/tolerances/mipgap=0.1 -display nonZeros
+    fi
+
+
+
+
+
+
+    echo "######### Cmpl tests done  ###############################"
+    
+    if [ -f cplex.log ] ; then rm cplex.log ; fi
+	if [ -f gurobi.log ] ; then rm gurobi.log ; fi
+    
+    
+else 
+	echo "CMPL does not exist in ../bin"
+fi
+

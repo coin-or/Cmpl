@@ -1,0 +1,16 @@
+%data: Nodes set, s[Nodes], d[Nodes], Arcs set[2], c[Arcs],  maxCap[Arcs]
+%display nonZeros
+
+
+variables:
+    { [i,j] in Arcs: x[i,j] : real[0..maxCap[i, j]];  }
+   
+objectives:
+    costs: sum { [i,j] in Arcs: c[i,j] * x[i,j] } ->min;
+
+constraints:
+    { i in Nodes : flowCon[i] :
+            	sum{ j in Arcs *> [i,*] : x[i,j] } - 
+            	sum{ j in Arcs *> [*,i] : x[j,i] } = s[i] - d[i]; 
+    }
+

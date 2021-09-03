@@ -1,0 +1,60 @@
+Problem;transhipment.cmpl
+Nr. of variables;54
+Nr. of constraints;25
+Objective name;costs
+Solver name;CBC
+Display variables;nonzero variables (all)
+Display constraints;nonzero constraints (all)
+Objective status;optimal
+Objective value ;114960;(min!)
+Variables;
+Name;Type;Activity;Lower bound;Upper bound;Marginal
+x[H,Z1];C;170;0;170;-31
+x[H,Z2];C;150;0;170;0
+x[Z1,Z1a];C;340;0;600;0
+x[Z2,Z2a];C;400;0;400;-9
+x[Z3,Z3a];C;460;0;500;0
+x[W1,Z1];C;170;0;170;-49
+x[W1,Z2];C;160;0;170;0
+x[W1,Z3];C;170;0;170;-29
+x[W2,Z2];C;90;0;170;0
+x[W2,Z3];C;170;0;170;-23
+x[W3,Z3];C;120;0;170;0
+x[Z1a,R1];C;170;0;170;-11
+x[Z1a,R2];C;100;0;170;0
+x[Z1a,R3];C;70;0;170;0
+x[R1,R1a];C;290;0;400;0
+x[R2,R2a];C;200;0;200;-14
+x[R3,R3a];C;410;0;500;0
+x[R4,R4a];C;300;0;300;-3
+x[Z2a,R1];C;60;0;170;0
+x[Z2a,R3];C;170;0;170;-4
+x[Z2a,R4];C;170;0;170;-2
+x[Z3a,R1];C;60;0;170;0
+x[Z3a,R2];C;100;0;170;0
+x[Z3a,R3];C;170;0;170;-4
+x[Z3a,R4];C;130;0;170;0
+x[R1a,D1];C;120;0;170;0
+x[R1a,D2];C;170;0;170;-11
+x[R2a,D3];C;80;0;170;0
+x[R2a,D4];C;40;0;170;0
+x[R2a,D6];C;80;0;170;0
+x[R3a,D4];C;170;0;170;-18
+x[R3a,D6];C;100;0;170;0
+x[R3a,D7];C;140;0;170;0
+x[R4a,D2];C;70;0;170;0
+x[R4a,D4];C;70;0;170;0
+x[R4a,D5];C;160;0;170;0
+Constraints 
+Name;Type;Activity;Lower bound;Upper bound;Marginal
+flowCon[H];E;320;320;320;74
+flowCon[W1];E;500;500;500;79
+flowCon[W2];E;260;260;260;91
+flowCon[W3];E;120;120;120;42
+flowCon[D1];E;-120;-120;-120;-68
+flowCon[D2];E;-240;-240;-240;-71
+flowCon[D3];E;-80;-80;-80;-29
+flowCon[D4];E;-280;-280;-280;-42
+flowCon[D5];E;-160;-160;-160;-17
+flowCon[D6];E;-180;-180;-180;-56
+flowCon[D7];E;-140;-140;-140;-66

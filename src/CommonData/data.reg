@@ -1,0 +1,17 @@
+
+// register data classes for cmpl
+
+// data from module Precompiler
+DATA_CLASS_REG( CmplSourceInput )
+DATA_CLASS_REG( ExternDataInfo )
+
+// data from module Compiler
+DATA_CLASS_REG( SyntaxElements )
+DATA_CLASS_REG( IntCode )
+
+// data from module Interpreter
+DATA_CLASS_REG( OptModel )
+
+
+// data for Solution
+DATA_CLASS_REG( Solution )

@@ -1,7 +1,0 @@
-$HOME
-../bin/manual
-{}
-../cmpl
-{$problem$.$ext$}  {-matrix} {$problem$.mat} {-solutionAscii}
-../Coliop
-Courier-plain-13

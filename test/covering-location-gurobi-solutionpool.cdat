@@ -1,0 +1,42 @@
+%Destinations set < 
+K1 
+K2 
+K3 
+K4 
+K5 
+K6 
+>
+
+%Sources set < 
+S1 
+S2 
+S3 
+S4 
+S5 
+S6 
+>
+
+%a[Destinations,Sources] =0 indices <
+K6 S6 1.0
+K5 S5 1.0
+K4 S5 1.0
+K2 S3 1.0
+K5 S4 1.0
+K4 S3 1.0
+K3 S4 1.0
+K5 S6 1.0
+K4 S1 1.0
+K3 S2 1.0
+K3 S5 1.0
+K1 S3 1.0
+K6 S5 1.0
+K3 S3 1.0
+K2 S2 1.0
+K1 S1 1.0
+K5 S3 1.0
+K3 S1 1.0
+K4 S4 1.0
+K1 S4 1.0
+>
+
+%f[Sources] < 1.5 2.2 4.5 0.8 1.4 1.1>

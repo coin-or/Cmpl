@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes"?>
+<CmplSolutions version="1.1">
+   <general>
+       <instanceName>max-covering-location.cmpl</instanceName>
+       <nrOfVariables>12</nrOfVariables>
+       <nrOfConstraints>7</nrOfConstraints>
+       <objectiveName>line_1</objectiveName>
+       <objectiveSense>max</objectiveSense>
+       <nrOfSolutions>1</nrOfSolutions>
+       <solverName>GLPK</solverName>
+       <solverMsg>normal</solverMsg>
+       <variablesDisplayOptions>nonZeroVariables (all)</variablesDisplayOptions>
+       <constraintsDisplayOptions>nonZeroConstraints (all)</constraintsDisplayOptions>
+   </general>
+   <solution idx="0" status="optimal" value="60">
+       <variables>
+           <variable idx="2" name="x[S3]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="4" name="x[S5]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="6" name="y[K1]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="8" name="y[K3]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="9" name="y[K4]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="10" name="y[K5]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+           <variable idx="11" name="y[K6]" type="B" activity="1" lowerBound="0" upperBound="1" marginal="NaN"/>
+       </variables>
+       <linearConstraints> 
+           <constraint idx="6" name="line_8" type="L" activity="2" lowerBound="-inf" upperBound="2" marginal="NaN"/>
+       </linearConstraints>
+   </solution>
+</CmplSolutions>

@@ -1,0 +1,23 @@
+
+// compute prime numbers in the range up to 1000
+primeTo := 1000;
+
+// initialize empty set of prime numbers
+prime := set();
+
+// search prime numbers in the range from 2 to primeTo
+{ ordered @n in 2..primeTo:
+    // check if n is divisible by one of the already found prime numbers
+    p ::= { ordered @i in prime:
+              { mod(n, i) == 0: break @i := 0; }      // divisible by i: n is not prime
+              { i * i >= n: break @i := 1; }          // upper bound for checking reached: n is prime
+            |: 1                                      // set of prime numbers is still empty: n is prime
+          };
+
+    // add number to set of prime numbers
+    { p: prime += [n]; }
+}
+
+// output found prime numbers
+echo(prime);
+

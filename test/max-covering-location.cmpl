@@ -1,0 +1,15 @@
+%data : Sources set, Destinations set, a[Destinations,Sources], b[Destinations], p
+
+variables:
+    x[Sources] : binary;
+    y[Destinations] : binary;
+       
+objectives:
+    sum{ i in Destinations: b[i]*y[i]} ->max;
+
+constraints:
+    {i in Destinations: 
+        sum{j in Sources: a[i,j]*x[j]} >= y[i];
+    }
+    
+    sum{j in Sources: x[j]} <= p; 

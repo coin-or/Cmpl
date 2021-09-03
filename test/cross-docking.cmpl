@@ -1,0 +1,21 @@
+%data : vehicles set, docks set, pairs[vehicles, docks], g[vehicles, vehicles], d[docks, docks]
+
+variables:
+    { i in vehicles, j in docks, pairs[i,j]=1:
+         x[i, j]: binary;
+    }
+    { i in vehicles, j in docks,  k in vehicles, l in docks , pairs[i,j]=1, pairs[k,l]=1:
+         w[i,j,k,l] : real[0..1];
+    }
+          
+objectives:
+    Total_Cost:  sum{ i in vehicles, j in docks, k in vehicles, l in docks ,  
+                 pairs[i,j]=1, pairs[k,l]=1: g[i,k]*d[j,l]*w[i,j,k,l] }  ->min;
+
+constraints:
+    Vehicles { i in vehicles: sum{j in docks, pairs[i,j]=1: x[i,j]} = 1; }
+    Docks  { j in docks: sum{i in vehicles, pairs[i,j]=1: x[i,j]} = 1; }
+
+    { i in vehicles, j in docks, k in vehicles, l in docks , pairs[i,j]=1, pairs[k,l]=1: 
+        -w[i,j,k,l] + x[i,j] + x[k,l]<= 1;
+    }  

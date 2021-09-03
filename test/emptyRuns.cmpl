@@ -1,0 +1,12 @@
+%data: N1 set, N2 set, c[N1,N2]
+%display=nonZeros
+
+variables:
+	x[N1,N2]: real[0..1];
+
+objectives:
+	sum{ i in N1, j in N2: c[i,j]*x[i,j] } -> min ;
+
+constraints:
+	{ j in N2: sos_j[j]: sum{ i in N1: x[i,j] } = 1; }
+	{ i in N1: sos_i[i]: sum{ j in N2: x[i,j] } = 1; }

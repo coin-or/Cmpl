@@ -1,0 +1,23 @@
+Problem;prodmix-fc-threshold.cmpl
+Nr. of variables;4
+Nr. of constraints;6
+Objective name;gdb
+Solver name;GLPK
+Display variables;(all)
+Display constraints;(all)
+Objective status;optimal
+Objective value ;9640;(max!)
+Variables;
+Name;Type;Activity;Lower bound;Upper bound;Marginal
+x[1];I;44;0;inf;-
+x[2];I;30;0;inf;-
+y[1];B;1;0;1;-
+y[2];B;1;0;1;-
+Constraints 
+Name;Type;Activity;Lower bound;Upper bound;Marginal
+maschine[1];L;1410;-inf;2000;-
+maschine[2];L;2000;-inf;2000;-
+y_x[1,1];L;-14;-inf;0;-
+y_x[1,2];G;6;0;inf;-
+y_x[2,1];L;0;-inf;0;-
+y_x[2,2];G;30;0;inf;-

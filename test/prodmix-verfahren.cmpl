@@ -1,0 +1,18 @@
+%data
+
+
+variables:
+	x[produkte,verfahren] : integer[0..];
+	y[verfahren] : binary;
+
+objectives:
+	gdb: sum{n in produkte,v in verfahren, : d[n,v] * x[n,v] } ->max;
+	
+constraints:
+	maschine {v in verfahren, m in maschinen:
+			sum{ n in produkte: a[v,m,n] * x[n,v] } <= b[v,m] * y[v];
+	}
+
+	sos1: sum{ v in verfahren: y[v]} =1;
+
+	y_x {v in verfahren, n in produkte:  x[n,v]<= y[v] * xMax[n]; }		
