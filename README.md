@@ -58,6 +58,7 @@ Please use the GitHub functionalities to post issues and bugs at https://github.
 ### CMPL
 
 Thomas Schleiff - Halle(Saale), Germany
+
 Mike Steglich - Technical University of Applied Sciences Wildau, Germany 
 
 ### Coliop, pyCMPL and CMPLServer
@@ -67,6 +68,7 @@ Mike Steglich - Technical University of Applied Sciences Wildau, Germany
 ### jCMPL
 
 Mike Steglich - Technical University of Applied Sciences Wildau, Germany 
+
 Bernhard Knie - formerly Technical University of Applied Sciences Wildau, Germany
 
 
