@@ -59,6 +59,7 @@
 #define MODULE_CONF_ORDER_SOLVERCPLEX	202 		// solver cplex
 #define MODULE_CONF_ORDER_SOLVERGUROBI	203 		// solver gurobi
 #define MODULE_CONF_ORDER_SOLVERSCIP    204         // solver scip
+#define MODULE_CONF_ORDER_SOLVERHIGHS    205         // solver scip
 
 #define MODULE_CONF_ORDER_SOLUTIONASCII 300         // ascii solution report
 #define MODULE_CONF_ORDER_SOLUTIONCSV   301         // csv solution report

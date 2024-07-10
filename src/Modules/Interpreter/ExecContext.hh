@@ -127,7 +127,7 @@ namespace cmpl
 
 		CmplVal _opRes;								///< store for operation result
 
-        StackValue *_assRhs;						///< current assign: right hand side or NULL
+        intType _assRhsNo;                          ///< current assign: position of right hand side on the value stack or -1 when not set
         intType _assObjType;						///< current assign: object type or -1 when no one
         ValType *_assDataType;						///< current assign: data type or NULL
         unsigned _assSyntaxElem;					///< current assign: id of syntax element
@@ -332,7 +332,12 @@ namespace cmpl
 		/**
 		 * pointer to current element on the stack
 		 */
-		inline StackValue *stackCur()						{ return (_stack + (_stackTop-1)); }
+        inline StackValue *stackCur() const 				{ return (_stack + (_stackTop-1)); }
+
+        /**
+         * pointer to right hand side of current assign / NULL if no current assign
+         */
+        inline StackValue *assRhs() const                   { return (_assRhsNo >= 0 ? (_stack + _assRhsNo) : NULL); }
 
 		/**
 		 * pointer to previous element on the stack relative to a given element

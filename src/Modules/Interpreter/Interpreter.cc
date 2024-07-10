@@ -61,6 +61,9 @@ namespace cmpl
 		if (_syntaxElems)
 			delete _syntaxElems;
 
+        if (_globSymbols)
+            delete[] _globSymbols;
+
         // (_resMatrix darf nicht freigegeben werden, da in _data referenziert)
         //TODO
 	}

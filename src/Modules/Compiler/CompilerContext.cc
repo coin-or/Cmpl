@@ -606,7 +606,7 @@ namespace cmpl
 	bool CompilerContext::testCompControlCB(SyntaxElement *elem, LocationInfo& loc, bool rhs)
 	{
 		AssignModificators& am = curParseScope()->_assignModCurrent;
-		ModificatorKey cb;
+        ModificatorKey cb = modificatorDummy;
 
 		if (am.isControlCBAssign(this, &loc, cb)) {
 			compControlCB(elem, cb, NULL, rhs);
@@ -1059,7 +1059,7 @@ namespace cmpl
     {
         if (!checkOnly()) {
             IntCode::IcElem *p = _code + addr;
-            if (p->tp != IntCode::icTypeCommand || p->v.c.major != INTCODE_FETCH || p->v.c.par & ICPAR_FETCH_SUBSYM == 0)
+            if (p->tp != IntCode::icTypeCommand || p->v.c.major != INTCODE_FETCH || (p->v.c.par & ICPAR_FETCH_SUBSYM) == 0)
                 _modp->ctrl()->errHandler().internalError("wrong code address in CompilerContext::compChangeFetchSubLval()");
 
             if (mNew)
@@ -1178,7 +1178,7 @@ namespace cmpl
 		IntCode::IcElem *p;
 
 		// codeblock control has own statements
-		ModificatorKey cb;
+        ModificatorKey cb = modificatorDummy;
 		if (e->isControlCBAssign(cb)) {
 			return compControlCB(elem, cb, expLhs, (expRhs ? true : false));
 		}
@@ -1206,6 +1206,7 @@ namespace cmpl
                 p = _code + addr;
 				for (unsigned i = addr; i < _codeCnt-1; i++, p++) {
 					if (p->tp == IntCode::icTypeCommand && p->v.c.major == INTCODE_FETCH) {
+                        i++;
 						p++;
 						if (symnrs.count(p->v.n.n1) > 0) {
 							volaRhs = true;
@@ -1724,7 +1725,7 @@ namespace cmpl
 
 		_codeCnt = addr;
 		compLineNamePref(elem, lnp);
-		if (_codeCnt == addr + 1);
+        if (_codeCnt == addr + 1)
 			compNop(elem, _codeCnt, 0);
 
 		// compile reset of line name prefix

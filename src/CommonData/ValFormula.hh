@@ -93,6 +93,24 @@ namespace cmpl
          */
         virtual CmplVal *getPart(unsigned i)        { return NULL; }
 
+        /**
+         * check whether this formula has its canonical form
+         * @param chg   change this to canonical form if it is necessary and possible
+         * @return      return whether formula has now a canonical form
+         */
+        virtual bool canonicalForm(bool chg) = 0;       // pure virtual to make an abstract class
+
+        /**
+         * check whether this is equal to second formula (formulas should be in canonical form)
+         * @param f2    second formula
+         * @return
+         */
+        virtual bool equals(ValFormula *f2)         { return (this == f2); }
+
+        /**
+         * get hash for formula
+         */
+        virtual size_t formulahash()                { return hash<unsigned long>{}((unsigned long)this); }
 
     public:
         /************** functions for model properties **********/
@@ -227,8 +245,9 @@ namespace cmpl
         /**
          * get factor of a term
          * @param i		number of term
+         * @param ae    return factor even if empty
          */
-        virtual CmplVal *termFac(unsigned i)        { return NULL; }
+        virtual CmplVal *termFac(unsigned i, bool ae = false)    { return NULL; }
 
         /**
          * get factor of a term
@@ -370,9 +389,10 @@ namespace cmpl
         /**
          * get factor of a term
          * @param i		number of term
+         * @param ae    return factor even if empty
          * @return
          */
-        CmplVal *termFac(unsigned i) override           { return (i == 0 && _factor ? &_factor : NULL); }
+        CmplVal *termFac(unsigned i, bool ae = false) override   { return (i == 0 && (_factor || ae) ? &_factor : NULL); }
 
         /**
          * get factor of a term
@@ -380,6 +400,18 @@ namespace cmpl
          * @return
          */
         CmplVal *termVar(unsigned i) override           { return (i == 0 ? &_optVar : NULL); }
+
+        /**
+         * check whether this is equal to second formula (formulas should be in canonical form)
+         * @param f2    second formula
+         * @return
+         */
+        bool equals(ValFormula *f2) override;
+
+        /**
+         * get hash for formula
+         */
+        size_t formulahash() override                   { return (hash<unsigned long>{}((unsigned long)(_optVar.optVar()->id())) ^ (hash<unsigned long>{}((unsigned long)(_factor.v.i)) << 16)); }
 
         /**
          * write contents of the object to a stream
@@ -480,6 +512,18 @@ namespace cmpl
          * @param prop          properties of optimization model
          */
         void setModelProperties(OptModel::Properties& prop) const override;
+
+        /**
+         * check whether this is equal to second formula (formulas should be in canonical form)
+         * @param f2    second formula
+         * @return
+         */
+        bool equals(ValFormula *f2) override;
+
+        /**
+         * get hash for formula
+         */
+        size_t formulahash() override                   { return (hash<unsigned long>{}((unsigned long)(_optVars[0].optVar()->id())) ^ (_optVars.size() > 1 ? hash<unsigned long>{}((unsigned long)(_optVars[1].optVar()->id())) << 8 : 0) ^ (hash<unsigned long>{}((unsigned long)(_factor.v.i + _optVars.size())) << 16)); }
 
         /**
          * write contents of the object to a stream
@@ -612,8 +656,10 @@ namespace cmpl
         /**
          * get factor of a term
          * @param i		number of term
+         * @param ae    return factor even if empty
+         * @return
          */
-        CmplVal *termFac(unsigned i) override           { unsigned j = 2*i; return (j < _terms.size() && _terms[j] ? &(_terms[j]) : NULL); }
+        CmplVal *termFac(unsigned i, bool ae = false) override   { unsigned j = 2*i; return (j < _terms.size() && (_terms[j] || ae) ? &(_terms[j]) : NULL); }
 
         /**
          * get factor of a term
@@ -632,6 +678,18 @@ namespace cmpl
          * @return              binary variable / NULL: other formula
          */
         OptVar* asSingleBin(bool& neg) override;
+
+        /**
+         * check whether this is equal to second formula (formulas should be in canonical form)
+         * @param f2    second formula
+         * @return
+         */
+        bool equals(ValFormula *f2) override;
+
+        /**
+         * get hash for formula
+         */
+        size_t formulahash() override                   { return (hash<unsigned long>{}((unsigned long)(_terms[1].optVar()->id())) ^ (hash<unsigned long>{}((unsigned long)(_terms[_terms.size()-1].optVar()->id())) << 8) ^ (hash<unsigned long>{}((unsigned long)(_terms[0].v.i + _constTerm.v.i + _terms.size())) << 16)); }
 
         /**
          * write contents of the object to a stream
@@ -709,12 +767,12 @@ namespace cmpl
         /**
          * constructor
          */
-        inline ValFormulaCompare(unsigned se, CmplVal *ls, CmplVal *rs, bool ge, bool le, bool neg, bool ag = false): ValFormula(se), _leftSide(ls), _rightSide(rs), _compGe(ge), _compLe(le), _compNeg(neg), _autogen(ag)                  { checkSwapSides(); }
+        inline ValFormulaCompare(unsigned se, CmplVal *ls, CmplVal *rs, bool ge, bool le, bool neg, bool ag = false): ValFormula(se), _leftSide(ls), _rightSide(rs), _compGe(ge), _compLe(le), _compNeg(neg), _autogen(ag)                  { }
 
         /**
          * constructor
          */
-        inline ValFormulaCompare(unsigned se, ValFormula *ls, CmplVal *rs, bool ge, bool le, bool neg, bool ag = false): ValFormula(se), _leftSide(TP_FORMULA, ls), _rightSide(rs), _compGe(ge), _compLe(le), _compNeg(neg), _autogen(ag)   { checkSwapSides(); }
+        inline ValFormulaCompare(unsigned se, ValFormula *ls, CmplVal *rs, bool ge, bool le, bool neg, bool ag = false): ValFormula(se), _leftSide(TP_FORMULA, ls), _rightSide(rs), _compGe(ge), _compLe(le), _compNeg(neg), _autogen(ag)   { }
 
         /**
          * destructor
@@ -777,17 +835,24 @@ namespace cmpl
         CmplVal *getPart(unsigned i) override       { return (i == 0 ? &_leftSide : (i == 1 ? &_rightSide : NULL)); }
 
         /**
+         * check whether this is equal to second formula (formulas should be in canonical form)
+         * @param f2    second formula
+         * @return
+         */
+        bool equals(ValFormula *f2) override;
+
+        /**
+         * get hash for formula
+         */
+        size_t formulahash() override                   { return (hash<unsigned long>{}((unsigned long)(_compLe ? 1 : 0) + (_compGe ? 2 : 0) + (_compNeg ? 4 : 0)) ^ ((_leftSide.t == TP_FORMULA ? _leftSide.valFormula()->formulahash() : hash<unsigned long>{}((unsigned long)_leftSide.v.i)) << 4) ^ ((_rightSide.t == TP_FORMULA ? _rightSide.valFormula()->formulahash() : hash<unsigned long>{}((unsigned long)_rightSide.v.i)) << 8)); }
+
+        /**
          * write contents of the object to a stream
          * @param modp			calling module
          * @param mode			mode for output: 0=direct; 1=part of other value
          */
         void write(ostream& ostr, ModuleBase *modp, int mode = 0) const override    { ostr << "<f-cmp: "; _leftSide.write(ostr, modp, 1); ostr << (_compNeg ? (_compGe ? (_compLe ? " <> " : " < ") : " > ") : (_compGe ? (_compLe ? " = " : " >= ") : " <= ")); _rightSide.write(ostr, modp, 1); ostr << '>'; }
 
-    private:
-        /**
-         * swap sides to ensure that a simple value stands on the right side
-         */
-        void checkSwapSides();
 
         /************** filling linear model **********/
     public:
@@ -862,7 +927,7 @@ namespace cmpl
          * @param f         formula to minimize or to maximize, should be TP_FORMULA
          * @param ma        true: maximize; false: minimize
          */
-        ValFormulaObjective(unsigned se, CmplVal *f, bool ma);
+        ValFormulaObjective(unsigned se, CmplVal *f, bool ma): ValFormula(se), _formula(f), _maximize(ma)   { }
 
         /**
          * destructor
@@ -916,6 +981,18 @@ namespace cmpl
          * get true if formula is to maximize or false if it is to minimize
          */
         bool maximize()                             { return _maximize; }
+
+        /**
+         * check whether this is equal to second formula (formulas should be in canonical form)
+         * @param f2    second formula
+         * @return
+         */
+        bool equals(ValFormula *f2) override;
+
+        /**
+         * get hash for formula
+         */
+        size_t formulahash() override                   { return (hash<unsigned long>{}((unsigned long)(_maximize ? 1 : 0)) ^ ((_formula.t == TP_FORMULA ? _formula.valFormula()->formulahash() : hash<unsigned long>{}((unsigned long)_formula.v.i)) << 1)); }
 
         /**
          * write contents of the object to a stream
@@ -1067,6 +1144,18 @@ namespace cmpl
         CmplVal *getPart(unsigned i) override       { return (i < _formulas.size() ? &(_formulas[i]) : NULL); }
 
         /**
+         * check whether this is equal to second formula (formulas should be in canonical form)
+         * @param f2    second formula
+         * @return
+         */
+        bool equals(ValFormula *f2) override;
+
+        /**
+         * get hash for formula
+         */
+        size_t formulahash() override                   { return (hash<unsigned long>{}((unsigned long)(_logNeg ? 1 : 0) + (_logOr ? 2 : 0) + (_formulas.size() << 2)) ^ ((_formulas[0].t == TP_FORMULA ? _formulas[0].valFormula()->formulahash() : hash<unsigned long>{}((unsigned long)_formulas[0].v.i)) << 4) ^ ((_formulas[_formulas.size()-1].t == TP_FORMULA ? _formulas[_formulas.size()-1].valFormula()->formulahash() : hash<unsigned long>{}((unsigned long)_formulas[_formulas.size()-1].v.i)) << 8)); }
+
+        /**
          * write contents of the object to a stream
          * @param modp			calling module
          * @param mode			mode for output: 0=direct; 1=part of other value
@@ -1095,7 +1184,7 @@ namespace cmpl
             CmplValAuto _posCond;                   ///< condition which must be true for this part of formula (can only be TP_FORMULA (but not ValFormulaCond) or TP_EMPTY)
             vector<CmplValAuto> _negConds;          ///< conditions which must be false for this part of formula (can only be TP_FORMULA (but not ValFormulaCond))
 
-            CmplValAuto _val;                       ///< value of this part (is value of the formula, if the conditions match) (can be a numeric type or TP_FORMULA (also ValFormulaCond))
+            CmplValAuto _val;                       ///< value of this part (value of the formula, if the conditions match) (can be a numeric type or TP_FORMULA (also ValFormulaCond))
 
         public:
             /**
@@ -1119,6 +1208,25 @@ namespace cmpl
              * @return
              */
             CmplVal *getPart(unsigned i) override       { return (i == 0 ? &_val : (i == 1 ? &_posCond : (i < _negConds.size() + 2 ? &(_negConds.at(i - 2)) : NULL))); }
+
+            /**
+             * check whether this formula has its canonical form
+             * @param chg   change this to canonical form if it is necessary and possible
+             * @return      return whether formula has now a canonical form
+             */
+            bool canonicalForm(bool chg) override       { return false; }       // canonical form not implemented for this type of formula
+
+            /**
+             * check whether this is equal to second formula (formulas should be in canonical form)
+             * @param f2    second formula
+             * @return
+             */
+            bool equals(ValFormula *f2) override;
+
+            /**
+             * get hash for formula
+             */
+            size_t formulahash() override                   { return (hash<unsigned long>{}((unsigned long)_negConds.size()) ^ ((_posCond.t == TP_FORMULA ? _posCond.valFormula()->formulahash() : hash<unsigned long>{}((unsigned long)_posCond.v.i)) << 4) ^ ((_val.t == TP_FORMULA ? _val.valFormula()->formulahash() : hash<unsigned long>{}((unsigned long)_val.v.i)) << 8)); }
         };
 
     protected:
@@ -1226,6 +1334,18 @@ namespace cmpl
          * @return
          */
         CmplVal *getPart(unsigned i) override       { return (i < _parts.size() ? &(_parts[i]) : NULL); }
+
+        /**
+         * check whether this is equal to second formula (formulas should be in canonical form)
+         * @param f2    second formula
+         * @return
+         */
+        bool equals(ValFormula *f2) override;
+
+        /**
+         * get hash for formula
+         */
+        size_t formulahash() override                   { size_t res = 0; for (unsigned i = 0; i < _parts.size(); i++) { res ^= (_parts[i].valFormula()->formulahash() << i); } return res; }
 
         /**
          * write contents of the object to a stream

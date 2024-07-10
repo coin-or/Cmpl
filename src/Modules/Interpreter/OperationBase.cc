@@ -223,6 +223,17 @@ namespace cmpl
                     res.set(TP_BIN, (op != ICS_OPER_EQ2));
                 }
                 else {
+                    // temporary add additional reference to the scalar argument, in order to prevent reusing of its value object within the operation
+                    CmplValAuto rsa;
+                    if (!df1) {
+                        if (a1s->useValP())
+                            rsa.copyFrom(a1s);
+                    }
+                    else if (!df2) {
+                        if (a2s->useValP())
+                            rsa.copyFrom(a2s);
+                    }
+
                     for (unsigned long i = 0; i < arr->size(); i++)
                         execBinaryOper(ctx, arr->at(i), se, op, cmpFollow, (df1 ? a1->val().array()->at(i) : a1s), (df2 ? a2->val().array()->at(i) : a2s));
                 }
@@ -312,8 +323,8 @@ namespace cmpl
             }
             else {
                 CmplVal sempty(TP_SET_EMPTY);
-                CmplVal& df1 = (a1->val().t == TP_SET_NULL ? sempty : a1->val().array()->defset());
-                CmplVal& df2 = (a2->val().t == TP_SET_NULL ? sempty : a2->val().array()->defset());
+                CmplVal& df1 = (a1->val().t == TP_NULL ? sempty : a1->val().array()->defset());
+                CmplVal& df2 = (a2->val().t == TP_NULL ? sempty : a2->val().array()->defset());
 
                 if (op == ICS_OPER_MUL) {
                     if (!resultSetMatrixMult(ctx, res, mm, se, a1, a2, df1, df2))
@@ -836,8 +847,9 @@ namespace cmpl
      * @param ctx			execution context
      * @param res			store for result value
      * @param se			syntax element id of operation
+     * @param noReuse       don't reuse this even if it has only one reference
      */
-    void OperationBase::notF(ExecContext *ctx, CmplVal *res, unsigned se)
+    void OperationBase::notF(ExecContext *ctx, CmplVal *res, unsigned se, bool noReuse)
     {
         res->set(TP_FORMULA, new ValFormulaLogConOp(se, true, dynamic_cast<ValFormula *>(this)), true);
     }
@@ -1753,7 +1765,7 @@ namespace cmpl
             od = 1;
         }
 
-        ValFormulaObjective *f = new ValFormulaObjective(se, a1, (od > 0));
+        ValFormulaObjectiveOp *f = new ValFormulaObjectiveOp(se, a1, (od > 0));
         res->set(TP_FORMULA, f);
     }
 
@@ -2674,19 +2686,215 @@ namespace cmpl
         _linear = true;
     }
 
+    /**
+     * get factor and variable of a term within a formula
+     * @param frm           formula
+     * @param i             number of term
+     * @param tfac          return of factor within the term (or TP_EMPTY if factor is 1)
+     * @param tvar          return of variable (can also be product of variables) within the term
+     * @param tlin          return whether term is linear (false if tvar contains a product of variables)
+     * @return              true if result is returned / false if arguments are not suitable
+     */
+    bool ValFormulaLinearCombOp::getTermFacVar(ValFormula *frm, unsigned i, CmplVal& tfac, CmplVal& tvar, bool& tlin)
+    {
+        ValFormulaLinearComb *flc = dynamic_cast<ValFormulaLinearComb *>(frm);
+        if (flc) {
+            if (i < 0 || i >= flc->termCnt())
+                return false;
+
+            tfac.copyFrom(flc->getPart(2*i + 1));
+            tvar.copyFrom(flc->getPart(2*i + 2));
+            tlin = (tvar.t == TP_OPT_VAR);
+            return true;
+        }
+
+        ValFormulaVar *fv = dynamic_cast<ValFormulaVar *>(frm);
+        if (fv) {
+            if (i != 0)
+                return false;
+
+            tfac.copyFrom(fv->getPart(0));
+            tvar.copyFrom(fv->getPart(1));
+            tlin = true;
+            return true;
+        }
+
+        ValFormulaVarProd *fvp = dynamic_cast<ValFormulaVarProd *>(frm);
+        if (fvp) {
+            if (i != 0)
+                return false;
+
+            tfac.copyFrom(fv->getPart(0));
+
+            ValFormulaVarProdOp *nfvp;
+            tvar.dispSet(TP_FORMULA, nfvp = new ValFormulaVarProdOp(fvp));
+            nfvp->getPart(0)->unset();
+
+            tlin = false;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * add a new term to this linear combination
+     * @param tfac          factor for term
+     * @param tvar          variable (can also be product of variables) within the term
+     * @param neg           negate factor
+     */
+    void ValFormulaLinearCombOp::addTermFacVar(CmplVal& tfac, CmplVal& tvar, bool neg)
+    {
+        if (tfac && !tfac.isScalarNumber())
+            throw invalid_argument("factor for term must be a scalar number");
+
+        ValFormulaVarProd *fvp = (tvar.t == TP_FORMULA ? dynamic_cast<ValFormulaVarProd *>(tvar.valFormula()) : NULL);
+        if ((tvar.t != TP_OPT_VAR && !fvp) || (fvp && !fvp->getPart(0)->isNumOne(true)))
+            throw invalid_argument("variable for term must be a variable or product of variables");
+
+        if (!neg) {
+            _terms.push_back(tfac);
+        }
+        else {
+            CmplVal tfacn(TP_INT, (intType)0);
+            if (tfac)
+                tfacn.numAdd(tfac, true);
+            else
+                tfacn.set(TP_INT, (intType)-1);
+
+            _terms.push_back(tfacn);
+        }
+
+        _terms.push_back(tvar);
+
+        if (_linear && fvp)
+            _linear = false;
+    }
+
 
 
     /************** ValFormulaCompareOp **********/
+
+    /**
+     * check whether this formula has its canonical form
+     * @param chg   change this to canonical form if it is necessary and possible
+     * @return      return whether formula has now a canonical form
+     */
+    bool ValFormulaCompareOp::canonicalForm(bool chg)
+    {
+        // canonical form is: <linear combination> relation <scalar number>
+        // check for canonical form
+        bool cnf = false;
+        if (_rightSide.isScalarNumber() && _leftSide.t == TP_FORMULA) {
+            ValFormulaLinearCombBase *lcb = dynamic_cast<ValFormulaLinearCombBase *>(_leftSide.valFormula());
+            if (lcb) {
+                CmplVal *constTerm = lcb->constTerm();
+                if (!constTerm || !*constTerm)
+                    cnf = true;
+            }
+        }
+
+        // change to canonical form
+        if (!cnf && chg) {
+            checkSwapSides();
+
+            if (_leftSide.t != TP_FORMULA || (!_rightSide.isScalarNumber() && _rightSide.t != TP_FORMULA))
+                return false;
+
+            ValFormula *lf = _leftSide.valFormula();
+            ValFormula *rf = (_rightSide.t == TP_FORMULA ? _rightSide.valFormula() : NULL);
+
+            // left side: change to ValFormulaLinearComb if necessary
+            ValFormulaLinearCombOp *llc = dynamic_cast<ValFormulaLinearCombOp *>(lf);
+            if (!llc) {
+                CmplValAuto tfac, tvar;
+                bool tlin;
+                if (!ValFormulaLinearCombOp::getTermFacVar(lf, 0, tfac, tvar, tlin))
+                    return false;
+
+                _leftSide.dispSet(TP_FORMULA, llc = new ValFormulaLinearCombOp(lf->syntaxElem()));
+                llc->addTermFacVar(tfac, tvar);
+            }
+
+            // right side: move all but a scalar value to left side
+            if (rf) {
+                CmplValAuto scal;
+                CmplValAuto tfac, tvar;
+                bool tlin;
+
+                ValFormulaLinearCombOp *rlc = dynamic_cast<ValFormulaLinearCombOp *>(rf);
+                if (rlc) {
+                    for (unsigned i = 0; i < rlc->termCnt(); i++) {
+                        ValFormulaLinearCombOp::getTermFacVar(rlc, 0, tfac, tvar, tlin);
+                        llc->addTermFacVar(tfac, tvar, true);
+                    }
+
+                    scal.copyFrom(rlc->constTerm());
+                    if (!scal)
+                         scal.set(TP_INT, 0);
+                }
+                else {
+                    if (!ValFormulaLinearCombOp::getTermFacVar(rf, 0, tfac, tvar, tlin))
+                        return false;
+
+                    llc->addTermFacVar(tfac, tvar, true);
+                    scal.set(TP_INT, 0);
+                }
+
+                _rightSide.copyFrom(scal);
+            }
+
+            // move a scalar value from left side to right side
+            CmplVal *lct = llc->constTerm();
+            if (*lct) {
+                _rightSide.numAdd(*lct, true);
+                lct->dispUnset();
+            }
+
+            // if the left side has a canonical form then change it to it
+            llc->canonicalForm(true);
+        }
+
+        return cnf;
+    }
+
+
+    /**
+     * swap sides to ensure that a simple value stands on the right side
+     */
+    void ValFormulaCompareOp::checkSwapSides()
+    {
+        if (_leftSide.isScalarNumber()) {
+            CmplVal s;
+            s.moveFrom(_leftSide);
+            _leftSide.moveFrom(_rightSide);
+            _rightSide.moveFrom(s);
+
+            swap(_compGe, _compLe);
+        }
+
+        if (_leftSide.t == TP_OPT_VAR) {
+            CmplVal f(TP_FORMULA, new ValFormulaVarOp(syntaxElem(), _leftSide.optVar()));
+            _leftSide.moveFrom(f, true);
+        }
+
+        if (_rightSide.t == TP_OPT_VAR) {
+            CmplVal f(TP_FORMULA, new ValFormulaVarOp(syntaxElem(), _rightSide.optVar()));
+            _rightSide.moveFrom(f, true);
+        }
+    }
+
 
     /**
      * logical Not for formula
      * @param ctx			execution context
      * @param res			store for result value
      * @param se			syntax element id of operation
+     * @param noReuse       don't reuse this even if it has only one reference
      */
-    void ValFormulaCompareOp::notF(ExecContext *ctx, CmplVal *res, unsigned se)
+    void ValFormulaCompareOp::notF(ExecContext *ctx, CmplVal *res, unsigned se, bool noReuse)
     {
-        ValFormulaCompareOp *f = (refCnt() > 1 ? new ValFormulaCompareOp(this) : this);
+        ValFormulaCompareOp *f = (noReuse || refCnt() > 1 ? new ValFormulaCompareOp(this) : this);
         res->set(TP_FORMULA, f, true);
         f->_compNeg = (_compNeg ? false : true);
     }
@@ -2787,10 +2995,11 @@ namespace cmpl
      * @param ctx			execution context
      * @param res			store for result value
      * @param se			syntax element id of operation
+     * @param noReuse       don't reuse this even if it has only one reference
      */
-    void ValFormulaLogConOp::notF(ExecContext *ctx, CmplVal *res, unsigned se)
+    void ValFormulaLogConOp::notF(ExecContext *ctx, CmplVal *res, unsigned se, bool noReuse)
     {
-        ValFormulaLogConOp *f = (refCnt() > 1 ? new ValFormulaLogConOp(this) : this);
+        ValFormulaLogConOp *f = (noReuse || refCnt() > 1 ? new ValFormulaLogConOp(this) : this);
         res->set(TP_FORMULA, f, true);
         f->_logNeg = (_logNeg ? false : true);
     }
@@ -3031,8 +3240,9 @@ namespace cmpl
      * @param ctx			execution context
      * @param res			store for result value
      * @param se			syntax element id of operation
+     * @param noReuse       don't reuse this even if it has only one reference
      */
-    void ValFormulaCondOp::notF(ExecContext *ctx, CmplVal *res, unsigned se)
+    void ValFormulaCondOp::notF(ExecContext *ctx, CmplVal *res, unsigned se, bool noReuse)
     {
         CmplValAuto t;
         if (convertToFormulaLogCon(ctx, &t, se, true))
@@ -3256,6 +3466,90 @@ namespace cmpl
         res->copyFrom(_binaryFormula);
         return true;
     }
+
+    /**
+     * check this for simple form ("{ cond: optvar = scal1; }" or "{ cond: optvar = scal1; |: optvar = scal2; }")
+     * @param cond          return of condition
+     * @param optvar        return of optimization variable
+     * @param scal1         return of first scalar value
+     * @param scal2         return of second scalar value or TP_EMPTY if no one
+     * @return              true if simple form
+     */
+    bool ValFormulaCondOp::checkSimpleForm(CmplVal *cond, CmplVal *optvar, CmplVal *scal1, CmplVal *scal2)
+    {
+        if (!_binary || _parts.size() < 1 || _parts.size() > 2)
+            return false;
+
+        const Part *p1 = dynamic_cast<Part *>(_parts[0].valFormula());
+        if (p1->_posCond.t != TP_FORMULA || p1->_negConds.size() != 0 || p1->_val.t != TP_FORMULA)
+            return false;
+
+        ValFormulaCompare *c1 = dynamic_cast<ValFormulaCompare *>(p1->_val.valFormula());
+        if (!c1 || !c1->isCompGe() || !c1->isCompLe() || c1->isNeg())
+            return false;
+
+        ValFormulaCompare *c2 = NULL;
+        if (_parts.size() > 1) {
+            const Part *p2 = dynamic_cast<Part *>(_parts[1].valFormula());
+            if (p2->_posCond || p2->_negConds.size() != 1 || p2->_val.t != TP_FORMULA)
+                return false;
+
+            c2 = dynamic_cast<ValFormulaCompare *>(p2->_val.valFormula());
+            if (!c2 || !c2->isCompGe() || !c2->isCompLe() || c2->isNeg())
+                return false;
+        }
+
+        CmplVal *p1a = c1->getPart(0);
+        CmplVal *p1b = c1->getPart(1);
+        CmplVal *p2a = (c2 ? c2->getPart(0) : NULL);
+        CmplVal *p2b = (c2 ? c2->getPart(1) : NULL);
+        if ((!p1a->isScalarNumber() && !p1b->isScalarNumber()) || (c2 && !p2a->isScalarNumber() && !p2b->isScalarNumber()))
+            return false;
+
+        CmplVal *vf1 = (!p1a->isScalarNumber() ? p1a : p1b);
+        CmplVal *vf2 = (c2 ? (!p2a->isScalarNumber() ? p2a : p2b) : NULL);
+
+        CmplVal *v1 = NULL;
+        if (vf1->t == TP_OPT_VAR) {
+            v1 = vf1;
+        }
+        else if (vf1->t == TP_FORMULA) {
+            ValFormulaVar *vv = dynamic_cast<ValFormulaVar *>(vf1->valFormula());
+            if (vv) {
+                if (vv->getPart(0)->isNumOne(true) && vv->getPart(1)->t == TP_OPT_VAR)
+                    v1 = vv->getPart(1);
+            }
+        }
+        if (!v1)
+            return false;
+
+        if (c2) {
+            CmplVal *v2 = NULL;
+            if (vf2->t == TP_OPT_VAR) {
+                v2 = vf2;
+            }
+            else if (vf2->t == TP_FORMULA) {
+                ValFormulaVar *vv = dynamic_cast<ValFormulaVar *>(vf2->valFormula());
+                if (vv) {
+                    if (vv->getPart(0)->isNumOne(true) && vv->getPart(1)->t == TP_OPT_VAR)
+                        v2 = vv->getPart(1);
+                }
+            }
+            if (!v2 || v2->optVar() != v1->optVar())
+                return false;
+        }
+
+        cond->copyFrom(p1->_posCond);
+        optvar->copyFrom(v1);
+        scal1->copyFrom(p1a->isScalarNumber() ? p1a : p1b);
+        if (c2)
+            scal2->copyFrom(p1a->isScalarNumber() ? p2a : p2b);
+        else
+            scal2->unset();
+
+        return true;
+    }
+
 
     /**
      * execute binary operation for every part of the conditional value

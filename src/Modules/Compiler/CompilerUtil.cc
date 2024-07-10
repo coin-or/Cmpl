@@ -938,11 +938,11 @@ namespace cmpl
 				}
 			}
 
-			delete _symbols;
+            delete[] _symbols;
 		}
 	
 		if (_names)
-			delete _names;
+            delete _names;
 	}
 
 	/**
@@ -1172,7 +1172,7 @@ namespace cmpl
 
 		// check if codeblock control modificator is used outside of a codeblock, or together with other modificators
         if (_lval && _lvalSym.size() > 0 && _assignMod->_defControlCB != assignModLevelUndefined) {
-			ModificatorKey cb;
+            ModificatorKey cb = modificatorDummy;
 			_assignMod->isControlCBAssign(comp, &_loc, cb);
 		}
 

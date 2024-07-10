@@ -2,7 +2,7 @@
 
 CMPL (<Coliop|Coin> Mathematical Programming Language) is a mathematical programming language and a system for mathematical programming and optimisation of linear optimisation problems.
 The CMPL syntax is similar in formulation to the original mathematical model but also includes syntactic elements from modern programming languages. CMPL is intended to combine the clarity of mathematical models with the flexibility of programming languages.
-CMPL executes CBC, GLPK, Gurobi, SCIP or CPLEX directly to solve the generated model instance. Because it is also possible to transform the mathematical problem into MPS or Free-MPS, alternative solvers can be used.
+CMPL executes HiGHS, SCIP, CBC, GLPK, Gurobi or CPLEX directly to solve the generated model instance. The CMPL package contains HiGHS as a standard solver as well as SCIP. Because it is also possible to transform the mathematical problem into MPS or Free-MPS, alternative solvers can be used.
 CMPL is an open-source project licensed under GPL. It is written in C++ and is available for most of the relevant operating systems (Windows, OS X and Linux). 
 
 The CMPL distribution contains Coliop which is CMPL’s IDE (Integrated Development Environment). Coliop is an open-source project licensed under GPL. It is written in C++ and is as an integral part of the CMPL distribution. 
@@ -28,14 +28,15 @@ An installation is not required after unpacking the ZIP or tar.gz file. The CMPL
 
 ### macOS
 
-The CMPL package works out of the box in any folder. After unpacking the ZIP file, the following steps must be carried out once at the first start:
+To use CMPL on macOS the following installation steps are necessary:
+ 1. Download CMPL from  http://www.coliop.org
+ 2. Unzip CMPL package and copy (or move) the Cmpl2 folder to ```/Applications```
+ 3. Open Terminal
+The easiest way to open Terminal is to press ```Cmd+Space``` to open Spotlight Search. Afterward type type ```Terminal``` in the Spotlight input field. Simply select the Terminal entry in the search result list to open Terminal.
+ 4. Run Cmpl setup script in Terminal (just copy and paste the following command and press enter)
+    ```/Applications/Cmpl2/cmpl_setup``` 
+To start CmplShell, the link cmplShell in  ```/Applications/Cmpl2``` have to be double-clicked. In addition a user can do so in Coliop (Menu Actions -> Open CmplShell). To start ```cmpl``` on the command line please use it inside CmplShell.   If ```cmpl.opt``` or ```cmplServer.opt``` need to be edited, just open them via the links in the ```/Applications/Cmpl2/opt``` subfolder. 
 
- * While holding down the "ctrl" key, click on the icon of the Coliop app and select "Open" from the context menu.
- * In the appearing dialogue, click on "Open".
-   
-The app is saved as an exception to your security settings so that you can open it in the future by double-clicking on it like a registered app. 
-To start CmplShell, the link ```cmplShell``` in  ```CMPLHOME``` have to be double-clicked. In addition a user can do so in Coliop (Menu Actions -> Open CmplShell). 
-To start cmpl on the command line please use it within CmplShell.  If ```cmpl.opt``` or ```cmplServer.opt``` need to be edited, just open them via the links in the ```CMPLHOME/opt``` subfolder. 
 
 
 # Source code
@@ -58,6 +59,7 @@ Please use the GitHub functionalities to post issues and bugs at https://github.
 ### CMPL
 
 Thomas Schleiff - Halle(Saale), Germany
+
 Mike Steglich - Technical University of Applied Sciences Wildau, Germany 
 
 ### Coliop, pyCMPL and CMPLServer
@@ -67,6 +69,7 @@ Mike Steglich - Technical University of Applied Sciences Wildau, Germany
 ### jCMPL
 
 Mike Steglich - Technical University of Applied Sciences Wildau, Germany 
+
 Bernhard Knie - formerly Technical University of Applied Sciences Wildau, Germany
 
 

@@ -54,7 +54,7 @@ void Solver::init(MainControl *ctrl, MainData *data, const char *name)
 {
     ModuleBase::init(ctrl, data, name);
 
-    _solverName="CBC";
+    _solverName="HIGHS";
     _solverBinName = "";
 
 #ifdef _WIN32
@@ -90,6 +90,7 @@ void Solver::init(MainControl *ctrl, MainData *data, const char *name)
 #define OPTION_SOLVER_OPTION        20
 #define OPTION_SOLVER_DISPLAY       30
 #define OPTION_SOLVER_INTEGERRELAXATION          40
+#define OPTION_OUT_MODEL_MPS_ADD_CON_UV         50
 
 
 
@@ -110,6 +111,9 @@ void Solver::regModOptions(vector<CmdLineOptList::RegOption> &modOptReg)
     REG_CMDL_OPTION( OPTION_SOLVER_DISPLAY, "display", 1, 200, CMDL_OPTION_NEG_NO_ARG, false );
 
     REG_CMDL_OPTION( OPTION_SOLVER_INTEGERRELAXATION, "int-relax", 0, 0, CMDL_OPTION_NEG_DELIV, false );
+
+    REG_CMDL_OPTION( OPTION_OUT_MODEL_MPS_ADD_CON_UV, "add-con-uv", 0, 1, CMDL_OPTION_NEG_NO_ARG, true );
+
 
 
 
@@ -174,7 +178,24 @@ bool Solver::parseOption(int ref, int prio, CmdLineOptList::SingleOption *opt)
     case OPTION_SOLVER_INTEGERRELAXATION:
         _integerRelaxation=true;
         return true;
-    }
+
+
+    case OPTION_OUT_MODEL_MPS_ADD_CON_UV:
+                if (opt->neg()) {
+                    _addConForUnusedVar = 0;
+                }
+                else if (opt->size() == 0) {
+                    _addConForUnusedVar = 1;
+                }
+                else {
+                    _addConForUnusedVar = opt->argAsInt(0, _ctrl);
+                    if (_addConForUnusedVar > 2)
+                        _addConForUnusedVar = 2;
+                    else if (_addConForUnusedVar < 0)
+                        _addConForUnusedVar = 0;
+                }
+                return true;
+     }
     return false;
 }
 
@@ -282,7 +303,7 @@ void Solver::deleteTmpFiles() {
         remove(_instanceFileName.c_str());
 
     if (FileBase::exists(_instanceSolName))
-        remove(_instanceFileName.c_str());
+        remove(_instanceSolName.c_str());
 
     if (FileBase::exists(_instanceCmdName))
         remove(_instanceCmdName.c_str());

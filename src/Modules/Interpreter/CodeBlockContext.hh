@@ -555,7 +555,7 @@ namespace cmpl
         /**
          * destructor
          */
-        virtual ~CBAssignInfoTuple()                { DELETE_UNSET(_cbFetchIDs); DELETE_UNSET(_tpLen); }
+        virtual ~CBAssignInfoTuple()                { DELETE_ARR_UNSET(_cbFetchIDs); DELETE_ARR_UNSET(_tpLen); }
 
         /**
          * set the values for codeblock symbols within the execution context

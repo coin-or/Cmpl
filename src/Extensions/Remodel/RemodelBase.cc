@@ -182,7 +182,7 @@ namespace cmpl
                     try {
                         *res += rme->remodelWorkStep(modp, om, ws);
                     }
-                    catch (exception ex) {
+                    catch (exception& ex) {
                         rme->outError(modp, ws, ex.what(), ERROR_LVL_NORMAL);
                         break;
                     }
@@ -472,6 +472,28 @@ namespace cmpl
         const SyntaxElement *sep = modp->syntaxElement(oc->syntaxElem());
         modp->ctrl()->errHandler().error(errLvl, ostr.str().c_str(), sep->loc());
     }
+
+
+    /**
+     * check whether this is equal to p2
+     * @param p2
+     * @return
+     */
+    bool FormulaCacheKey::operator ==(const FormulaCacheKey& p2) const
+    {
+        return ((_frm == p2._frm || _frm.valFormula()->equals(p2._frm.valFormula())));
+    }
+
+    /**
+     * get hash for a FormulaCacheKey
+     * @param p
+     * @return
+     */
+    size_t FormulaCacheKeyHash::operator() (FormulaCacheKey const& p) const noexcept
+    {
+        return p._frm.valFormula()->formulahash();
+    }
+
 }
 
 

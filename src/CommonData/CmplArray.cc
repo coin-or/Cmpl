@@ -166,7 +166,7 @@ namespace cmpl
 
 		_defset.dispose();
 
-		delete _array;
+        delete[] _array;
 	}
 
 

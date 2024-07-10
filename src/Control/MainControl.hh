@@ -32,7 +32,7 @@
 #ifndef MAINCONTROL_HH
 #define MAINCONTROL_HH
 
-#define CMPL_VERSION		"2.0.0"
+#define CMPL_VERSION		"2.1.0"
 
 #include <iostream>
 #include <string>
@@ -576,8 +576,8 @@ namespace cmpl
 		/**
 		 * get default name of module config file
 		 */
-		const char *modConfigFileDefault()			{ return ".modules"; }
-
+        //const char *modConfigFileDefault()			{ return ".modules"; }
+        const char *modConfigFileDefault()			{ return "modules.opt"; }
 		/**
 		 * add a module to <code>_modules</code>, if it not contained already
 		 * @param n				module name
@@ -629,7 +629,7 @@ namespace cmpl
 #define ARRAY_CAP_MIN           30          /* minimum capacity for array */
 #define ARRAY_CAP_GROW          0.1         /* relative growth for array */
 #define ARR_NEWCAP(oc)          (ARRAY_CAP_MIN >= ARRAY_CAP_GROW * oc ? (unsigned long)(oc + ARRAY_CAP_MIN) : (unsigned long)(oc * (1 + ARRAY_CAP_GROW)))
-#define ARR_REALLOC(p,t,l,c)    { t *__x = p; p = new t[c]; if(__x) { memcpy(p, __x, sizeof(t)*l); delete __x; } }
+#define ARR_REALLOC(p,t,l,c)    { t *__x = p; p = new t[c]; if(__x) { memcpy(p, __x, sizeof(t)*l); delete[] __x; } }
 
 
 #endif // MAINCONTROL_HH

@@ -805,7 +805,7 @@ namespace cmpl
      */
     CBAssignInfoComplex::~CBAssignInfoComplex()
     {
-        DELETE_UNSET(_cbFetchIDs);
+        DELETE_ARR_UNSET(_cbFetchIDs);
 
         for (oneInfo& oi : _info)
             delete[] oi._rank;
@@ -1150,11 +1150,13 @@ namespace cmpl
             else if (cbhRes.t == TP_FORMULA) {
                 if (_cbContext->_lastPart) {
                     //TODO? -> hier immer Fehler wegen Mix mit Iteration?
+                    ctx->valueError("mix of iterations and conditions over optimization variables is not allowed in same codeblock", cbhRes, head->syntaxElem(ctx));
+
                     //  oder Ausfuehrung auch hier, wenn spaet ausgewerteter Header auch ohne Iteration?
                     //      dann: Bedingung cbhRes im Codeblockkontext hinzufuegen
 
                     // rekursiv aufrufen
-                    execElem(thd, ctx, nextNextHead, curInd);
+                    //execElem(thd, ctx, nextNextHead, curInd);
 
                     // effektive Bedingung im Codeblockkontext wieder auf vorherigen Wert zurück
                     //  -> Ruecksetzen sollte nie notwendig sein, weil keine Iteration?

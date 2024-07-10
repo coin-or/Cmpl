@@ -124,7 +124,7 @@ void SolverCplex::run()
         GET_NEW_DATA(Solution,sol);
 
         string probName = StringStore::modelName(string( modp()->data()->cmplFileBase() ))+".cmpl";
-        sol->prepareSolutionData(probName, _solverName, _integerRelaxation, _data,this);
+        sol->prepareSolutionData(probName, _solverName, _integerRelaxation, _addConForUnusedVar, _data,this);
 
         generateCmdLine(om);
 

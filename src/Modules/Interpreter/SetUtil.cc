@@ -150,7 +150,7 @@ namespace cmpl
 			ctx->valueError("end value for algorithmic set must be a scalar integer value", end);
 
         SetAlg *sa;
-        bool no;
+        bool no = false;
         if (sb->hasUserOrder()) {
             // user order can be here only reverse order
             no = true;
@@ -490,7 +490,7 @@ namespace cmpl
 
 					if (!*subs) {
 						// no real subsets, subset array is not needed
-						delete subs;
+                        delete[] subs;
 						res->moveFrom(nsb, false);
 						return;
 					}
@@ -517,7 +517,7 @@ namespace cmpl
 						res->set(TP_SET_FIN, nsf);
 					}
 
-					delete subs;
+                    delete[] subs;
 					for (unsigned long j = 1; j <= bCnt; j++)
 						msubs[j+1].dispose();
 				}
@@ -1194,6 +1194,7 @@ namespace cmpl
                                 *a = vt.v.i;
                                 ins = i;
                                 a++;
+                                f = true;
                             }
 
                             *a = v;
@@ -1814,7 +1815,7 @@ namespace cmpl
         // if set hasn't at least two elements then no user order needed
         if (cnt <= 1) {
             if (hasOrderArr)
-                delete orderArr;
+                delete[] orderArr;
 
             if (!set && st && SetBase::hasUserOrder(st))
                 SetBase::stripOrder(st, res);
@@ -1851,7 +1852,7 @@ namespace cmpl
         }
         if (i == cnt) {
             if (hasOrderArr)
-                delete orderArr;
+                delete[] orderArr;
 
             if (!set && SetBase::hasUserOrder(st))
                 SetBase::stripOrder(st, res);
@@ -1866,7 +1867,7 @@ namespace cmpl
         }
         if (i == cnt) {
             if (hasOrderArr)
-                delete orderArr;
+                delete[] orderArr;
 
             setOrderNegRec(res, st);
             return true;
@@ -1877,7 +1878,7 @@ namespace cmpl
             setOrderArrRec(res, st, orderArr);
             if (res || !set) {
                 if (hasOrderArr)
-                    delete orderArr;
+                    delete[] orderArr;
                 return (bool)res;
             }
         }
@@ -1900,7 +1901,7 @@ namespace cmpl
         else {
             // user order for source set remains unchanged
             if (hasOrderArr)
-                delete orderArr;
+                delete[] orderArr;
 
             return false;
         }
@@ -1973,7 +1974,7 @@ namespace cmpl
                     else {
                         arr[i].copyFrom(ps, true, false);
                         if (apuo[i])
-                            delete apuo[i];
+                            delete[] apuo[i];
                     }
                 }
 
@@ -1982,11 +1983,11 @@ namespace cmpl
             else {
                 for (unsigned i = 0; i < r; i++) {
                     if (apuo[i])
-                        delete apuo[i];
+                        delete[] apuo[i];
                 }
             }
 
-            delete apuo;
+            delete[] apuo;
         }
 
         else if (set.t == TP_SET_FIN && (set.setFinite()->minRank() || orderArr[0] == 0)) {
@@ -2043,6 +2044,8 @@ namespace cmpl
 
                         if (!canonicalOrder(arr[i], ss, NULL, asuo))
                             arr[i].copyFrom(ss, true, false);
+
+                        // (asuo is consumed or deleted by canonicalOrder())
                     }
                     else {
                         arr[i].copyFrom(ss, true, false);
@@ -2050,11 +2053,13 @@ namespace cmpl
                 }
 
                 res.set(TP_SET_FIN, new SetFinite(nbs, arr, sf->minRank(), sf->maxRank()));
+
+                // (abuo is consumed or deleted by canonicalOrder())
             }
 
-            delete asi;
+            delete[] asi;
             if (!suc)
-                delete abuo;
+                delete[] abuo;
         }
 
         return suc;

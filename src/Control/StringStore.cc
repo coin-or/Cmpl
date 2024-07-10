@@ -72,12 +72,12 @@ namespace cmpl
 	{
 		if (_cap > 0) {
 			for (unsigned i = 0; i < _len; i++) {
-				delete _strings_ind[i];
+                delete[] _strings_ind[i];
 			}
 
-			delete _strings_ind;
-			delete _strings_sort;
-			delete _index;
+            delete[] _strings_ind;
+            delete[] _strings_sort;
+            delete[] _index;
 		}
 
 		init();

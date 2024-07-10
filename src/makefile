@@ -2,7 +2,8 @@
 # Makefile for cmpl
 
 export CXX ?= g++
-export CXXFLAGS ?= -DSTANDALONE -DPROTO -DCHDIR -ggdb -std=c++0x -Wall -Wno-parentheses -lpthread
+#export CXXFLAGS ?= -DSTANDALONE -DPROTO -DCHDIR -ggdb -std=c++0x -Wall -Wno-parentheses -lpthread
+export CXXFLAGS ?= -DSTANDALONE -DPROTO -DCHDIR  -std=c++0x -Wall -Wno-parentheses -lpthread
 # Mögliche Flags:
 #				STANDALONE		make standalone cmpl
 #               PROTO           protocol file output enabled

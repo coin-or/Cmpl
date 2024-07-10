@@ -760,16 +760,17 @@ namespace cmpl
 
         CmplValAuto v;
         unsigned line = 0;
+        bool rec = false;
 
         if (!readAll) {
             inStr->seekg(fpos);
 
-            readSymbolValues(v, inStr, line, &symname);
+            readSymbolValues(v, inStr, line, rec, &symname);
             _values[symname].moveFrom(v, false);
         }
         else {
             while (true) {
-                int sym = readSymbolValues(v, inStr, line);
+                int sym = readSymbolValues(v, inStr, line, rec);
                 if (sym == -1)
                     break;
 
@@ -784,43 +785,61 @@ namespace cmpl
      * @param res		return of read values
      * @param inStr		open input stream
      * @param line		current line in the input file
+     * @param rec       recover mode, skip file up to next symbol start
      * @param checkSym	check that values for this symbol are read / NULL: any symbol
      * @return          symbol for which values are read / -1: end of file
      */
-    int ExternDataFileImport::readSymbolValues(CmplVal& res, istream *inStr, unsigned& line, int *checkSym)
+    int ExternDataFileImport::readSymbolValues(CmplVal& res, istream *inStr, unsigned& line, bool& rec, int *checkSym)
     {
-        // read head line for symbol
-        string lstr;
-        size_t p = getNextLine(inStr, line, lstr, false);
-        if (p == string::npos)
-            return -1;
-        else if (p)
-            lstr = lstr.substr(p);
+        int sym = -1;
 
-        ValueMode mode = valueScalar;
-        CmplValAuto modePar, valDef;
-        int sym = parseSymbolHead(mode, modePar, valDef, lstr, line);
+        try {
+            // read head line for symbol
+            string lstr;
+            size_t p = getNextLine(inStr, line, lstr, false, (rec ? '%' : '\0'));
+            if (p == string::npos)
+                return -1;
+            else if (p)
+                lstr = lstr.substr(p);
 
-        if (checkSym && sym != *checkSym)
-            throw FileException("symbol found on given position is not the expected symbol", _mod->data()->globStrings()->at(_filename), line);
+            rec = false;
+            ValueMode mode = valueScalar;
+            CmplValAuto modePar, valDef;
 
-        // read values for symbol
-        switch (mode) {
-            case valueScalar:
-                readValuesScalar(res, inStr, line, lstr);
-                break;
+            sym = parseSymbolHead(mode, modePar, valDef, lstr, line);
+            if (checkSym && sym != *checkSym)
+                throw FileException("symbol found on given position is not the expected symbol", _mod->data()->globStrings()->at(_filename), line);
 
-            case valueSet:
-                readValuesSet(res, inStr, line, lstr, (unsigned)(modePar.v.i));
-                break;
+            // read values for symbol
+            switch (mode) {
+                case valueScalar:
+                    readValuesScalar(res, inStr, line, lstr);
+                    break;
 
-            case valueArray:
-                readValuesArray(res, inStr, line, lstr, modePar);
-                break;
+                case valueSet:
+                    readValuesSet(res, inStr, line, lstr, (unsigned)(modePar.v.i));
+                    break;
 
-            case valueIndices:
-                readValuesIndices(res, inStr, line, lstr, modePar, valDef);
-                break;
+                case valueArray:
+                    readValuesArray(res, inStr, line, lstr, modePar);
+                    break;
+
+                case valueIndices:
+                    readValuesIndices(res, inStr, line, lstr, modePar, valDef);
+                    break;
+            }
+        }
+
+        catch (FileException& e) {
+            if (!checkSym || sym != *checkSym) {
+                _mod->ctrl()->errHandler().error((checkSym ? ERROR_LVL_EASY : ERROR_LVL_NORMAL), _mod->ctrl()->printBuffer("error while reading value of external data symbol '%s': %s, in '%s' line %u", _mod->data()->globStrings()->at(checkSym ? *checkSym : sym), e.what(), e.filename().c_str(), e.line()), ((Interpreter *)_mod)->syntaxElement(_syntaxElem)->loc());
+                res.unset();
+            }
+
+            if (checkSym)
+                throw;  // expception is ignored, and this function is called again with !checkSym
+
+            rec = true;
         }
 
         return sym;
@@ -1048,9 +1067,14 @@ namespace cmpl
                         res.moveFrom(v, true);
                     }
                 }
-                else if (!SetUtil::tupleInSet(_ctx, res, t, dummy)) {
-                    SetUtil::addTupleToSet(_ctx, v, res, t, true, false);
-                    res.moveFrom(v, true);
+                else {
+                    if (!SetUtil::tupleInSet(_ctx, res, t, dummy)) {
+                        SetUtil::addTupleToSet(_ctx, v, res, t, true, false);
+                        res.moveFrom(v, true);
+                    }
+                    else {
+                        _mod->ctrl()->errHandler().error(ERROR_LVL_WARN, _mod->ctrl()->printBuffer("non-unique value ignored for set, in '%s' line %u", _mod->data()->globStrings()->at(_filename), line), ((Interpreter *)_mod)->syntaxElement(_syntaxElem)->loc());
+                    }
                 }
             }
 
@@ -1064,6 +1088,9 @@ namespace cmpl
                     if (!SetUtil::tupleInSet(_ctx, res, t, dummy)) {
                         SetUtil::addTupleToSet(_ctx, v, res, t, true, false);
                         res.moveFrom(v, true);
+                    }
+                    else {
+                        _mod->ctrl()->errHandler().error(ERROR_LVL_WARN, _mod->ctrl()->printBuffer("non-unique value ignored for set, in '%s' line %u", _mod->data()->globStrings()->at(_filename), line), ((Interpreter *)_mod)->syntaxElement(_syntaxElem)->loc());
                     }
 
                     tpl = new Tuple(rank);
@@ -1258,9 +1285,10 @@ namespace cmpl
      * @param line		current line in the input file
      * @param lstr		return of read line
      * @param errEof	throw exception if EOF
+     * @param skipTo    if given then skip up to line starting with this char
      * @return          position of first non-space char in the line / string::npos if EOF
      */
-    size_t ExternDataFileImport::getNextLine(istream *inStr, unsigned& line, string& lstr, bool errEof)
+    size_t ExternDataFileImport::getNextLine(istream *inStr, unsigned& line, string& lstr, bool errEof, char skipTo)
     {
         while (true) {
             line++;
@@ -1277,7 +1305,7 @@ namespace cmpl
             }
 
             size_t pos = lstr.find_first_not_of(WHITE_SPACES);
-            if (pos != string::npos && lstr[pos] != '#')
+            if (pos != string::npos && lstr[pos] != '#' && (!skipTo || lstr[pos] == skipTo))
                 return pos;
         }
     }

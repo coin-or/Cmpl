@@ -233,7 +233,9 @@ namespace cmpl
 
         case OPTION_OUT_MODEL_MPS_FORMAT_HEADER:
             _formatHeader = parseFormatExtName(opt);
-            if (_formatHeader != FormatExtensionNone && _formatHeader != FormatExtensionDefault && _formatHeader != FormatExtensionCplex && _formatHeader != FormatExtensionGurobi && _formatHeader != FormatExtensionScip) {
+            if (_formatHeader != FormatExtensionNone && _formatHeader != FormatExtensionDefault &&
+                  _formatHeader != FormatExtensionCplex && _formatHeader != FormatExtensionGurobi &&
+                  _formatHeader != FormatExtensionScip && _formatHeader != FormatExtensionHighs)  {
                 _ctrl->errHandler().error(ERROR_LVL_EASY, "invalid name for format of MPS header lines", opt->loc(true));
                 _formatHeader = FormatExtensionDefault;
             }
@@ -309,6 +311,8 @@ namespace cmpl
             return FormatExtensionGurobi;
         else if (name == "scip")
             return FormatExtensionScip;
+        else if (name == "highs")
+            return FormatExtensionHighs;
 
         return FormatExtensionError;
     }
@@ -320,7 +324,7 @@ namespace cmpl
     {
         // format of header lines in MPS
         if (_formatHeader == FormatExtensionDefault) {
-            if (_formatDefault == FormatExtensionCplex || _formatDefault == FormatExtensionGurobi || _formatDefault == FormatExtensionScip)
+            if (_formatDefault == FormatExtensionCplex || _formatDefault == FormatExtensionGurobi || _formatDefault == FormatExtensionScip || _formatDefault == FormatExtensionHighs)
                 _formatHeader = _formatDefault;
             else
                 _formatHeader = FormatExtensionNone;
@@ -513,6 +517,10 @@ namespace cmpl
                 else if (_formatHeader == FormatExtensionScip) {
                     ostr << "* OBJNAME " << rowNames[i] << endl;
                     ostr << "OBJSENSE" << endl << "\t" << (*mode == '+' ? "MAX" : "MIN") << endl;
+                }
+                else if (_formatHeader == FormatExtensionHighs) {
+                    ostr << "* OBJNAME " << rowNames[i] << endl;
+                    ostr << "OBJSENSE " << (*mode == '+' ? "MAX" : "MIN") << endl;
                 }
                 else if (fm) {
                     ostr << "* OBJNAME " << rowNames[i] << endl << "* OBJSENSE " << (*mode == '+' ? "MAX" : "MIN") << endl;

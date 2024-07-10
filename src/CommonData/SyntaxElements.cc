@@ -466,7 +466,7 @@ namespace cmpl
 			si.pos->addLines();
 		}
 
-		delete ses;
+        delete[] ses;
 	}
 }
 

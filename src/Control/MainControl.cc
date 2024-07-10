@@ -80,7 +80,7 @@ namespace cmpl
 		if (_data && _data->globStrings())
 			_data->globStrings()->setModp(NULL, "global strings");
 
-		delete _printBuffer;
+        delete[] _printBuffer;
 	}
 
 

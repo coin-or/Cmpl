@@ -126,14 +126,27 @@ namespace cmpl
      */
     void ValFormulaVar::setModelProperties(OptModel::Properties& prop) const
     {
-        if (_optVar.t == TP_OPT_VAR) {
-            OptVar *v = _optVar.optVar();
-            if (v->binVar() && prop.vartypes == 0)
-                prop.vartypes = 1;
-            else if (v->intVar() && !v->binVar())
-                prop.vartypes = 2;
-        }
+        if (_optVar.t == TP_OPT_VAR)
+            _optVar.optVar()->setModelProperties(prop);
     }
+
+    /**
+     * check whether this is equal to second formula (formulas should be in canonical form)
+     * @param f2    second formula
+     * @return
+     */
+    bool ValFormulaVar::equals(ValFormula *f2)
+    {
+        if (this == f2)
+            return true;
+
+        ValFormulaVar *f2a = dynamic_cast<ValFormulaVar *>(f2);
+        if (!f2a)
+            return false;
+
+        return (_optVar == f2a->_optVar && (_factor == f2a->_factor || (_factor.isNumOne(true) && f2a->_factor.isNumOne(true))));
+    }
+
 
     /**
      * fills coefficients from this constraint for linear or quadratic model per column
@@ -276,6 +289,8 @@ namespace cmpl
         unsigned cr = 0, ci = 0, cb = 0;
         for (unsigned i = 0; i < _optVars.size(); i++) {
             OptVar *v = _optVars[i].optVar();
+            v->setModelProperties(prop);
+
             if (v->binVar())
                 cb++;
             else if (v->intVar())
@@ -298,6 +313,31 @@ namespace cmpl
                     prop.varprodInt = 1;
             }
         }
+    }
+
+    /**
+     * check whether this is equal to second formula (formulas should be in canonical form)
+     * @param f2    second formula
+     * @return
+     */
+    bool ValFormulaVarProd::equals(ValFormula *f2)
+    {
+        if (this == f2)
+            return true;
+
+        ValFormulaVarProd *f2a = dynamic_cast<ValFormulaVarProd *>(f2);
+        if (!f2a)
+            return false;
+
+        if (_optVars.size() != f2a->_optVars.size() || (_factor != f2a->_factor && (!_factor.isNumOne(true) || !f2a->_factor.isNumOne(true))))
+            return false;
+
+        for (unsigned i = 0; i < _optVars.size(); i++) {
+            if (_optVars[i] != f2a->_optVars[i])
+                return false;
+        }
+
+        return true;
     }
 
 
@@ -381,8 +421,11 @@ namespace cmpl
             if (!factor.isNumNull()) {
                 CmplValAuto tlb, tub;
                 ValFormula::getBounds(_terms[i], tlb, tub, con);
-                if (!tlb || !tub)
+                if (!tlb || !tub) {
+                    lb.unset();
+                    ub.unset();
                     break;
+                }
 
                 if (!factor.isNumOne()) {
                     tlb.numMult(factor);
@@ -413,19 +456,10 @@ namespace cmpl
     {
         for (unsigned i = 1; i < _terms.size(); i += 2) {
             if (!_terms[i-1].isNumNull()) {
-                if (_terms[i].t == TP_OPT_VAR) {
-                    if (prop.vartypes < 2) {
-                        OptVar *v = _terms[i].optVar();
-                        if (v->binVar() && prop.vartypes == 0)
-                            prop.vartypes = 1;
-                        else if (v->intVar() && !v->binVar())
-                            prop.vartypes = 2;
-                    }
-                }
-                else if (_terms[i].t == TP_FORMULA) {
-                    ValFormula *f = _terms[i].valFormula();
-                    f->setModelProperties(prop);
-                }
+                if (_terms[i].t == TP_OPT_VAR)
+                    _terms[i].optVar()->setModelProperties(prop);
+                else if (_terms[i].t == TP_FORMULA)
+                    _terms[i].valFormula()->setModelProperties(prop);
             }
         }
     }
@@ -448,6 +482,32 @@ namespace cmpl
 
         return NULL;
     }
+
+    /**
+     * check whether this is equal to second formula (formulas should be in canonical form)
+     * @param f2    second formula
+     * @return
+     */
+    bool ValFormulaLinearComb::equals(ValFormula *f2)
+    {
+        if (this == f2)
+            return true;
+
+        ValFormulaLinearComb *f2a = dynamic_cast<ValFormulaLinearComb *>(f2);
+        if (!f2a)
+            return false;
+
+        if (_terms.size() != f2a->_terms.size() || _linear != f2a->_linear || (_constTerm != f2a->_constTerm && (!_constTerm.isNumNull(true) || !f2a->_constTerm.isNumNull(true))))
+            return false;
+
+        for (unsigned i = 0; i < _terms.size(); i++) {
+            if (_terms[i] != f2a->_terms[i] && (_terms[i].t != TP_FORMULA || f2a->_terms[i].t != TP_FORMULA || !_terms[i].valFormula()->equals(f2a->_terms[i].valFormula())))
+                return false;
+        }
+
+        return true;
+    }
+
 
     /**
      * fills coefficients from this constraint for linear or quadratic model per column
@@ -642,29 +702,31 @@ namespace cmpl
     }
 
     /**
-     * swap sides to ensure that a simple value stands on the right side
+     * check whether this is equal to second formula (formulas should be in canonical form)
+     * @param f2    second formula
+     * @return
      */
-    void ValFormulaCompare::checkSwapSides()
+    bool ValFormulaCompare::equals(ValFormula *f2)
     {
-        if (_leftSide.isScalarNumber()) {
-            CmplVal s;
-            s.moveFrom(_leftSide);
-            _leftSide.moveFrom(_rightSide);
-            _rightSide.moveFrom(s);
+        if (this == f2)
+            return true;
 
-            swap(_compGe, _compLe);
-        }
+        ValFormulaCompare *f2a = dynamic_cast<ValFormulaCompare *>(f2);
+        if (!f2a)
+            return false;
 
-        if (_leftSide.t == TP_OPT_VAR) {
-            CmplVal f(TP_FORMULA, new ValFormulaVar(syntaxElem(), _leftSide.optVar()));
-            _leftSide.moveFrom(f, true);
-        }
+        if (_compGe != f2a->_compGe || _compLe != f2a->_compLe || _compNeg != f2a->_compNeg)
+            return false;
 
-        if (_rightSide.t == TP_OPT_VAR) {
-            CmplVal f(TP_FORMULA, new ValFormulaVar(syntaxElem(), _rightSide.optVar()));
-            _rightSide.moveFrom(f, true);
-        }
+        if (_leftSide != f2a->_leftSide && (_leftSide.t != TP_FORMULA || f2a->_leftSide.t != TP_FORMULA || !_leftSide.valFormula()->equals(f2a->_leftSide.valFormula())))
+            return false;
+
+        if (_rightSide != f2a->_rightSide && (_rightSide.t != TP_FORMULA || f2a->_rightSide.t != TP_FORMULA || !_rightSide.valFormula()->equals(f2a->_rightSide.valFormula())))
+            return false;
+
+        return true;
     }
+
 
     /**
      * fills coefficients from this constraint for linear or quadratic model per column
@@ -744,21 +806,6 @@ namespace cmpl
     /************** ValFormulaObjective **********/
 
     /**
-     * constructor
-     * @param f         formula to minimize or to maximize, should be TP_FORMULA
-     * @param ma        true: maximize; false: minimize
-     */
-    ValFormulaObjective::ValFormulaObjective(unsigned se, CmplVal *f, bool ma): ValFormula(se)
-    {
-        if (f->t == TP_OPT_VAR)
-            _formula.set(TP_FORMULA, new ValFormulaVar(se, f->optVar()));
-        else
-            _formula.copyFrom(f, true, false);
-
-        _maximize = ma;
-    }
-
-    /**
      * get lower and upper bound of the possible value range of this formula
      * @param lb        return of lower bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
      * @param ub        return of upper bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
@@ -767,6 +814,26 @@ namespace cmpl
     void ValFormulaObjective::getBounds(CmplVal& lb, CmplVal& ub, bool con) const
     {
         ValFormula::getBounds(_formula, lb, ub, con);
+    }
+
+    /**
+     * check whether this is equal to second formula (formulas should be in canonical form)
+     * @param f2    second formula
+     * @return
+     */
+    bool ValFormulaObjective::equals(ValFormula *f2)
+    {
+        if (this == f2)
+            return true;
+
+        ValFormulaObjective *f2a = dynamic_cast<ValFormulaObjective *>(f2);
+        if (!f2a)
+            return false;
+
+        if (_formula != f2a->_formula || (_formula.t != TP_FORMULA || f2a->_formula.t != TP_FORMULA || !_formula.valFormula()->equals(f2a->_formula.valFormula())))
+            return false;
+
+        return (_maximize == f2a->_maximize);
     }
 
     /**
@@ -889,6 +956,31 @@ namespace cmpl
     }
 
     /**
+     * check whether this is equal to second formula (formulas should be in canonical form)
+     * @param f2    second formula
+     * @return
+     */
+    bool ValFormulaLogCon::equals(ValFormula *f2)
+    {
+        if (this == f2)
+            return true;
+
+        ValFormulaLogCon *f2a = dynamic_cast<ValFormulaLogCon *>(f2);
+        if (!f2a)
+            return false;
+
+        if (_formulas.size() != f2a->_formulas.size() || _logNeg != f2a->_logNeg || _logOr != f2a->_logOr)
+            return false;
+
+        for (unsigned i = 0; i < _formulas.size(); i++) {
+            if (_formulas[i] != f2a->_formulas[i] && (_formulas[i].t != TP_FORMULA || f2a->_formulas[i].t != TP_FORMULA || !_formulas[i].valFormula()->equals(f2a->_formulas[i].valFormula())))
+                return false;
+        }
+
+        return true;
+    }
+
+    /**
      * write contents of the object to a stream
      * @param modp			calling module
      * @param mode			mode for output: 0=direct; 1=part of other value
@@ -921,21 +1013,40 @@ namespace cmpl
      */
     bool ValFormulaCond::Part::eqCond(Part& p2)
     {
-        //TODO: inhaltlich vergleichen, nicht nur auf Objektidentitaet
-
-        if (_posCond != p2._posCond)
+        if (_posCond != p2._posCond && (_posCond.t != TP_FORMULA || p2._posCond.t != TP_FORMULA || !_posCond.valFormula()->equals(p2._posCond.valFormula())))
             return false;
 
         if (_negConds.size() != p2._negConds.size())
             return false;
 
         for (unsigned i = 0; i < _negConds.size(); i++) {
-            if (_negConds[i] != p2._negConds[i])
+            if (_negConds[i] != p2._negConds[i] && (_negConds[i].t != TP_FORMULA || p2._negConds[i].t != TP_FORMULA || !_negConds[i].valFormula()->equals(p2._negConds[i].valFormula())))
                 return false;
         }
 
         return true;
     }
+
+    /**
+     * check whether this is equal to second formula (formulas should be in canonical form)
+     * @param f2    second formula
+     * @return
+     */
+    bool ValFormulaCond::Part::equals(ValFormula *f2)
+    {
+        if (this == f2)
+            return true;
+
+        ValFormulaCond::Part *f2a = dynamic_cast<ValFormulaCond::Part *>(f2);
+        if (!f2a)
+            return false;
+
+        if (_val != f2a->_val && (_val.t != TP_FORMULA || f2a->_val.t != TP_FORMULA || !_val.valFormula()->equals(f2a->_val.valFormula())))
+            return false;
+
+        return eqCond(*f2a);
+    }
+
 
     /**
      * get lower and upper bound of the possible value range of this formula
@@ -988,11 +1099,12 @@ namespace cmpl
      */
     void ValFormulaCond::setModelProperties(OptModel::Properties& prop) const
     {
+        if (prop.condDepVal <= 0)
+            prop.condDepVal = 1;
+
         if (prop.conditions <= 0)
             prop.conditions = 1;
 
-        //TODO: wenn Teil keine Formel, sondern Einzelvariable ist, dann entsprechend behandeln
-        //          (vielleicht am besten direkt in OptVar auch passende Methode)
         for (unsigned i = 0; i < _parts.size(); i++) {
             const Part *p = dynamic_cast<Part *>(_parts[i].valFormula());
 
@@ -1008,6 +1120,31 @@ namespace cmpl
             if (p->_val.t == TP_FORMULA)
                 p->_val.valFormula()->setModelProperties(prop);
         }
+    }
+
+    /**
+     * check whether this is equal to second formula (formulas should be in canonical form)
+     * @param f2    second formula
+     * @return
+     */
+    bool ValFormulaCond::equals(ValFormula *f2)
+    {
+        if (this == f2)
+            return true;
+
+        ValFormulaCond *f2a = dynamic_cast<ValFormulaCond *>(f2);
+        if (!f2a)
+            return false;
+
+        if (_parts.size() != f2a->_parts.size())
+            return false;
+
+        for (unsigned i = 0; i < _parts.size(); i++) {
+            if (!_parts[i].valFormula()->equals(f2a->_parts[i].valFormula()))
+                return false;
+        }
+
+        return true;
     }
 
     /**

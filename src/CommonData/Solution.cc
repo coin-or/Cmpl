@@ -159,7 +159,7 @@ void Solution::getVarBounds(OptVar *ov,double &lowerBound, double &upperBound ) 
  * @param md            pointer to main data object
  * @param mb            pointer to ModulBase object
  */
-void Solution::prepareSolutionData(string probName, string solver,  bool intRelaxation, MainData *md, ModuleBase *mb) {
+void Solution::prepareSolutionData(string probName, string solver,  bool intRelaxation, int addConForUnusedVar, MainData *md, ModuleBase *mb) {
 
 #define GET_DATA_2(n,d)		n *d = (n *)(md->data(string(#n)))
     GET_DATA_2( OptModel , om);
@@ -199,6 +199,10 @@ void Solution::prepareSolutionData(string probName, string solver,  bool intRela
 
     _objName=om->objName();
     _objSense=om->objSense();
+
+    bool hasAddConUV = false;
+    const char addConUVMode = 'E';
+    const string addConUVName = "__acuv";
 
     for (unsigned long i = 0; i < rowCnt; i++, mode++, rhs++) {
         char m = *mode;
@@ -244,6 +248,45 @@ void Solution::prepareSolutionData(string probName, string solver,  bool intRela
             }
         }
     }
+
+    if (_addConForUnusedVar) {
+        for (unsigned long i = 0; i < colCnt; i++) {
+            OptVar *ov = dynamic_cast<OptVar *>(om->cols()[i]);
+            if (ov && ov->usedByCon() <= (_addConForUnusedVar == 2 ? 0 : -1)) {
+
+                const LinearModel::Coefficient addConUVRhs(ov);
+
+                ModelElement modElem;
+
+                string rowName;
+                rowName = "__acuv[" + to_string(i) + "]";
+                modElem.setName(rowName);
+
+                string type;
+                type.push_back(addConUVMode);
+                modElem.setType(type);
+
+                double rhsVal;
+
+                if (addConUVRhs.iCoeff != 0 || addConUVRhs.rCoeff == 0)
+                    rhsVal = addConUVRhs.iCoeff;
+                else
+                    rhsVal = addConUVRhs.rCoeff;
+
+                modElem.setLowerBound(rhsVal);
+                modElem.setUpperBound(rhsVal);
+
+                _modConstraints.push_back(modElem);
+
+                hasAddConUV = true;
+                _rowNameMap[ rowName ] = conIdx;
+                _rowIdxMap[i]=conIdx;
+
+                conIdx++;
+            }
+        }
+    }
+
     _nrOfConstraints=conIdx;
 
     bool hasInt = false;
@@ -280,6 +323,27 @@ void Solution::prepareSolutionData(string probName, string solver,  bool intRela
                     mpsIdx++;
                     _modVariables.push_back(modElem);
                 }
+            }
+            else if (hasAddConUV && ov->usedByCon() <= (_addConForUnusedVar == 2 ? 0 : -1))
+            {
+                ModelElement modElem;
+                modElem.setName(colNames[i]);
+                modElem.setType("C");
+
+                double lowerBound=0;
+                double upperBound=0;
+
+                getVarBounds(ov,lowerBound,upperBound);
+
+                modElem.setLowerBound( lowerBound);
+                modElem.setUpperBound( upperBound );
+                _colNameMap[colNames[i] ] = mpsIdx;
+                _colIdxMap[i]=mpsIdx;
+                //_colSolIdxMap[mpsIdx]=i;
+                mpsIdx++;
+                _modVariables.push_back(modElem);
+
+
             }
         }
     }

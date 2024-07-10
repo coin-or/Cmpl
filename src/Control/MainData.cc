@@ -110,9 +110,9 @@ namespace cmpl
 		}
 		_data.clear();
 		
-		if (delData) {
+        if (delData) {
 			_globStrings->clear();
-			_globLocs->clear();
+            _globLocs->clear();
 		}
 		else {
             _globStrings = new StringStore(true);

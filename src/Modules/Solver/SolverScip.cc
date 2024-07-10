@@ -120,12 +120,13 @@ void SolverScip::run()
         GET_NEW_DATA(Solution,sol);
 
         if (!om->isInteger()){
-             LocationInfo loc(PositionInfo(POSITION_TYPE_DESCR, "(internal)"));
-             _ctrl->errHandler().error(ERROR_LVL_WARN,_ctrl->printBuffer("Warning: Scip runs only (M)ILP problems, marginals are not available in solution") , loc ) ;
+            CmplOutput(cout, "Warning: Scip does not show marginals in solution");
+             //LocationInfo loc(PositionInfo(POSITION_TYPE_DESCR, "(internal)"));
+             //_ctrl->errHandler().error(ERROR_LVL_WARN,_ctrl->printBuffer("Warning: Scip runs only (M)ILP problems, marginals are not available in solution") , loc ) ;
         }
 
         string probName = StringStore::modelName(string( modp()->data()->cmplFileBase() ))+".cmpl";
-        sol->prepareSolutionData(probName, _solverName, _integerRelaxation, _data,this);
+        sol->prepareSolutionData(probName, _solverName, _integerRelaxation, _addConForUnusedVar, _data, this);
 
         generateCmdLine();
 
@@ -225,7 +226,7 @@ void SolverScip::readSolFile(Solution* sol,  OptModel* om) {
             if (lineNr==1) {
                 StringStore::split(line,solList,":");
                 solution.setStatus(solList[1]);
-                if (  StringStore::contains(StringStore::lrTrim(solList[1]),"optimal"  )) {
+                if (  StringStore::contains(StringStore::lrTrim(solList[1]),"optimal"  ) or StringStore::contains(StringStore::lrTrim(solList[1]),"limit reached"  )   ) {
                     nrOfSolutions=1;
                 } else {
                     nrOfSolutions=0;
@@ -251,11 +252,13 @@ void SolverScip::readSolFile(Solution* sol,  OptModel* om) {
                     _ctrl->errHandler().internalError("Internal error while reading var activity value from Scip solution file");
 
                 unsigned long idx=sol->varMpsIdxByName(varName);
-                if (sol->modelVariable(idx)->type()!="C") {
-                    activity=round(activity);
-                 }
+                if (idx!=-1) {
+                    if (sol->modelVariable(idx)->type()!="C") {
+                        activity=round(activity);
+                    }
 
-                solution.variable(idx)->setActivity(activity);
+                    solution.variable(idx)->setActivity(activity);
+                }
             }
         }
 

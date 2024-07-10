@@ -29,8 +29,8 @@
  ***********************************************************************/
 
 
-#ifndef OPTMATRIX_HH
-#define OPTMATRIX_HH
+#ifndef OPTMODEL_HH
+#define OPTMODEL_HH
 
 #include <unordered_map>
 #include <list>
@@ -48,303 +48,6 @@ using namespace std;
 namespace cmpl
 {
     class OptModel;
-    class LinearModel;
-    class ValFormula;
-
-
-    /**
-     * base class for additional properties of an optimization matrix element, especially for linearization
-     */
-    class AddPropOptVarConBase
-    {
-    protected:
-        CmplValAuto _srcVal;                ///< source value (typically TP_FORMULA) which has caused the optimization matrix element
-        bool _linearized;                   ///< necessary linearization is already done
-
-    protected:
-        /**
-         * constructor
-         * @param src       source value
-         */
-        AddPropOptVarConBase(CmplVal& src): _srcVal(src), _linearized(false)        { }
-
-    public:
-        /**
-         * destructor
-         */
-        virtual ~AddPropOptVarConBase()                                             { }
-
-        /**
-         * get name of this additional property type
-         */
-        virtual const char *name() = 0;
-
-        /**
-         * get source value (typically TP_FORMULA) which has caused the optimization matrix element
-         */
-        CmplVal& srcVal()                       { return _srcVal; }
-
-        /**
-         * get whether necessary linearization is already done
-         */
-        bool linearized()                       { return _linearized; }
-
-        /**
-         * set whether necessary linearization is already done
-         */
-        void setLinearized(bool lin = true)     { _linearized = lin; }
-
-
-        //TODO
-        //  (insbesondere virtual abstract Funktionen fuer Modelleigenschaften, fuer Linearisierung)
-    };
-
-    /**
-     * additional property for an optimization variable which is used as replacement for a conditional value
-     */
-    class AddPropOptVarConValCond : public AddPropOptVarConBase
-    {
-    public:
-        /**
-         * constructor
-         * @param src       source value, must be TP_FORMULA with ValFormulaCond
-         */
-        AddPropOptVarConValCond(CmplVal& src): AddPropOptVarConBase(src)            { }
-
-        /**
-         * destructor
-         */
-        virtual ~AddPropOptVarConValCond()                                          { }
-
-        /**
-         * get name of this additional property type
-         */
-        const char *name() override                  { return "ConValCond"; }
-
-        //TODO
-    };
-
-
-	/**
-	 * base class for optimization matrix elements
-	 */
-	class OptVarConBase : public CmplObjBase, public ValueTreeElem
-	{
-	protected:
-        unsigned _syntaxElem;               ///< id of syntax element in the cmpl text creating this matrix element
-        CmplValAuto _names;                 ///< if set then TP_ARRAY of additional names usable for linearisation
-
-        AddPropOptVarConBase *_addProp;     ///< if set then additional properties, especially for linearization (owning pointer)
-
-        //TODO
-
-    public:
-        /**
-         * destructor
-         */
-        virtual ~OptVarConBase()                    { if (_addProp) delete _addProp; }
-
-        /**
-         * get id of syntax element in the cmpl text creating this matrix element
-         */
-        unsigned syntaxElem() const                 { return _syntaxElem; }
-
-        /**
-         * get TP_ARRAY of additional names usable for linearisation
-         */
-        CmplVal& names()                            { return _names; }
-
-        /**
-         * get additional properties, especially for linearization
-         */
-        AddPropOptVarConBase *addProp() const       { return _addProp; }
-
-        /**
-         * set additional properties, especially for linearization
-         */
-        void setAddProp(AddPropOptVarConBase *a)    { _addProp = a; }
-
-        /**
-         * get lower and upper bound of the possible value range of this variable or constraint
-         * @param lb        return of lower bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
-         * @param ub        return of upper bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
-         */
-        virtual void getBounds(CmplVal& lb, CmplVal& ub) const  { }
-
-        //TODO
-	};
-
-
-	/**
-	 * class for one optimization variable (column in the optimization matrix)
-	 */
-	class OptVar : public OptVarConBase
-	{
-	protected:
-		CmplVal _dataType;								///< data type
-        bool _hasDataType;								///< data type is fixed (when false, then _dataType is the default data type for variables)
-
-        bool _intVar;									///< integer optimization variable
-        CmplVal _lowBound;								///< lower bound (can only be TP_EMPTY, TP_INT, TP_REAL)
-        CmplVal _uppBound;								///< upper bound (can only be TP_EMPTY, TP_INT, TP_REAL)
-
-        int _usedByCon;                                 ///< mark variable as used by at least one constraint: 0: not used, 1: used, -1: used only in constraint deleted by remodelation
-
-    public:
-        /**
-         * constructor
-         * @param om		result matrix
-         * @param tp		data type
-         * @param defTp		data type tp is default type
-         * @param se		id of syntax element in the cmpl text creating this matrix element
-         */
-        OptVar(OptModel *om, CmplVal& tp, bool defTp, unsigned se);
-
-        /**
-         * destructor
-         */
-        virtual ~OptVar()                       { _dataType.dispose(); _lowBound.dispose(); _uppBound.dispose(); }
-
-        /**
-         * write contents of the object to a stream
-         * @param modp			calling module
-         * @param mode			mode for output: 0=direct; 1=part of other value
-         */
-        virtual void write(ostream& ostr, ModuleBase *modp, int mode = 0) const override     { ostr << "<var#" << _id; if (mode == 0) { ostr << ": " << (_hasDataType ? "" : "(def.type) "); _dataType.write(ostr, modp, 1); } ostr << '>'; }
-
-        /**
-         * set data type as fixed
-         */
-        inline void fixDataType()					{ _hasDataType = true; }
-
-        /**
-         * get data type
-         */
-        inline CmplVal& dataType()					{ return _dataType; }
-
-        /**
-         * get whether this is an integer optimization variable
-         */
-        inline bool intVar()						{ return _intVar; }
-
-        /**
-         * get whether this is a binary optimization variable
-         */
-        inline bool binVar()                        { return (_intVar && _uppBound.t == TP_INT && _uppBound.v.i == 1 && _lowBound.t == TP_INT && _lowBound.v.i == 0); }
-
-        /**
-         * set whether this is an integer optimization variable
-         */
-        inline void setIntVar(bool iv)				{ _intVar = iv; }
-
-        /**
-         * get lower bound (can only be TP_EMPTY, TP_INT or TP_REAL)
-         */
-        inline CmplVal& lowBound()					{ return _lowBound; }
-
-        /**
-         * set lower bound (must be TP_EMPTY, TP_INT or TP_REAL)
-         */
-        inline void setLowBound(CmplVal& lb)		{ _lowBound.copyFrom(lb); }
-
-        /**
-         * get upper bound (can only be TP_EMPTY, TP_INT or TP_REAL)
-         */
-        inline CmplVal& uppBound()					{ return _uppBound; }
-
-        /**
-         * set upper bound (must be TP_EMPTY, TP_INT or TP_REAL)
-         */
-        inline void setUppBound(CmplVal& lb)		{ _uppBound.copyFrom(lb); }
-
-        /**
-         * get lower and upper bound of the possible value range of this variable or constraint
-         * @param lb        return of lower bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
-         * @param ub        return of upper bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
-         */
-        void getBounds(CmplVal& lb, CmplVal& ub) const override;
-
-        /**
-         * get whether variable is used by at least one constraint: 0: not used, 1: used, -1: used only in constraint deleted by remodelation
-         */
-        inline int usedByCon()                     { return _usedByCon; }
-
-        /**
-         * set whether variable is used by at least one constraint: 0: not used, 1: used, -1: used only in constraint deleted by remodelation
-         */
-        inline void setUsedByCon(int i)            { _usedByCon = i; }
-
-        /**
-         * iterates over all optimization variables found in formula or constraint
-         * @param fv        formula or constraint (only used in initializating call)
-         * @param stat      current internal iteration status, empty in initializating call
-         * @return          first (in initializating call) or next optimization variable, or NULL if iteration ended
-         */
-        static OptVar *iterInFormula(CmplVal& fv, stack<pair<ValFormula *, unsigned>>& stat);
-	};
-
-
-	/**
-	 * class for one optimization constraint or objective (row in the optimization matrix)
-	 */
-	class OptCon : public OptVarConBase
-	{
-	protected:
-        CmplVal _formula;								///< formula for constraint or objective, should be TP_FORMULA
-        bool _objective;								///< objective or constraint
-		
-	public:
-        /**
-         * constructor
-         * @param om		result matrix
-         * @param f			formula for constraint or objective
-         * @param obj		true: objective / false: constraint
-         * @param se		id of syntax element in the cmpl text creating this matrix element
-         */
-        OptCon(OptModel *om, CmplVal& f, bool obj, unsigned se);
-
-        /**
-         * destructor
-         */
-        virtual ~OptCon()                       { _formula.dispose(); }
-
-        /**
-         * write contents of the object to a stream
-         * @param modp			calling module
-         * @param mode			mode for output: 0=direct; 1=part of other value
-         */
-        virtual void write(ostream& ostr, ModuleBase *modp, int mode = 0) const override     { ostr << (_objective ? "<obj#" : "<con#") << _id << ": "; _formula.write(ostr, modp, 1); ostr << '>'; }
-
-
-        /**
-		 * get whether this is a linear constraint or objective
-		 */
-        bool linearConstraint();
-		
-        /**
-         * get formula for constraint or objective
-         */
-        ValFormula *formula()							{ return (_formula.t == TP_FORMULA ? _formula.valFormula() : NULL); }
-
-        /**
-         * get value of the constraint or objective
-         */
-        CmplVal& value()                                { return _formula; }
-
-        /**
-         * get whether objective or constraint
-         */
-        bool objective()                                { return _objective; }
-
-        /**
-         * get lower and upper bound of the possible value range of this variable or constraint
-         * @param lb        return of lower bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
-         * @param ub        return of upper bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
-         */
-        void getBounds(CmplVal& lb, CmplVal& ub) const override;
-
-        //TODO
-	};
 
 
     /**
@@ -615,6 +318,7 @@ namespace cmpl
             bool init = false;                  ///< properties are initialized
             int vartypes = 0;                   ///< type of variables in model: 0:only continuos / 1:also binary / 2:also integer other than binary
             int conditions = 0;                 ///< logical conditions or operations between optimization constraints: 0:no / -1:only trivial (i.e. logical And) / 1:other
+            int condDepVal = 0;                 ///< values dependent of conditions: 0:no / -1:only already linearized / 1:yes and handling still necessary
             int varprodInt = 0;                 ///< products of optimization variables with one integer operand: 0:no / 1:only with one binary / 2:also with integer other than binary
             int varprodReal = 0;                ///< products of optimization variables with both continuos variables: 0:no / 1:yes
             // TODO: other non-linear properties
@@ -625,12 +329,12 @@ namespace cmpl
             /**
              * reset all properties
              */
-            void reset()            { init = false; vartypes = 0; conditions = 0; varprodInt = 0; varprodReal = 0; sos = 0; }
+            void reset()            { init = false; vartypes = 0; conditions = 0; condDepVal = 0; varprodInt = 0; varprodReal = 0; sos = 0; }
 
             /**
              * get whether model is linear
              */
-            bool linear()           { return (init && !conditions && !varprodInt && !varprodReal && sos <= 0); }
+            bool linear()           { return (init && !conditions && condDepVal <= 0 && !varprodInt && !varprodReal && sos <= 0); }
 
             /**
              * get whether model has products of optimization variables
@@ -648,9 +352,14 @@ namespace cmpl
             bool hasConditions()    { return conditions; }
 
             /**
+             * get whether model has values dependent of conditions
+             */
+            bool hasCondDepVal()    { return (condDepVal > 0); }
+
+            /**
              * get model type (type with least linearizations)
              */
-            ModelType modelType()   { return (!init ? modelTypeUnknown : (vartypes > 0 || conditions > 0 || varprodInt > 0 || sos > 0 ? (varprodInt || varprodReal ? modelTypeMIQP : modelTypeMIP) : (varprodReal ? modelTypeQP : modelTypeLP))); }
+            ModelType modelType()   { return (!init ? modelTypeUnknown : (vartypes > 0 || conditions > 0 || condDepVal > 0 || varprodInt > 0 || sos > 0 ? (varprodInt || varprodReal ? modelTypeMIQP : modelTypeMIP) : (varprodReal ? modelTypeQP : modelTypeLP))); }
         };
 
 
@@ -873,7 +582,321 @@ namespace cmpl
          */
         virtual void deserializeFrom(MainData::SerializeInfo& si, const MainData *data, int subCnt, int lc, string &rline);
 	};
+
+
+
+    /**
+     * base class for additional properties of an optimization matrix element, especially for linearization
+     */
+    class AddPropOptVarConBase
+    {
+    protected:
+        CmplValAuto _srcVal;                ///< source value (typically TP_FORMULA) which has caused the optimization matrix element
+        bool _linearized;                   ///< necessary linearization is already done
+
+    protected:
+        /**
+         * constructor
+         * @param src       source value
+         */
+        AddPropOptVarConBase(CmplVal& src): _srcVal(src), _linearized(false)        { }
+
+    public:
+        /**
+         * destructor
+         */
+        virtual ~AddPropOptVarConBase()                                             { }
+
+        /**
+         * get name of this additional property type
+         */
+        virtual const char *name() = 0;
+
+        /**
+         * get source value (typically TP_FORMULA) which has caused the optimization matrix element
+         */
+        CmplVal& srcVal()                       { return _srcVal; }
+
+        /**
+         * get whether necessary linearization is already done
+         */
+        bool linearized()                       { return _linearized; }
+
+        /**
+         * set whether necessary linearization is already done
+         */
+        void setLinearized(bool lin = true)     { _linearized = lin; }
+
+        /**
+         * set model properties from this additional properties
+         * @param prop          properties of optimization model
+         */
+        virtual void setModelProperties(OptModel::Properties& prop) const = 0;
+
+        //TODO
+        //  (insbesondere virtual abstract Funktionen fuer Modelleigenschaften, fuer Linearisierung)
+    };
+
+    /**
+     * additional property for an optimization variable which is used as replacement for a conditional value
+     */
+    class AddPropOptVarConValCond : public AddPropOptVarConBase
+    {
+    public:
+        /**
+         * constructor
+         * @param src       source value, must be TP_FORMULA with ValFormulaCond
+         */
+        AddPropOptVarConValCond(CmplVal& src): AddPropOptVarConBase(src)            { }
+
+        /**
+         * destructor
+         */
+        virtual ~AddPropOptVarConValCond()                                          { }
+
+        /**
+         * get name of this additional property type
+         */
+        const char *name() override                  { return "ConValCond"; }
+
+        /**
+         * set model properties from this additional properties
+         * @param prop          properties of optimization model
+         */
+        void setModelProperties(OptModel::Properties& prop) const override;
+
+        //TODO
+    };
+
+
+    /**
+     * base class for optimization matrix elements
+     */
+    class OptVarConBase : public CmplObjBase, public ValueTreeElem
+    {
+    protected:
+        unsigned _syntaxElem;               ///< id of syntax element in the cmpl text creating this matrix element
+        CmplValAuto _names;                 ///< if set then TP_ARRAY of additional names usable for linearisation
+
+        AddPropOptVarConBase *_addProp = NULL;  ///< if set then additional properties, especially for linearization (owning pointer)
+
+        //TODO
+
+    public:
+        /**
+         * destructor
+         */
+        virtual ~OptVarConBase()                    { if (_addProp) delete _addProp; }
+
+        /**
+         * get id of syntax element in the cmpl text creating this matrix element
+         */
+        unsigned syntaxElem() const                 { return _syntaxElem; }
+
+        /**
+         * get TP_ARRAY of additional names usable for linearisation
+         */
+        CmplVal& names()                            { return _names; }
+
+        /**
+         * get additional properties, especially for linearization
+         */
+        AddPropOptVarConBase *addProp() const       { return _addProp; }
+
+        /**
+         * set additional properties, especially for linearization
+         */
+        void setAddProp(AddPropOptVarConBase *a)    { _addProp = a; }
+
+        /**
+         * get lower and upper bound of the possible value range of this variable or constraint
+         * @param lb        return of lower bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
+         * @param ub        return of upper bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
+         */
+        virtual void getBounds(CmplVal& lb, CmplVal& ub) const  { }
+
+        //TODO
+    };
+
+
+    /**
+     * class for one optimization variable (column in the optimization matrix)
+     */
+    class OptVar : public OptVarConBase
+    {
+    protected:
+        CmplVal _dataType;								///< data type
+        bool _hasDataType;								///< data type is fixed (when false, then _dataType is the default data type for variables)
+
+        bool _intVar;									///< integer optimization variable
+        CmplVal _lowBound;								///< lower bound (can only be TP_EMPTY, TP_INT, TP_REAL)
+        CmplVal _uppBound;								///< upper bound (can only be TP_EMPTY, TP_INT, TP_REAL)
+
+        int _usedByCon;                                 ///< mark variable as used by at least one constraint: 0: not used, 1: used, -1: used only in constraint deleted by remodelation
+
+    public:
+        /**
+         * constructor
+         * @param om		result matrix
+         * @param tp		data type
+         * @param defTp		data type tp is default type
+         * @param se		id of syntax element in the cmpl text creating this matrix element
+         */
+        OptVar(OptModel *om, CmplVal& tp, bool defTp, unsigned se);
+
+        /**
+         * destructor
+         */
+        virtual ~OptVar()                       { _dataType.dispose(); _lowBound.dispose(); _uppBound.dispose(); }
+
+        /**
+         * write contents of the object to a stream
+         * @param modp			calling module
+         * @param mode			mode for output: 0=direct; 1=part of other value
+         */
+        virtual void write(ostream& ostr, ModuleBase *modp, int mode = 0) const override     { ostr << "<var#" << _id; if (mode == 0) { ostr << ": " << (_hasDataType ? "" : "(def.type) "); _dataType.write(ostr, modp, 1); } ostr << '>'; }
+
+        /**
+         * set data type as fixed
+         */
+        inline void fixDataType()					{ _hasDataType = true; }
+
+        /**
+         * get data type
+         */
+        inline CmplVal& dataType()      			{ return _dataType; }
+
+        /**
+         * get whether this is an integer optimization variable
+         */
+        inline bool intVar() const					{ return _intVar; }
+
+        /**
+         * get whether this is a binary optimization variable
+         */
+        inline bool binVar() const                  { return (_intVar && _uppBound.t == TP_INT && _uppBound.v.i == 1 && _lowBound.t == TP_INT && _lowBound.v.i == 0); }
+
+        /**
+         * set whether this is an integer optimization variable
+         */
+        inline void setIntVar(bool iv)				{ _intVar = iv; }
+
+        /**
+         * get lower bound (can only be TP_EMPTY, TP_INT or TP_REAL)
+         */
+        inline CmplVal& lowBound()      			{ return _lowBound; }
+
+        /**
+         * set lower bound (must be TP_EMPTY, TP_INT or TP_REAL)
+         */
+        inline void setLowBound(CmplVal& lb)		{ _lowBound.copyFrom(lb); }
+
+        /**
+         * get upper bound (can only be TP_EMPTY, TP_INT or TP_REAL)
+         */
+        inline CmplVal& uppBound()      			{ return _uppBound; }
+
+        /**
+         * set upper bound (must be TP_EMPTY, TP_INT or TP_REAL)
+         */
+        inline void setUppBound(CmplVal& lb)		{ _uppBound.copyFrom(lb); }
+
+        /**
+         * get lower and upper bound of the possible value range of this variable or constraint
+         * @param lb        return of lower bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
+         * @param ub        return of upper bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
+         */
+        void getBounds(CmplVal& lb, CmplVal& ub) const override;
+
+        /**
+         * get whether variable is used by at least one constraint: 0: not used, 1: used, -1: used only in constraint deleted by remodelation
+         */
+        inline int usedByCon() const               { return _usedByCon; }
+
+        /**
+         * set whether variable is used by at least one constraint: 0: not used, 1: used, -1: used only in constraint deleted by remodelation
+         */
+        inline void setUsedByCon(int i)            { _usedByCon = i; }
+
+        /**
+         * set model properties from this constraint
+         * @param prop          properties of optimization model
+         */
+        void setModelProperties(OptModel::Properties& prop) const;
+
+        /**
+         * iterates over all optimization variables found in formula or constraint
+         * @param fv        formula or constraint (only used in initializating call)
+         * @param stat      current internal iteration status, empty in initializating call
+         * @return          first (in initializating call) or next optimization variable, or NULL if iteration ended
+         */
+        static OptVar *iterInFormula(CmplVal& fv, stack<pair<ValFormula *, unsigned>>& stat);
+    };
+
+
+    /**
+     * class for one optimization constraint or objective (row in the optimization matrix)
+     */
+    class OptCon : public OptVarConBase
+    {
+    protected:
+        CmplVal _formula;								///< formula for constraint or objective, should be TP_FORMULA
+        bool _objective;								///< objective or constraint
+
+    public:
+        /**
+         * constructor
+         * @param om		result matrix
+         * @param f			formula for constraint or objective
+         * @param obj		true: objective / false: constraint
+         * @param se		id of syntax element in the cmpl text creating this matrix element
+         */
+        OptCon(OptModel *om, CmplVal& f, bool obj, unsigned se);
+
+        /**
+         * destructor
+         */
+        virtual ~OptCon()                       { _formula.dispose(); }
+
+        /**
+         * write contents of the object to a stream
+         * @param modp			calling module
+         * @param mode			mode for output: 0=direct; 1=part of other value
+         */
+        virtual void write(ostream& ostr, ModuleBase *modp, int mode = 0) const override     { ostr << (_objective ? "<obj#" : "<con#") << _id << ": "; _formula.write(ostr, modp, 1); ostr << '>'; }
+
+
+        /**
+         * get whether this is a linear constraint or objective
+         */
+        bool linearConstraint();
+
+        /**
+         * get formula for constraint or objective
+         */
+        ValFormula *formula()							{ return (_formula.t == TP_FORMULA ? _formula.valFormula() : NULL); }
+
+        /**
+         * get value of the constraint or objective
+         */
+        CmplVal& value()                                { return _formula; }
+
+        /**
+         * get whether objective or constraint
+         */
+        bool objective()                                { return _objective; }
+
+        /**
+         * get lower and upper bound of the possible value range of this variable or constraint
+         * @param lb        return of lower bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
+         * @param ub        return of upper bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
+         */
+        void getBounds(CmplVal& lb, CmplVal& ub) const override;
+
+        //TODO
+    };
+
 }
 
-#endif // OPTMATRIX_HH
+#endif // OPTMODEL_HH
 

@@ -330,7 +330,7 @@ namespace cmpl
 		 * get whether assign modificators indicate a codeblock control assignment
 		 * @param loc           location, only for error handling
 		 */
-		inline bool assignModControlCB(LocationInfo *loc)										{ ModificatorKey cb; return curParseScope()->_assignModCurrent.isControlCBAssign(this, loc, cb); }
+        inline bool assignModControlCB(LocationInfo *loc)										{ ModificatorKey cb = modificatorDummy; return curParseScope()->_assignModCurrent.isControlCBAssign(this, loc, cb); }
 
 		/**
 		 * set directive from current assign modificators

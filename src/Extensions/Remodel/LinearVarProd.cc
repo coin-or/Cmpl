@@ -417,7 +417,7 @@ namespace cmpl
                     string nmv = getBaseNameTuple2(modp, v1, v2, tpl);
 
                     OptVar *pv = newOptVar(modp, om, se, f2->dataType(), NULL, NULL, &nmv, &tpl);
-                    setBoundsForProduct(modp->baseExecCtx(), pv, lb, lb, v2->lowBound(), v2->uppBound(), se);
+                    setBoundsForProduct(modp->baseExecCtx(), pv, lb, lb, f2->lowBound(), f2->uppBound(), se);
                     CmplValAuto pvf(TP_FORMULA, new ValFormulaVarOp(se, pv));
 
                     // create constraint for product

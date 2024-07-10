@@ -413,8 +413,9 @@ namespace cmpl
         /**
          * release key in the cache reserved with checkPrep()
          * @param cache     cache
+         * @param err       error message if no reserved key
          */
-        template<class CacheMap> void release(RemodelCache<CacheMap>& cache)
+        template<class CacheMap> void release(RemodelCache<CacheMap>& cache, bool err = true)
         {
             if (_info) {
                 GuardInfo<CacheMap> *info = dynamic_cast<GuardInfo<CacheMap> *>(_info);
@@ -429,8 +430,9 @@ namespace cmpl
                     return;
                 }
             }
-
-            throw logic_error("RemodelCacheGuard::checkPrep() must be called before RemodelCacheGuard::release()");
+            else if (err) {
+                throw logic_error("RemodelCacheGuard::checkPrep() must be called before RemodelCacheGuard::release()");
+            }
         }
 
         /**
@@ -441,6 +443,33 @@ namespace cmpl
         {
             return (_info != NULL);
         }
+    };
+
+
+    /**
+     * type for using a formula value as the key for a remodel cache
+     */
+    class FormulaCacheKey
+    {
+        friend class FormulaCacheKeyHash;
+
+    private:
+        CmplValAuto _frm;            ///< formula (can only be TP_FORMULA)
+
+    public:
+        FormulaCacheKey(CmplVal& v)                             { if (v.t == TP_FORMULA) _frm.copyFrom(v); }
+        FormulaCacheKey(ValFormula *f): _frm(TP_FORMULA, (CmplObjBase *)f)      { }
+
+        bool operator == (const FormulaCacheKey& p2) const;
+        explicit operator bool() const                          { return (bool)_frm; }
+    };
+
+    /**
+     * hash for use with FormulaCacheKey
+     */
+    struct FormulaCacheKeyHash
+    {
+        size_t operator() (FormulaCacheKey const& p) const noexcept;
     };
 }
 

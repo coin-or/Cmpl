@@ -127,7 +127,7 @@ void SolverCbc::run()
         GET_NEW_DATA(Solution,sol);
 
         string probName = StringStore::modelName(string( modp()->data()->cmplFileBase() ))+".cmpl";
-        sol->prepareSolutionData(probName, _solverName, _integerRelaxation, _data,this);
+        sol->prepareSolutionData(probName, _solverName, _integerRelaxation,  _addConForUnusedVar, _data,this);
 
         generateCmdLine(sol);
 
@@ -152,9 +152,9 @@ void SolverCbc::generateCmdLine(Solution* sol) {
     _solverCmdLine="\""+_solverBinName+"\" "+ _instanceFileName;
 
     for (size_t i=0; i<_solverOpts.size(); i++)
-        _solverCmdLine+= " " + _solverOpts[i].key + " " + _solverOpts[i].value;
+        _solverCmdLine+= " -" + _solverOpts[i].key + " " + _solverOpts[i].value;
 
-    _solverCmdLine+= " " + sol->objSense() + " " +" solve gsolu "+ _instanceSolName + " 2>&1";
+    _solverCmdLine+= " -" + sol->objSense() + " -solve -gsolu "+ _instanceSolName + " 2>&1";
 }
 
 

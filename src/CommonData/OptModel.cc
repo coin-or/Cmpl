@@ -45,149 +45,6 @@ namespace cmpl
 
 
 
-
-    /****** OptVar ****/
-
-    /**
-     * constructor
-     * @param om		result matrix
-     * @param tp		data type
-     * @param defTp		data type tp is default type
-     * @param se		id of syntax element in the cmpl text creating this matrix element
-     */
-    OptVar::OptVar(OptModel *om, CmplVal &tp, bool defTp, unsigned se)
-    {
-        _dataType.copyFrom(tp, true, false);
-        _hasDataType = !defTp;
-        _syntaxElem = se;
-        _addProp = NULL;
-        _usedByCon = 0;
-
-        ValueTreeRoot& vtr = om->cols();
-        vtr.insertNewElem(this);
-        incRef();
-    }
-
-    /**
-     * get lower and upper bound of the possible value range of this variable or constraint
-     * @param lb        return of lower bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
-     * @param ub        return of upper bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
-     */
-    void OptVar::getBounds(CmplVal& lb, CmplVal& ub) const
-    {
-        if (_lowBound)
-            lb.copyFrom(_lowBound);
-        else
-            lb.dispSet(TP_INFINITE, -1);
-
-        if (_uppBound)
-            ub.copyFrom(_uppBound);
-        else
-            ub.dispSet(TP_INFINITE, 1);
-    }
-
-
-    /**
-     * iterates over all optimization variables found in formula or constraint
-     * @param fv        formula or constraint (only used in initializating call)
-     * @param stat      current internal iteration status, empty in initializating call
-     * @return          first (in initializating call) or next optimization variable, or NULL if iteration ended
-     */
-    OptVar *OptVar::iterInFormula(CmplVal& fv, stack<pair<ValFormula *, unsigned>>& stat)
-    {
-        ValFormula *frm;
-        if (stat.empty()) {
-            // in initializating call
-            if (fv.t == TP_FORMULA || fv.isOptRC()) {
-                frm = (fv.t == TP_FORMULA ? fv.valFormula() : (fv.isOptRow() ? fv.optCon()->formula() : NULL));
-                stat.emplace(frm, 0);
-            }
-            else {
-                // no variable
-                return NULL;
-            }
-        }
-
-        frm = stat.top().first;
-        unsigned p = stat.top().second;
-
-        OptVar *res;
-        if (frm == NULL) {
-            // special handling if fv itself is optimization variable
-            stat.top().second = p + 1;
-            if (p == 0 && fv.t == TP_OPT_VAR)
-                res = fv.optVar();
-            else
-                res = NULL;
-        }
-
-        else {
-            unsigned pc = frm->partCount();
-            while (p < pc && !res) {
-                CmplVal *pv = frm->getPart(p++);
-                stat.top().second = p;
-
-                if (pv->t == TP_OPT_VAR) {
-                    res = pv->optVar();
-                }
-                else if (pv->t == TP_FORMULA) {
-                    stat.emplace(pv->valFormula(), 0);
-                    res = iterInFormula(fv, stat);
-                }
-            }
-        }
-
-        if (!res) {
-            stat.pop();
-            if (!stat.empty())
-                res = iterInFormula(fv, stat);
-        }
-
-        return res;
-    }
-
-
-    /****** OptCon ****/
-
-    /**
-     * constructor
-     * @param om		result matrix
-     * @param f			formula for constraint or objective
-     * @param obj		true: objective / false: constraint
-     * @param se		id of syntax element in the cmpl text creating this matrix element
-     */
-    OptCon::OptCon(OptModel *om, CmplVal& f, bool obj, unsigned se)
-    {
-        _formula.copyFrom(f, true, false);
-        _objective = obj;
-        _syntaxElem = se;
-        _addProp = NULL;
-
-        ValueTreeRoot& vtr = om->rows();
-        vtr.insertNewElem(this);
-        incRef();
-    }
-
-    /**
-     * get whether this is a linear constraint or objective
-     */
-    bool OptCon::linearConstraint()
-    {
-        return (_formula.t == TP_FORMULA ? _formula.valFormula()->linearConstraint() : false);
-    }
-
-    /**
-     * get lower and upper bound of the possible value range of this variable or constraint
-     * @param lb        return of lower bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
-     * @param ub        return of upper bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
-     */
-    void OptCon::getBounds(CmplVal& lb, CmplVal& ub) const
-    {
-        ValFormula::getBounds(_formula, lb, ub, true);
-    }
-
-
-
     /****** LinearModel ****/
 
     /**
@@ -409,6 +266,29 @@ namespace cmpl
 
     /****** OptModel ****/
 
+    /**
+     * set model properties
+     * @param modp          calling module
+     */
+    void OptModel::setModelProperties(ModuleBase *modp)
+    {
+        _prop.reset();
+
+        for (unsigned long i = 0; i < _rows.size(); i++) {
+            OptCon *oc = dynamic_cast<OptCon *>(_rows[i]);
+            if (oc) {
+                ValFormula *frm = oc->formula();
+                if (frm)
+                    frm->setModelProperties(_prop);
+            }
+        }
+
+        modp->ctrl()->runExtension(modp, EXT_STEP_INTERPRET_MODELPROP, &_prop);
+
+        _prop.init = true;
+        PROTO_MOD_OUTL(modp, "Model type: " << _prop.modelType() << " (vartypes:" << _prop.vartypes << ", conditions:" << _prop.conditions << ", varprodInt:" << _prop.varprodInt << ", varprodReal:" << _prop.varprodReal << ", sos:" << _prop.sos << ")");
+    }
+
 
     /**
      * get array of names for usage on formatted outputs of the columns or rows of the model
@@ -494,27 +374,178 @@ namespace cmpl
     }
 
 
-    /**
-     * set model properties
-     * @param modp          calling module
-     */
-    void OptModel::setModelProperties(ModuleBase *modp)
-    {
-        _prop.reset();
 
-        for (unsigned long i = 0; i < _rows.size(); i++) {
-            OptCon *oc = dynamic_cast<OptCon *>(_rows[i]);
-            if (oc) {
-                ValFormula *frm = oc->formula();
-                if (frm)
-                    frm->setModelProperties(_prop);
+    /****** AddPropOptVarConValCond ****/
+
+    /**
+     * set model properties from this additional properties
+     * @param prop          properties of optimization model
+     */
+    void AddPropOptVarConValCond::setModelProperties(OptModel::Properties& prop) const
+    {
+        if (prop.condDepVal < 1) {
+            if (!_linearized)
+                prop.condDepVal = 1;
+            else if (!prop.condDepVal)
+                prop.condDepVal = -1;
+        }
+    }
+
+
+
+    /****** OptVar ****/
+
+    /**
+     * constructor
+     * @param om		result matrix
+     * @param tp		data type
+     * @param defTp		data type tp is default type
+     * @param se		id of syntax element in the cmpl text creating this matrix element
+     */
+    OptVar::OptVar(OptModel *om, CmplVal &tp, bool defTp, unsigned se)
+    {
+        _dataType.copyFrom(tp, true, false);
+        _hasDataType = !defTp;
+        _syntaxElem = se;
+        _addProp = NULL;
+        _usedByCon = 0;
+
+        ValueTreeRoot& vtr = om->cols();
+        vtr.insertNewElem(this);
+        incRef();
+    }
+
+    /**
+     * get lower and upper bound of the possible value range of this variable or constraint
+     * @param lb        return of lower bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
+     * @param ub        return of upper bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
+     */
+    void OptVar::getBounds(CmplVal& lb, CmplVal& ub) const
+    {
+        if (_lowBound)
+            lb.copyFrom(_lowBound);
+        else
+            lb.dispSet(TP_INFINITE, -1);
+
+        if (_uppBound)
+            ub.copyFrom(_uppBound);
+        else
+            ub.dispSet(TP_INFINITE, 1);
+    }
+
+
+    /**
+     * set model properties from this optimization variable
+     * @param prop          properties of optimization model
+     */
+    void OptVar::setModelProperties(OptModel::Properties& prop) const
+    {
+        if (prop.vartypes < 2) {
+            if (binVar() && prop.vartypes == 0)
+                prop.vartypes = 1;
+            else if (intVar() && !binVar())
+                prop.vartypes = 2;
+        }
+
+        if (_addProp)
+            _addProp->setModelProperties(prop);
+    }
+
+    /**
+     * iterates over all optimization variables found in formula or constraint
+     * @param fv        formula or constraint (only used in initializating call)
+     * @param stat      current internal iteration status, empty in initializating call
+     * @return          first (in initializating call) or next optimization variable, or NULL if iteration ended
+     */
+    OptVar *OptVar::iterInFormula(CmplVal& fv, stack<pair<ValFormula *, unsigned>>& stat)
+    {
+        ValFormula *frm;
+        if (stat.empty()) {
+            // in initializating call
+            if (fv.t == TP_FORMULA || fv.isOptRC()) {
+                frm = (fv.t == TP_FORMULA ? fv.valFormula() : (fv.isOptRow() ? fv.optCon()->formula() : NULL));
+                stat.emplace(frm, 0);
+            }
+            else {
+                // no variable
+                return NULL;
             }
         }
 
-        modp->ctrl()->runExtension(modp, EXT_STEP_INTERPRET_MODELPROP, &_prop);
+        frm = stat.top().first;
+        unsigned p = stat.top().second;
 
-        _prop.init = true;
-        PROTO_MOD_OUTL(modp, "Model type: " << _prop.modelType() << " (vartypes:" << _prop.vartypes << ", conditions:" << _prop.conditions << ", varprodInt:" << _prop.varprodInt << ", varprodReal:" << _prop.varprodReal << ", sos:" << _prop.sos << ")");
+        OptVar *res = NULL;
+        if (frm == NULL) {
+            // special handling if fv itself is optimization variable
+            stat.top().second = p + 1;
+            if (p == 0 && fv.t == TP_OPT_VAR)
+                res = fv.optVar();
+        }
+
+        else {
+            unsigned pc = frm->partCount();
+            while (p < pc && !res) {
+                CmplVal *pv = frm->getPart(p++);
+                stat.top().second = p;
+
+                if (pv->t == TP_OPT_VAR) {
+                    res = pv->optVar();
+                }
+                else if (pv->t == TP_FORMULA) {
+                    stat.emplace(pv->valFormula(), 0);
+                    res = iterInFormula(fv, stat);
+                }
+            }
+        }
+
+        if (!res) {
+            stat.pop();
+            if (!stat.empty())
+                res = iterInFormula(fv, stat);
+        }
+
+        return res;
+    }
+
+
+    /****** OptCon ****/
+
+    /**
+     * constructor
+     * @param om		result matrix
+     * @param f			formula for constraint or objective
+     * @param obj		true: objective / false: constraint
+     * @param se		id of syntax element in the cmpl text creating this matrix element
+     */
+    OptCon::OptCon(OptModel *om, CmplVal& f, bool obj, unsigned se)
+    {
+        _formula.copyFrom(f, true, false);
+        _objective = obj;
+        _syntaxElem = se;
+        _addProp = NULL;
+
+        ValueTreeRoot& vtr = om->rows();
+        vtr.insertNewElem(this);
+        incRef();
+    }
+
+    /**
+     * get whether this is a linear constraint or objective
+     */
+    bool OptCon::linearConstraint()
+    {
+        return (_formula.t == TP_FORMULA ? _formula.valFormula()->linearConstraint() : false);
+    }
+
+    /**
+     * get lower and upper bound of the possible value range of this variable or constraint
+     * @param lb        return of lower bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
+     * @param ub        return of upper bound (TP_INT, TP_REAL, TP_INFINITE, or TP_EMPTY when unknown)
+     */
+    void OptCon::getBounds(CmplVal& lb, CmplVal& ub) const
+    {
+        ValFormula::getBounds(_formula, lb, ub, true);
     }
 
 }

@@ -114,7 +114,7 @@ namespace cmpl
 
         _curVarCondMap = (prv ? prv->_curVarCondMap : NULL);
 
-        _assRhs = NULL;
+        _assRhsNo = -1;
         _assDataType = NULL;
 
         _cancel = false;
@@ -135,9 +135,10 @@ namespace cmpl
 
         if (_stack) {
             // only for error handling: empty stack
-            stackPopTo(_stack);
+            if (_stackTop > 0)
+                stackPopTo(_stack);
 
-            delete _stack;
+            delete[] _stack;
         }
 
         if (_cbContext) {
@@ -147,14 +148,14 @@ namespace cmpl
                     delete _cbContext[i].cbContext;
             }
 
-            delete _cbContext;
+            delete[] _cbContext;
         }
 
         if (_iterVals) {
             for (unsigned i = 0; i < _iterValsCap; i++)
                 _iterVals[i].dispose();
 
-            delete _iterVals;
+            delete[] _iterVals;
         }
 
         _topIterVal.dispose();
@@ -701,18 +702,18 @@ namespace cmpl
         if (assignOrdered == 2 && !_assStartVolaRhs)
             assignOrdered = 1;
 
-		StackValue *svLhs;
+        unsigned svLhsNo;
         char op = '\0';
 
-        _assRhs = stackCur();
-        PROTO_MOD_OUTL(_modp,  "  rhs = " << _assRhs->val());
+        _assRhsNo = _stackTop - 1;
+        PROTO_MOD_OUTL(_modp,  "  rhs = " << assRhs()->val());
 		
 		if (cd->v.c.minor == ICS_ASSIGN_RHSONLY) {
-            if (_assRhs->val().t == TP_NULL || (_assObjType != VAL_OBJECT_TYPE_CON && _assObjType != VAL_OBJECT_TYPE_OBJ)) {
-                if (_assObjType == VAL_OBJECT_TYPE_VAR && _assRhs->val().t != TP_NULL) {
+            if (assRhs()->val().t == TP_NULL || (_assObjType != VAL_OBJECT_TYPE_CON && _assObjType != VAL_OBJECT_TYPE_OBJ)) {
+                if (_assObjType == VAL_OBJECT_TYPE_VAR && assRhs()->val().t != TP_NULL) {
                     CmplValAuto t;
-                    if (!checkContainerConvSpecial(t, _assRhs->val(), TP_OPT_VAR) || t.t != TP_NULL)
-                        valueError("expression without assignment cannot be used with modificator 'var'", _assRhs);
+                    if (!checkContainerConvSpecial(t, assRhs()->val(), TP_OPT_VAR) || t.t != TP_NULL)
+                        valueError("expression without assignment cannot be used with modificator 'var'", assRhs());
                 }
 			}
             else if (setResName && (_assObjType == VAL_OBJECT_TYPE_CON || _assObjType == VAL_OBJECT_TYPE_OBJ)) {
@@ -723,7 +724,7 @@ namespace cmpl
                     ValueStore::setValInValueTree(this, (ssv ? ssv : &(sv->val())), _assSyntaxElem, _modp->getResModel());
                 }
 			}
-            stackPopTo(_assRhs);
+            stackPopTo(assRhs());
         }
 		else {
             switch (cd->v.c.minor) {
@@ -733,21 +734,21 @@ namespace cmpl
 
                 case ICS_ASSIGN_EXTERN:
                     if (_assObjType == VAL_OBJECT_TYPE_OBJ || _assObjType == VAL_OBJECT_TYPE_CON)
-                        valueError("alone left hand side cannot be used with modificator 'con' or 'obj'", _assRhs);
+                        valueError("alone left hand side cannot be used with modificator 'con' or 'obj'", assRhs());
                     // no break
 
                 case ICS_ASSIGN_ASSERT:
-                    svLhs = _assRhs;
-                    _assRhs = NULL;
+                    svLhsNo = _assRhsNo;
+                    _assRhsNo = -1;
                     break;
 
                 case ICS_ASSIGN_REF:
-                    if (!_assRhs->lvalue())
-                        valueError("internal error: lvalue expected on stack, but not given", _assRhs, ERROR_LVL_FATAL);
-                    if (_assRhs->hasIndex())
-                        valueError("right hand side of ref assignment cannot have indexation", _assRhs);
+                    if (!assRhs()->lvalue())
+                        valueError("internal error: lvalue expected on stack, but not given", assRhs(), ERROR_LVL_FATAL);
+                    if (assRhs()->hasIndex())
+                        valueError("right hand side of ref assignment cannot have indexation", assRhs());
                     if (_curVarCondMap && !assignNocond)
-                        valueError("ref assignment not possible within codeblock with condition over optimization variables", _assRhs);
+                        valueError("ref assignment not possible within codeblock with condition over optimization variables", assRhs());
                     _assObjType = -1;
                     _assDataType = NULL;
                     break;
@@ -766,26 +767,27 @@ namespace cmpl
                     break;
             }
 
-            if (_assRhs) {
+            if (_assRhsNo >= 0) {
                 // if right hand side is a list then convert it to an array or tuple
-                if (_assRhs->isList())
-                    _assRhs = replaceListOnStack(_assRhs);
-
+                if (assRhs()->isList()) {
+                    replaceListOnStack(assRhs());
+                    _assRhsNo = _stackTop - 1;
+                }
                 //TODO: Wenn RHS Typ TP_SPECIALSYM, dann darin get aufrufen und auf stattdessen auf den Stack
                 //          oder vielleicht diese Umwandlung mit in replaceListOnStack()?
 
-                svLhs = stackPrev(_assRhs);
+                svLhsNo = stackPrev(assRhs()) - _stack;
 			}
 
             for (unsigned iLhs = 1; iLhs < cntLhs; iLhs++)
-                svLhs = stackPrev(svLhs);
+                svLhsNo = stackPrev(_stack + svLhsNo) - _stack;
 
-            StackValue *svLhsBase = svLhs;
-            for (unsigned iLhs = 0; iLhs < cntLhs; iLhs++, svLhs++) {
-                if (!svLhs->lvalue())
-                    valueError("internal error: lvalue expected on stack, but not given", svLhs);
-                else if (svLhs->val().t == TP_SYMBOL_VAL) {
-                    SymbolValue *sym = (SymbolValue *)(svLhs->val().v.p);
+            unsigned svLhsBaseNo = svLhsNo;
+            for (unsigned iLhs = 0; iLhs < cntLhs; iLhs++, svLhsNo++) {
+                if (!_stack[svLhsNo].lvalue())
+                    valueError("internal error: lvalue expected on stack, but not given", _stack + svLhsNo);
+                else if (_stack[svLhsNo].val().t == TP_SYMBOL_VAL) {
+                    SymbolValue *sym = (SymbolValue *)(_stack[svLhsNo].val().v.p);
                     if (sym) {
                         bool needLockSym = (_needLock && (sym->global() || (!sym->global() && (sym - _localSymbols) < _localSymbolCreateTo)));
                         LockGuard<mutex> lckS(needLockSym, sym->accMtx());
@@ -795,29 +797,29 @@ namespace cmpl
                             bool ncerr;
                             map = checkGetMappedVS(sym, (cd->v.c.minor != ICS_ASSIGN_ASSERT && !assignConst && !assignNocond), assignNocond, ncerr);
                             if (ncerr || (map && assignConst)) {
-                                valueError("inconsistent mix of conditional and non-conditional assignments within a codeblock part with conditions over optimization variables", svLhs);
+                                valueError("inconsistent mix of conditional and non-conditional assignments within a codeblock part with conditions over optimization variables", _stack + svLhsNo);
                                 map = NULL;
                             }
                         }
                         //TODO: Verwendung map in den folgenden Funktionsaufrufen bei der Ausfuehrung der Zuweisungsfunktionalitaet
 
                         if (cd->v.c.minor == ICS_ASSIGN_EXTERN)
-                            svLhs->importExtern(this, assignConst, cd->se);
+                            _stack[svLhsNo].importExtern(this, assignConst, cd->se);
                         else if (cd->v.c.minor == ICS_ASSIGN_ASSERT)
-                            svLhs->checkAssert(this, assignConst, _assDataType, _assObjType, cd->se);
+                            _stack[svLhsNo].checkAssert(this, assignConst, _assDataType, _assObjType, cd->se);
                         else
-                            svLhs->doAssign(this, op, (cd->v.c.minor == ICS_ASSIGN_REF), assignConst, assignInitial, assignOrdered, setResName, map);
+                            _stack[svLhsNo].doAssign(this, op, (cd->v.c.minor == ICS_ASSIGN_REF), assignConst, assignInitial, assignOrdered, setResName, map);
                     }
                 }
-                else {  // svLhs->val().t == TP_SPECIALSYM
+                else {  // _stack[svLhsNo].val().t == TP_SPECIALSYM
                     if (cd->v.c.minor == ICS_ASSIGN_EXTERN || cd->v.c.minor == ICS_ASSIGN_ASSERT || cd->v.c.minor == ICS_ASSIGN_REF || assignConst || setResName)
-                        valueError("invalid assign modificator for assign to pseudo symbol", svLhs);
+                        valueError("invalid assign modificator for assign to pseudo symbol", _stack + svLhsNo);
                     else
-                        svLhs->doAssignSpecial(this, op, assignInitial, assignOrdered);
+                        _stack[svLhsNo].doAssignSpecial(this, op, assignInitial, assignOrdered);
                 }
 			}
 
-            stackPopTo(svLhsBase);
+            stackPopTo(_stack + svLhsBaseNo);
 		}
 
 		return cd + (cd->v.c.cnt + 1);
@@ -831,8 +833,8 @@ namespace cmpl
 	 */
 	IntCode::IcElem* ExecContext::execCodeOperation(IntCode::IcElem *cd)
 	{
-        StackValue *sv1, *sv2;
-        StackValue *sve = NULL;
+        intType svNo1, svNo2;
+        intType sveNo = -1;
         CmplVal *v;
         intType i;
         unsigned short ac;
@@ -842,12 +844,12 @@ namespace cmpl
 		switch (cd->v.c.minor) {
 			case ICS_OPER_FUNC:
 				// function call
-				sv1 = stackCur();
-                sve = sv2 = stackPrev(sv1);
-				v = sv2->simpleValue();
+                svNo1 = stackCur() - _stack;
+                sveNo = svNo2 = stackPrev(_stack + svNo1) - _stack;
+                v = _stack[svNo2].simpleValue();
 
                 if (!v)
-                    valueError("function call for a not function-like value", sv2);
+                    valueError("function call for a not function-like value", _stack + svNo2);
 
                 if (v->t == TP_OBJECT_TYPE) {
                     //Umwandlung/Konstruktor
@@ -855,40 +857,40 @@ namespace cmpl
                 }
                 else if (v->t == TP_FUNCTION || v->t == TP_DATA_TYPE) {
                     ValContainer *pt = _callThis;
-                    _callThis = (sv2->_addVal.t == TP_CONTAINER ? sv2->_addVal.valContainer() : NULL);
-                    if (!((ValFunctionBase *)(v->v.vp))->operCall(this, sv1))
-                        valueError("internal error: unhandled function call", sv2, ERROR_LVL_FATAL);
+                    _callThis = (_stack[svNo2]._addVal.t == TP_CONTAINER ? _stack[svNo2]._addVal.valContainer() : NULL);
+                    if (!((ValFunctionBase *)(v->v.vp))->operCall(this, _stack + svNo1))
+                        valueError("internal error: unhandled function call", _stack + svNo2, ERROR_LVL_FATAL);
                     _callThis = pt;
                 }
                 else if (v->toInt(i, typeConversionExact, modp())) {
                     // construct algorithmic set: first pseudo function call for expression like "1(1)(n)"
-                    SetUtil::constructAlg(this, _opRes, sv2, sv1, NULL);
+                    SetUtil::constructAlg(this, _opRes, _stack + svNo2, _stack + svNo1, NULL);
                 }
                 else if (SET_TP_WO_ORDER(*v) == TP_SET_R1_ALG && ((SetAlg *)(SET_VAL_WO_ORDER(*v).v.vp))->incomplete()) {
                     // construct algorithmic set: second pseudo function call for expression like "1(1)(n)"
-                    SetUtil::constructAlg(this, _opRes, v->setBase(), sv1);
+                    SetUtil::constructAlg(this, _opRes, v->setBase(), _stack + svNo1);
                 }
                 else {
-                    valueError("internal error: unhandled function call", sv2, ERROR_LVL_FATAL);
+                    valueError("internal error: unhandled function call", _stack + svNo2, ERROR_LVL_FATAL);
                 }
                 break;
 
             case ICS_OPER_INDEX:
                 // indexation operation
-                sv1 = stackCur();
-                sve = sv2 = stackPrev(sv1);
+                svNo1 = stackCur() - _stack;
+                sveNo = svNo2 = stackPrev(_stack + svNo1) - _stack;
 
-                if (!sv2->indexation(this, sv1)) {
+                if (!_stack[svNo2].indexation(this, _stack + svNo1)) {
                     pushRes = false;
-                    sve = sv1;
+                    sveNo = svNo1;
                 }
                 break;
 
             case ICS_OPER_ARRCAST:
                 // array cast operation
-                sv1 = stackCur();
-                sve = sv2 = stackPrev(sv1);
-                sv1->arraycast(this, sv2);
+                svNo1 = stackCur() - _stack;
+                sveNo = svNo2 = stackPrev(_stack + svNo1) - _stack;
+                _stack[svNo1].arraycast(this, _stack + svNo2);
                 break;
 
             default:
@@ -896,37 +898,37 @@ namespace cmpl
                 ac = cd->v.c.par & ICPAR_OPER_CNT;
                 if (ac > 0) {
                     if (ac == 1) {
-                        sve = sv1 = replaceListOnStack(stackCur());
-                        sv2 = NULL;
+                        sveNo = svNo1 = replaceListOnStack(stackCur()) - _stack;
+                        svNo2 = -1;
                     }
                     else {
-                        sv2 = replaceListOnStack(stackCur());
-                        sve = sv1 = stackPrev(sv2);
-                        if (sv1->isList()) {
+                        svNo2 = replaceListOnStack(stackCur()) - _stack;
+                        sveNo = svNo1 = stackPrev(_stack + svNo2) - _stack;
+                        if (_stack[svNo1].isList()) {
                             CmplVal rl;
-                            rl.setP(TP_REF_LIST, sv1);
-                            pushVal(rl, sv1->syntaxElem());
-                            sv1 = replaceListOnStack(stackCur());
+                            rl.setP(TP_REF_LIST, _stack + svNo1);
+                            pushVal(rl, _stack[svNo1].syntaxElem());
+                            svNo1 = replaceListOnStack(stackCur()) - _stack;
                         }
                     }
                 }
                 else {
-                    sve = sv1 = sv2 = NULL;
+                    sveNo = svNo1 = svNo2 = -1;
                 }
 
                 // execute operation
-                if (!OperationBase::execOper(this, _opRes, transp, cd->se, cd->v.c.minor, (bool)(cd->v.c.par & ICPAR_OPER_CMP_FOLLOW), ac, sv1, sv2)) {
+                if (!OperationBase::execOper(this, _opRes, transp, cd->se, cd->v.c.minor, (bool)(cd->v.c.par & ICPAR_OPER_CMP_FOLLOW), ac, (svNo1 >= 0 ? _stack + svNo1 : NULL), (svNo2 >= 0 ? _stack + svNo2 : NULL))) {
                     //TODO: sonstige Operation, insbesondere vielleicht in Codeblockheader (oder vielleicht doch gar nichts hier?)
                     // (fuer Transpose bei eindimensionalem Arrays hier weiter nichts zu tun, schon durch transp erledigt)
                     pushRes = false;
                     if (transp)
-                        sve = NULL;
+                        sveNo = -1;
                 }
                 break;
 		}
 
-        if (sve)
-            stackPopTo(sve);
+        if (sveNo >= 0)
+            stackPopTo(_stack + sveNo);
         if (pushRes)
             pushOpResult(cd->se);
 
@@ -1543,7 +1545,12 @@ namespace cmpl
 	{
 		// discard elements over sv
 		StackValue *top = _stack + _stackTop;
-		for (StackValue *s = sv + 1; s < top; s++)
+        if (sv == top && incl)
+            return;
+        if (sv >= top)
+            internalError("invalid stack popTo");
+
+        for (StackValue *s = sv + 1; s < top; s++)
 			s->unsetValue();
 
 		_stackTop = (sv - _stack) + 1;
@@ -2107,53 +2114,57 @@ namespace cmpl
             if (_assStartVolaRhs) {
                 //TODO:
                 //	Code ab _assStartVolaRhs erneut ausfuehren bis zur aktuellen Codeposition (moeglichst direkt in diesem ExecContext)
-                //	dadurch wird RHS neu oben auf dem Stack hinterlassen, darauf _assRhs setzen
-                stackPopTo(_assRhs, false);	//nur vorlaeufig
-                valueError("volatile right hand side value not implemented", _assRhs);
-                //stackPopTo(_assRhs, true);
+                //	dadurch wird RHS neu oben auf dem Stack hinterlassen, darauf _assRhsNo setzen
+                stackPopTo(assRhs(), false);	//nur vorlaeufig
+                valueError("volatile right hand side value not implemented", assRhs());
+                //stackPopTo(assRhs(), true);
                 //run(_assStartVolaRhs, _curCommand);
-                //_assRhs = stackCur();
+                //_assRhsNo = _stackTop - 1;
             }
             else {
-                if (_assRhs)
-                    stackPopTo(_assRhs, false);
+                if (_assRhsNo >= 0)
+                    stackPopTo(assRhs(), false);
                 else
                     pop();
             }
         }
-        else if (!_assRhs) {
+        else if (_assRhsNo < 0) {
             // push default value to stack
             if (_assObjType == VAL_OBJECT_TYPE_CON || _assObjType == VAL_OBJECT_TYPE_OBJ) {
                 valueError("no constraint or objective given within 'con' or 'obj'", stackCur());
                 pushEmpty(se);
-                _assRhs = stackCur();
+                _assRhsNo = _stackTop - 1;
             }
             else if (_assObjType == VAL_OBJECT_TYPE_VAR) {
                 if (_assDataType) {
-                    _assRhs = pushPre(se);
-                    _assRhs->val().set(TP_DATA_TYPE, _assDataType);
+                    pushPre(se);
+                    _assRhsNo = _stackTop - 1;
+                    assRhs()->val().set(TP_DATA_TYPE, _assDataType);
                     _assDataType = NULL;
                 }
             }
             else {
-                _assRhs = pushPre(se);
+                pushPre(se);
+                _assRhsNo = _stackTop - 1;
                 if (_assDataType && _assDataType->baseType() != TP_CONTAINER) {
-                    _assDataType->defValCopy(_assRhs->val());
+                    _assDataType->defValCopy(assRhs()->val());
                     _assDataType = NULL;
                 }
             }
         }
 
-        if (_assRhs && _assRhs->isList())
-            _assRhs = replaceListOnStack(_assRhs);
+        if (_assRhsNo >= 0 && assRhs()->isList()) {
+            replaceListOnStack(assRhs());
+            _assRhsNo = _stackTop - 1;
+        }
 
-        StackValue *res = _assRhs;
+        StackValue *res = assRhs();
         bool volRes = false;
 
         // convert to object type
         if (_assObjType != -1) {
-            res = pushPre(_assRhs ? _assRhs->syntaxElem() : se);
-            ObjectTypeUtil::convertTo(this, res->val(), _assObjType, _assRhs, _assSyntaxElem, res->syntaxElem(), _assOrdered);
+            res = pushPre(_assRhsNo >= 0 ? assRhs()->syntaxElem() : se);
+            ObjectTypeUtil::convertTo(this, res->val(), _assObjType, assRhs(), _assSyntaxElem, res->syntaxElem(), _assOrdered);
 
             if (_assObjType != VAL_OBJECT_TYPE_PAR)
                 volRes = true;
@@ -2161,9 +2172,9 @@ namespace cmpl
 
         // convert to data type
         if (_assDataType) {
-            StackValue *sv = res;
-            res = pushPre(sv->syntaxElem());
-            _assDataType->convertTo(this, res->val(), sv);
+            unsigned svNo = res - _stack;
+            res = pushPre(res->syntaxElem());
+            _assDataType->convertTo(this, res->val(), _stack + svNo);
         }
 
         if (_assObjType == VAL_OBJECT_TYPE_VAR) {
@@ -2970,7 +2981,10 @@ namespace cmpl
     bool VarCondMapping::checkType(CmplVal& res, CmplVal& v, OptCon *&oc)
     {
         if (oc) {
-            if (!v.isOptRow() || v.optCon() != oc) {
+            if (v.isEmpty()) {
+                return true;
+            }
+            else if (!v.isOptRow() || v.optCon() != oc) {
                 _execContext->valueError("constraint must be unique in conditional expression", v, _cbContext->syntaxElem());
                 res.dispSet((oc->objective() ? TP_OPT_OBJ : TP_OPT_CON), oc);
                 return false;

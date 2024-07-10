@@ -706,3 +706,7 @@ src/Extensions/DataImport/ExternXlsDataFileMod.cc
 src/Extensions/DataImport/ExternXlsDataFileMod.hh
 src/Extensions/DataImport/ExternXlsDataFile.hh
 src/Extensions/DataImport/ExternXlsDataFile.cc
+src/Extensions/Remodel/LinearConditional.cc
+src/Extensions/Remodel/LinearConditional.hh
+src/Extensions/Remodel/LinearConditionalMod.cc
+src/Extensions/Remodel/LinearConditionalMod.hh

@@ -1,0 +1,10 @@
+cmplServerPort = 8008
+maxProblems = 4
+maxInactivityTime = 43200
+maxServerTries = 3
+serviceIntervall = 30
+schedulerServiceIntervall = 0.1
+performanceIndex = 1
+solvers = highs scip cbc glpk cplex
+cmplGridScheduler = http://127.0.0.1:8008  4
+

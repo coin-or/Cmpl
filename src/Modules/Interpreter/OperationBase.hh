@@ -100,10 +100,10 @@ namespace cmpl
          * get mode and result definition set for matrix multiplication
          * @param ctx			execution context
          * @param res			store for result definition set
+         * @param mm			return mode for matrix multiplication
          * @param se			syntax element id of operation
          * @param df1			definition set of argument one
          * @param df2			definition set of argument two
-         * @param mm			return mode for matrix multiplication
          * @return				false if error
          */
         static bool resultSetMatrixMult(ExecContext *ctx, CmplVal& res, MatrixMultMode &mm, unsigned se, StackValue *a1, StackValue *a2, CmplVal& df1, CmplVal& df2);
@@ -166,7 +166,7 @@ namespace cmpl
         static void negN(ExecContext *ctx, CmplVal *res, unsigned se, CmplVal *a1);							///< negation of number (a1 must be TP_INT, TP_REAL or TP_INFINITE)
         virtual void negF(ExecContext *ctx, CmplVal *res, unsigned se) { }									///< negation of formula
 
-        virtual void notF(ExecContext *ctx, CmplVal *res, unsigned se);                                     ///< logical Not for formula
+        virtual void notF(ExecContext *ctx, CmplVal *res, unsigned se, bool noReuse = false);               ///< logical Not for formula
 
         // binary operation plus
     public:
@@ -176,7 +176,9 @@ namespace cmpl
         virtual void plusF(ExecContext *ctx, CmplVal *res, unsigned se, CmplVal *a2) { }					///< addition for formula
 
         // binary operation minus
+    public:
         static void minus(ExecContext *ctx, CmplVal *res, unsigned se, CmplVal *a1, CmplVal *a2);			///< minus of two arbitrary values
+    protected:
         static void minusN(ExecContext *ctx, CmplVal *res, unsigned se, CmplVal *a1, CmplVal *a2);			///< minus of numbers (a1 and a2 must be TP_INT, TP_REAL or TP_INFINITE)
         virtual void minusF(ExecContext *ctx, CmplVal *res, unsigned se, CmplVal *a2, bool rev) { }			///< minus for formula
 
@@ -277,6 +279,14 @@ namespace cmpl
         inline ValFormulaVarOp(unsigned se, OptVar *ov, intType i): ValFormulaVar(se, ov, i)		{ }
 
 
+        /**
+         * check whether this formula has its canonical form
+         * @param chg   change this to canonical form if it is necessary and possible
+         * @return      return whether formula has now a canonical form
+         */
+        bool canonicalForm(bool chg) override           { return false; }       // canonical form not implemented for this type of formula
+
+
         /************** operations **********/
     public:
         /**
@@ -336,6 +346,15 @@ namespace cmpl
          */
         void pushToLinearCombTerms(vector<CmplVal> &terms, bool neg = false);
 
+        /**
+         * check whether this formula has its canonical form
+         * @param chg   change this to canonical form if it is necessary and possible
+         * @return      return whether formula has now a canonical form
+         */
+        bool canonicalForm(bool chg) override           { return false; }       // canonical form not implemented for this type of formula
+            //TODO: Implementierung: Pruefen und anpassen Reihenfolge Variablen in _optVars (wie in LinearVarProd)
+
+
         /************** operations **********/
     public:
         /**
@@ -393,6 +412,14 @@ namespace cmpl
          * @param f			formula for product of variables
          */
         inline ValFormulaLinearCombOp(unsigned se, ValFormulaVarProdOp *f): ValFormulaLinearComb(se)    { _linear = false; f->pushToLinearCombTerms(_terms); }
+
+        /**
+         * check whether this formula has its canonical form
+         * @param chg   change this to canonical form if it is necessary and possible
+         * @return      return whether formula has now a canonical form
+         */
+        bool canonicalForm(bool chg) override           { return false; }       // canonical form not implemented for this type of formula
+            //TODO: Implementierung: pruefen und anpassen Reihenfolge Terme (vielleicht einfach in Definitionsreihenfolge der Variablen)
 
 
         /************** operations **********/
@@ -457,6 +484,25 @@ namespace cmpl
          * @param ctx			execution context
          */
         void checkLinear(ExecContext *ctx);
+
+        /**
+         * get factor and variable of a term within a formula
+         * @param frm           formula
+         * @param i             number of term
+         * @param tfac          return of factor within the term (or TP_EMPTY if factor is 1)
+         * @param tvar          return of variable (can also be product of variables) within the term
+         * @param tlin          return whether term is linear (false if tvar contains a product of variables)
+         * @return              true if result is returned / false if arguments are not suitable
+         */
+        static bool getTermFacVar(ValFormula *frm, unsigned i, CmplVal& tfac, CmplVal& tvar, bool& tlin);
+
+        /**
+         * add a new term to this linear combination
+         * @param tfac          factor for term
+         * @param tvar          variable (can also be product of variables) within the term
+         * @param neg           negate factor
+         */
+        void addTermFacVar(CmplVal& tfac, CmplVal& tvar, bool neg = false);
     };
 
 
@@ -477,17 +523,30 @@ namespace cmpl
          * @param se        id of syntax element in the cmpl text creating this formula value
          * @param f			source formula
          */
-        inline ValFormulaCompareOp(unsigned se, ValFormulaCompare *f, bool ge, bool le, bool neg, bool ag = false): ValFormulaCompare(se, f, ge, le, neg, ag)                { }
+        inline ValFormulaCompareOp(unsigned se, ValFormulaCompare *f, bool ge, bool le, bool neg, bool ag = false): ValFormulaCompare(se, f, ge, le, neg, ag)               { }
 
         /**
          * constructor
          */
-        inline ValFormulaCompareOp(unsigned se, CmplVal *ls, CmplVal *rs, bool ge, bool le, bool neg, bool ag = false): ValFormulaCompare(se, ls, rs, ge, le, neg, ag)		{ }
+        inline ValFormulaCompareOp(unsigned se, CmplVal *ls, CmplVal *rs, bool ge, bool le, bool neg, bool ag = false): ValFormulaCompare(se, ls, rs, ge, le, neg, ag)		{ checkSwapSides(); }
 
         /**
          * constructor
          */
-        inline ValFormulaCompareOp(unsigned se, ValFormula *ls, CmplVal *rs, bool ge, bool le, bool neg, bool ag = false): ValFormulaCompare(se, ls, rs, ge, le, neg, ag)	{ }
+        inline ValFormulaCompareOp(unsigned se, ValFormula *ls, CmplVal *rs, bool ge, bool le, bool neg, bool ag = false): ValFormulaCompare(se, ls, rs, ge, le, neg, ag)	{ checkSwapSides(); }
+
+        /**
+         * check whether this formula has its canonical form
+         * @param chg   change this to canonical form if it is necessary and possible
+         * @return      return whether formula has now a canonical form
+         */
+        bool canonicalForm(bool chg) override;
+
+    private:
+        /**
+         * swap sides to ensure that a simple value stands on the right side
+         */
+        void checkSwapSides();
 
 
         /************** operations **********/
@@ -497,8 +556,9 @@ namespace cmpl
          * @param ctx			execution context
          * @param res			store for result value
          * @param se			syntax element id of operation
+         * @param noReuse       don't reuse this even if it has only one reference
          */
-        void notF(ExecContext *ctx, CmplVal *res, unsigned se) override;
+        void notF(ExecContext *ctx, CmplVal *res, unsigned se, bool noReuse = false) override;
 
         /**
          * get priority of calling the binary operation at this formula object
@@ -538,6 +598,13 @@ namespace cmpl
          */
         void write(ostream& ostr, ModuleBase *modp, int mode = 0) const override     { ostr << "<f-cmp: (continue)>"; }
 
+        /**
+         * check whether this formula has its canonical form
+         * @param chg   change this to canonical form if it is necessary and possible
+         * @return      return whether formula has now a canonical form
+         */
+        bool canonicalForm(bool chg) override           { return false; }       // canonical form not implemented for this type of formula
+
 
         /************** operations **********/
 
@@ -565,7 +632,14 @@ namespace cmpl
         /**
          * constructor
          */
-        inline ValFormulaObjectiveOp(unsigned se, CmplVal *f, bool ma): ValFormulaObjective(se, f, ma)		{ }
+        inline ValFormulaObjectiveOp(unsigned se, CmplVal *f, bool ma): ValFormulaObjective(se, f, ma)		{ if (f->t == TP_OPT_VAR) _formula.dispSet(TP_FORMULA, new ValFormulaVarOp(se, f->optVar())); }
+
+        /**
+         * check whether this formula has its canonical form
+         * @param chg   change this to canonical form if it is necessary and possible
+         * @return      return whether formula has now a canonical form
+         */
+        bool canonicalForm(bool chg) override           { return false; }       // canonical form not implemented for this type of formula
 
 
         /************** operations **********/
@@ -620,6 +694,13 @@ namespace cmpl
          */
         inline ValFormulaLogConOp(unsigned se, ValFormula *f1, ValFormula *f2, bool logOr): ValFormulaLogCon(se, f1, f2, logOr)  { }
 
+        /**
+         * check whether this formula has its canonical form
+         * @param chg   change this to canonical form if it is necessary and possible
+         * @return      return whether formula has now a canonical form
+         */
+        bool canonicalForm(bool chg) override           { return false; }       // canonical form not implemented for this type of formula
+
 
         /************** operations **********/
     public:
@@ -628,8 +709,9 @@ namespace cmpl
          * @param ctx			execution context
          * @param res			store for result value
          * @param se			syntax element id of operation
+         * @param noReuse       don't reuse this even if it has only one reference
          */
-        void notF(ExecContext *ctx, CmplVal *res, unsigned se) override;
+        void notF(ExecContext *ctx, CmplVal *res, unsigned se, bool noReuse = false) override;
 
         /**
          * logical And or Or for formula
@@ -669,6 +751,13 @@ namespace cmpl
          * @param se        id of syntax element in the cmpl text creating this formula value
          */
         inline ValFormulaCondOp(unsigned se): ValFormulaCond(se)                { }
+
+        /**
+         * check whether this formula has its canonical form
+         * @param chg   change this to canonical form if it is necessary and possible
+         * @return      return whether formula has now a canonical form
+         */
+        bool canonicalForm(bool chg) override           { return false; }       // canonical form not implemented for this type of formula
 
 
         /************** operations **********/
@@ -711,7 +800,7 @@ namespace cmpl
 
         void compF(ExecContext *ctx, CmplVal *res, unsigned se, CmplVal *a2, bool ge, bool le, bool neg) override;	///< compare for formula
 
-        void notF(ExecContext *ctx, CmplVal *res, unsigned se) override;                                        ///< logical Not for formula
+        void notF(ExecContext *ctx, CmplVal *res, unsigned se, bool noReuse = false) override;                                        ///< logical Not for formula
         void logAndOrF(ExecContext *ctx, CmplVal *res, unsigned se, CmplVal *a2, bool logOr) override;          ///< logical And or Or for formula
 
     private:
@@ -757,6 +846,16 @@ namespace cmpl
          * @return              true if conversion is successful
          */
         bool convertToFormulaLogCon(ExecContext *ctx, CmplVal *res, unsigned se, bool err);
+
+        /**
+         * check this for simple form ("{ cond: optvar = scal1; }" or "{ cond: optvar = scal1; |: optvar = scal2; }")
+         * @param cond          return of condition
+         * @param optvar        return of optimization variable
+         * @param scal1         return of first scalar value
+         * @param scal2         return of second scalar value or TP_EMPTY if no one
+         * @return              true if simple form
+         */
+        bool checkSimpleForm(CmplVal *cond, CmplVal *optvar, CmplVal *scal1, CmplVal *scal2);
 
     private:
         /**

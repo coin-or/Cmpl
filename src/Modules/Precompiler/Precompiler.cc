@@ -590,7 +590,7 @@ namespace cmpl
 #if CHDIR
 					// change path separator char, to allow using of '/' in the cmpl file
 					if (_dirSepChar != '/') {
-                        unsigned i;
+                        size_t i;
 						while ((i = fn.find('/')) != string::npos)
 							fn.replace(i, 1, 1, _dirSepChar);
 					}
@@ -899,11 +899,11 @@ namespace cmpl
 
 			if (getcwd(buf, bufsize-1)) {
 				const string s(buf);
-				delete buf;
+                delete[] buf;
 				return s;
 			}
 
-			delete buf;
+            delete[] buf;
 			bufsize *= 2;
 		}
 

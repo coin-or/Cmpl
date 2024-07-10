@@ -314,6 +314,9 @@ private:
     vector<ModelElement> _modVariables;
     vector<ModelElement> _modConstraints;
 
+    int _addConForUnusedVar;                ///< add pseudo constraint for otherwise unused variable: 0: no / 1: yes if unused because of deletion of a constraint / 2: yes for all)
+
+
     /**
      * @brief Returns the bounds of a variable
      * @param ov            Pointer to OptVar object
@@ -343,7 +346,7 @@ public:
      * @param md            pointer to main data object
      * @param mb            pointer to ModulBase object
      */
-    void prepareSolutionData(string probName, string solver, bool intRelaxation, MainData *md, ModuleBase *mb);
+    void prepareSolutionData(string probName, string solver, bool intRelaxation, int addConForUnusedVar, MainData *md, ModuleBase *mb);
 
     /**
      * @brief returns the name of the problem
@@ -456,7 +459,7 @@ public:
      * @param name      name of the variable
      * @return          index of the variable
      */
-    inline unsigned long varMpsIdxByName(string& name) { return _colNameMap[name];}
+    inline unsigned long varMpsIdxByName(string& name) { return ( (( _colNameMap.find(name) != _colNameMap.end()) ) ? _colNameMap[name] : -1);}
 
     /**
      * @brief Returns the original index of a variable based on its index
@@ -470,7 +473,7 @@ public:
      * @param name      name of the constraint
      * @return          index of the constraint
      */
-    inline unsigned long conMpsIdxByName(string& name) { return _rowNameMap[name];}
+    inline unsigned long conMpsIdxByName(string& name) { return (( ( _rowNameMap.find(name) != _rowNameMap.end()) ) ? _rowNameMap[name] :-1 );}
 
     /**
      * @brief Returns the original index of a constraint based on its index

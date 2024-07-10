@@ -348,10 +348,11 @@ namespace cmpl
          * @param res		return of read values
          * @param inStr		open input stream
          * @param line		current line in the input file
+         * @param rec       recover mode, skip file up to next symbol start
          * @param checkSym	check that values for this symbol are read / NULL: any symbol
          * @return          symbol for which values are read / -1: end of file
          */
-        int readSymbolValues(CmplVal& res, istream *inStr, unsigned& line, int *checkSym = NULL);
+        int readSymbolValues(CmplVal& res, istream *inStr, unsigned& line, bool &rec, int *checkSym = NULL);
 
         /**
          * parse headline for symbol
@@ -419,9 +420,10 @@ namespace cmpl
          * @param line		current line in the input file
          * @param lstr		return of read line
          * @param errEof	throw exception if EOF
+         * @param skipTo    if given then skip up to line starting with this char
          * @return          position of first non-space char in the line / string::npos if EOF
          */
-        size_t getNextLine(istream *inStr, unsigned& line, string& lstr, bool errEof);
+        size_t getNextLine(istream *inStr, unsigned& line, string& lstr, bool errEof, char skipTo = '\0');
 
         /**
          * read one value (TP_INT, TP_REAL or TP_STR) from string

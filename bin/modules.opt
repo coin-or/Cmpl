@@ -1,0 +1,152 @@
+#***************************************************
+# configuration file for module aggregations
+#***************************************************
+
+# standard modules if no modules are specified on command line
+<default>		run cmpl with default modules (used if no modules are specified on command line)
+	default
+
+default			run cmpl with default modules
+	compatSymbols
+	mathFunctions
+	inputFunctions
+	classFunctions
+	externDataFile
+	externXlsDataFile
+    solverSelect
+	boundRow
+	linearSos -warn-invalid-sos
+	linearVarProd
+	linearConstantRow
+	linearConditional
+	linearLogCon
+	precompile
+	compile -no-warn-insert-eos -compat-linenamepref -compat-cbsymbols -compat-cbh-assign
+    interpret
+    writeMps
+    writeMatrix
+    solverHighs
+    solverCbc
+    solverGlpk
+    solverCplex
+    solverGurobi
+    solverScip
+    solutionReportAscii -solStdOut
+    solutionReportCsv
+	solutionReportXml
+
+woPreComp			run cmpl with default modules
+	compatSymbols
+	mathFunctions
+	inputFunctions
+	classFunctions
+	externDataFile
+	externXlsDataFile
+    solverSelect
+	boundRow
+	linearSos -warn-invalid-sos
+	linearVarProd
+	linearConstantRow
+	linearConditional
+	linearLogCon
+	#precompile
+	compile -no-warn-insert-eos -compat-linenamepref -compat-cbsymbols -compat-cbh-assign
+    interpret
+    writeMps
+    writeMatrix
+    writeMatrix
+    solverHighs
+    solverCbc
+    solverGlpk
+    solverCplex
+    solverGurobi
+    solverScip
+    solutionReportAscii -solStdOut
+    solutionReportCsv
+	solutionReportXml
+
+serverWithPreComp			run cmpl on CmplServer with precompiler
+	compatSymbols
+	mathFunctions
+	inputFunctions
+	classFunctions
+	externDataFile
+    externXlsDataFile
+    solverSelect
+	boundRow
+	linearSos -warn-invalid-sos
+	linearVarProd
+	linearConstantRow
+	linearConditional
+	linearLogCon
+	precompile
+	compile -no-warn-insert-eos -compat-linenamepref -compat-cbsymbols -compat-cbh-assign
+    interpret
+    writeMatrix
+    solverHighs
+    solverCbc
+    solverGlpk
+    solverCplex
+    solverGurobi
+    solverScip
+    solutionReportXml -solution
+
+serverWoPreComp 			run cmpl on CmplServer without precompiler  (default)  
+	compatSymbols
+	mathFunctions
+	inputFunctions
+	classFunctions
+	externDataFile
+    externXlsDataFile
+    solverSelect
+	boundRow
+	linearSos -warn-invalid-sos
+	linearVarProd
+	linearConstantRow
+	linearConditional
+	linearLogCon
+	compile -no-warn-insert-eos -compat-linenamepref -compat-cbsymbols -compat-cbh-assign
+    interpret
+    writeMatrix
+    solverHighs
+    solverCbc
+    solverGlpk
+    solverCplex
+    solverGurobi
+    solverScip
+    solutionReportXml -solution
+
+
+
+# checks the syntax of cmpl input, but don't execute it
+check-only		check only syntax of the cmpl input file
+	compatSymbols
+	externDataFile
+	externXlsDataFile
+	precompile
+	compile -no-warn-insert-eos -compat-linenamepref -compat-cbsymbols -compat-cbh-assign -check-only
+
+
+
+# runs only the compiler and outputs the generated code
+code			runs only the compiler and outputs the generated code
+	compatSymbols
+	mathFunctions
+	inputFunctions
+	classFunctions
+	externDataFile
+	externXlsDataFile
+	linearSos
+	precompile
+	compile -no-warn-insert-eos -compat-linenamepref -compat-cbsymbols -compat-cbh-assign -o-code
+
+# runs only the precompiler and outputs the generated file
+precomp			runs only the precompiler and outputs the generated file
+	compatSymbols
+	externDataFile
+	externXlsDataFile
+	precompile 
+	#precompile -o-pre 1
+
+
+

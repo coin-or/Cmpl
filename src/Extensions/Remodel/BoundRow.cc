@@ -262,7 +262,8 @@ namespace cmpl
     {
         // only check and wait for pseudo cache, but never insert anything
         RemodelCacheGuard cg;
-        (void) cg.checkPrep(_accessGuardCache, ov->id());
+        unsigned long ovid = ov->id();
+        (void) cg.checkPrep(_accessGuardCache, ovid);
 
         bool invalid = false;
 

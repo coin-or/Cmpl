@@ -122,6 +122,7 @@ namespace cmpl
 	 */
 	enum ModificatorKey
 	{
+        modificatorDummy,                   ///< dummy value only for initialization
 		modificatorPublic,					///< modificator keyword "public"
 		modificatorPrivate,					///< modificator keyword "private"
 		modificatorLocal,					///< modificator keyword "local"
@@ -258,7 +259,7 @@ namespace cmpl
 
 		AssignModLevel _defControlCB;		///< setting of codeblock control
 		LocationInfo _locControlCB;			///< location of codeblock control
-		ModificatorKey _controlCB;			///< codeblock control (only modificatorBreak, modificatorContinue, modificatorRepeat or modificatorReturn)
+        ModificatorKey _controlCB;          ///< codeblock control (only modificatorBreak, modificatorContinue, modificatorRepeat or modificatorReturn)
 
 	public:
 		/**
@@ -269,7 +270,7 @@ namespace cmpl
 		/**
 		 * initialize
 		 */
-        inline void init()					{ _defObjType = assignModLevelUndefined; _defDataType = assignModLevelUndefined; _defSymScope = assignModLevelUndefined; _defIsConst = assignModLevelUndefined; _defIsNew = assignModLevelUndefined; _defIsExtern = assignModLevelUndefined; _defIsInitial = assignModLevelUndefined;  _defIsRef = assignModLevelUndefined; _defIsAssert = assignModLevelUndefined; _defIsDeclare = assignModLevelUndefined; _defIsNocond = assignModLevelUndefined; _defIsOrdered = assignModLevelUndefined; _defControlCB = assignModLevelUndefined; }
+        inline void init()					{ _defObjType = assignModLevelUndefined; _defDataType = assignModLevelUndefined; _defSymScope = assignModLevelUndefined; _defIsConst = assignModLevelUndefined; _defIsNew = assignModLevelUndefined; _defIsExtern = assignModLevelUndefined; _defIsInitial = assignModLevelUndefined;  _defIsRef = assignModLevelUndefined; _defIsAssert = assignModLevelUndefined; _defIsDeclare = assignModLevelUndefined; _defIsNocond = assignModLevelUndefined; _defIsOrdered = assignModLevelUndefined; _defControlCB = assignModLevelUndefined; _controlCB = modificatorDummy; }
 
 		/**
 		 * set assign modificators for use with codeblock symbols

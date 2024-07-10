@@ -129,6 +129,8 @@ protected:
     string _objName;
     string _objSense;
 
+    int _addConForUnusedVar;
+
     struct solverOption {
         string key;
         string value;

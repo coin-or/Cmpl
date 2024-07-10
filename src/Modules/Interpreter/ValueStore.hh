@@ -198,7 +198,7 @@ namespace cmpl
 		/**
 		 * destructor
 		 */
-        inline ~ValueStore()								{ if (_values && _values->decRef()) { delete _values; } if (_nextAss) { delete _nextAss; } }
+        inline ~ValueStore()								{ if (_values && _values->decRef()) { delete _values; } }
 
 
         /**

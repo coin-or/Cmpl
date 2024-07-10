@@ -65,7 +65,7 @@ namespace cmpl
 	 */
 	ErrorHandler::~ErrorHandler()
 	{
-		delete _errorLevelName;
+        delete[] _errorLevelName;
 	}
 
 	/**

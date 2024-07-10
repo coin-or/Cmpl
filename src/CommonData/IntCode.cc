@@ -113,7 +113,7 @@ namespace cmpl
 	void IntCode::cleanUp()
 	{
 		if (_code) {
-			delete _code;
+            delete[] _code;
 			_code = NULL;
 			_cnt = 0;
 		}
